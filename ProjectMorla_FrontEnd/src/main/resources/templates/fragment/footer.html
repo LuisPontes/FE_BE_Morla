@@ -1,0 +1,21 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:dt="http://www.thymeleaf.org/dandelion/datatables">
+<head>
+</head>
+	<body>
+		<footer  th:fragment="footer">
+			
+					<!-- jQuery -->
+				    <script type="text/javascript" th:src="@{/js/jquery.js}" ></script>
+				    <!-- Bootstrap Core JavaScript -->
+					<script type="text/javascript" th:src="@{/js/bootstrap.min.js}" /></script>
+						<!-- Custom JavaScript -->
+					<script>
+					    $('.carousel').carousel({
+					        interval: 0//5000 //changes the speed
+					    })
+    				</script>
+			
+		</footer>
+	</body>
+</html>

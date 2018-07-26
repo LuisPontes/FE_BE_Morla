@@ -1,4 +1,4 @@
-package pt.morla.FrontEnd;
+package pt.morla;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
