@@ -25,7 +25,7 @@
 			<!-- ************************************************************************************************* -->
 			<div class="item active" id="0">
 				<!-- Set the second background image using inline CSS below. -->
-				<div class="fill" style="background-image: url(recursos/bg.jpg);"></div>
+				<div class="fill" style="background-image: url(fe/recursos/bg.jpg);"></div>
 				<div class="carousel-caption">
 					<h2>
 						<a href="#role0"> Catarina Morla </a>
@@ -36,7 +36,7 @@
 			<!-- ************************************************************************************************* -->
 			<div class="item" id="1">
 				<!-- Set the first background image using inline CSS below. -->
-				<div class="fill" style="background-image: url(recursos/1.jpg);"></div>
+				<div class="fill" style="background-image: url(fe/recursos/1.jpg);"></div>
 				<div class="carousel-caption">
 					<h2>
 						<a href="#role1">Coreografia</a>
@@ -46,7 +46,7 @@
 			<!-- ************************************************************************************************* -->
 			<div class="item" id="2">
 				<!-- Set the second background image using inline CSS below. -->
-				<div class="fill" style="background-image: url(recursos/4.jpg);"></div>
+				<div class="fill" style="background-image: url(fe/recursos/4.jpg);"></div>
 				<div class="carousel-caption">
 					<h2>
 						<a href="#role2">Figurinos</a>
@@ -56,7 +56,7 @@
 			<!-- ************************************************************************************************* -->
 			<div class="item" id="3">
 				<!-- Set the third background image using inline CSS below. -->
-				<div class="fill" style="background-image: url(recursos/2.jpg);"></div>
+				<div class="fill" style="background-image: url(fe/recursos/2.jpg);"></div>
 				<div class="carousel-caption">
 					<h2>
 						<a href="#role3">Vestuário</a>
@@ -66,7 +66,7 @@
 			<!-- ************************************************************************************************* -->
 			<div class="item" id="4">
 				<!-- Set the third background image using inline CSS below. -->
-				<div class="fill" style="background-image: url(recursos/3.jpg);"></div>
+				<div class="fill" style="background-image: url(fe/recursos/3.jpg);"></div>
 				<div class="carousel-caption">
 					<h2>
 						<a href="#role4">S.C.A.R.F.S</a>
@@ -115,17 +115,20 @@
 		</div>
 
 	</div>
+	
+	<footer th:replace="fragment/footer :: footer"></footer>
+	
 	<!-- /.container -->
-	<!-- jQuery -->
-	<script type="text/javascript" th:src="@{/js/jquery.js}"></script>
-	<!-- Bootstrap Core JavaScript -->
-	<script type="text/javascript" th:src="@{/js/bootstrap.min.js}" /></script>
-	<!-- Custom JavaScript -->
+	<!-- jQuery 
+	<script type="text/javascript" th:src="@{/fe/js/jquery.js}"></script>-->
+	<!-- Bootstrap Core JavaScript 
+	<script type="text/javascript" th:src="@{/fe/js/bootstrap.min.js}" /></script>-->
+	<!-- Custom JavaScript 
 	<script>
 		$('.carousel').carousel({
 			interval: 0//5000 //changes the speed
 		})
-    </script>
+    </script>-->
 </body>
 	
 </html>
