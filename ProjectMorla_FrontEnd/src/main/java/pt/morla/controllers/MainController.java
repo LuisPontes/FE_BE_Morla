@@ -24,15 +24,5 @@ public class MainController {
 	}
 	
 	
-	@RequestMapping(value = { "/dashboard", "/db" }, method = { RequestMethod.GET, RequestMethod.POST })
-	public String dashboard(HttpServletRequest request, HttpServletResponse response,ModelAndView model) {
-		
-		
-		
-		return "dashboard/index";
-	}
-	
-	
-	
 	
 }
