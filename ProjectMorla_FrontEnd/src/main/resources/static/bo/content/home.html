@@ -1,4 +1,9 @@
-
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:dt="http://www.thymeleaf.org/dandelion/datatables">
+<head>
+	
+</head>
+<body>
 <!--Start Breadcrumb-->
 <div class="row">
 	<div id="breadcrumb" class="col-xs-12">
@@ -16,22 +21,33 @@
 <div id="dashboard-header" class="row">
 
 	
+	 
 	<div class="box-content">
+	
+	<h1 th:text="${catgories}"></h1>
+	 <p th:text="'id: ' + ${catgories}" />
+	 
+	 <form action="#" th:action="@{/update_fe}" th:object="${greeting}" method="post">
 	<table class="table beauty-table table-hover">
-		<form action="#" th:action="@{/update_fe}" th:object="${greeting}" method="post">
+		
 					<thead>
 						<tr>
 							<th>Nome separador</th>
 							<th>Update</th>
 							<th>url</th>
+							<th>Path Imagem</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<td>Catarina Morla</td>
-							<td>20/08/2018 15:25:00</td>
-							<td><input type="text" value="/"></td>
-						</tr>
+					
+					<tr th:each="cat : ${catgories}">
+						<td th:text="${cat.nome}"></td>
+						<td th:text="${cat.lastUpdate}"></td>
+						<td th:text="${cat.url}"></td>
+						<td th:text="${cat.img}"></td>
+						
+					</tr>
+						
 						
 					</tbody>
 				</table>
@@ -39,3 +55,6 @@
 		</form>	
 			</div>
 </div>
+
+</body>
+</html>

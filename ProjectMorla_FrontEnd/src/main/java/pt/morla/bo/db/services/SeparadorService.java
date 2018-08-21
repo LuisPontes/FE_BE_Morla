@@ -21,4 +21,15 @@ public class SeparadorService implements ISeparadores{
         return result;
 	}
 
+	@Override
+	public Long save(tb_separador new_cat_obj) {
+		tb_separador newObj = repository.save(new_cat_obj);
+		return newObj.getId();
+	}
+
+	@Override
+	public void remove(Long id) {
+		repository.deleteById(id);
+	}
+
 }

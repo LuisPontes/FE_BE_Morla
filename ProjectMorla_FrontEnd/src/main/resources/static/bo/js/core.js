@@ -4,20 +4,32 @@
 //
 function LoadAjaxContent(url){
 	$('.preloader').show();
-	$.ajax({
-		mimeType: 'text/html; charset=utf-8', // ! Need set mimeType only when run from local file
-		url: url,
-		type: 'GET',
-		success: function(data) {
-			$('#ajax-content').html(data);
-			
-		},
-		error: function (jqXHR, textStatus, errorThrown) {
-			alert("error:"+errorThrown);
-		},
-		dataType: "html",
-		async: false
-	});
+		switch(url) {
+	    case "home":
+	    	$('#gestao-Categorias').hide();
+	        break;
+	    case "gestao-Categorias":
+	    	$('#home').hide();
+	        break;
+	} 
+	
+	$('#'+url).show();
+	
+	
+//	$.ajax({
+//		mimeType: 'text/html; charset=utf-8', // ! Need set mimeType only when run from local file
+//		url: url,
+//		type: 'GET',
+//		success: function(data) {
+//			$('#ajax-content').html(data);
+//			
+//		},
+//		error: function (jqXHR, textStatus, errorThrown) {
+//			alert("error:"+errorThrown);
+//		},
+//		dataType: "html",
+//		async: false
+//	});
 }
 
 //////////////////////////////////////////////////////
@@ -36,7 +48,7 @@ $(document).ready(function () {
 	});
 	var ajax_url = location.hash.replace(/^#/, '');
 	if (ajax_url.length < 1) {
-		ajax_url = 'bo/content/home.html';
+		ajax_url = 'home';
 	}
 	LoadAjaxContent(ajax_url);
 	var item = $('.main-menu li a[href$="' + ajax_url + '"]');

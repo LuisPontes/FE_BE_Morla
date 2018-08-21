@@ -19,9 +19,12 @@
 		
 		<!--Start Content-->
 		<div id="content" class="col-xs-12 col-sm-10">
-			<div id="ajax-content">
+		 
+		 	<!-- HOME -->
+			<div id="home" style="visibility: hidden" th:replace="dashboard/content/home :: home"></div>
+			<!-- gestao de categorias -->
+			<div id="gestao-Categorias" style="visibility: hidden" th:replace="dashboard/content/gestaoCategorias :: gestao-Categorias"></div>
 			
-			</div> 
 		</div>
 		<!--End Content-->
 		
