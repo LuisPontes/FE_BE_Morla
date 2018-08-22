@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,8 +29,14 @@ public class tb_separador {
 	private Date lastUpdate;
 	@Column(name = "url")
 	private String url;
+	@Column(name = "active")
+	private int active_flag;
+
+	@Transient
+	private String active;
+	@Transient
 	private MultipartFile[] fileDatas;
-	
+
 	public tb_separador() {
 	}
 
@@ -96,12 +103,33 @@ public class tb_separador {
 		this.fileDatas = fileDatas;
 	}
 
+	public int getActive_flag() {
+		return active_flag;
+	}
+
+	public void setActive_flag(int active_flag) {
+		this.active_flag = active_flag;
+	}
+
+	public String getActive() {
+		return active;
+	}
+
+	public void setActive(String active) {
+		this.active = active;
+	}
+
+	public void mappingActive() {
+		if ( this.active.equals("on")) {
+			this.active_flag=1;
+		} else {
+			this.active_flag=0;
+		}
+	}
 	@Override
 	public String toString() {
 		return "tb_separador [id=" + id + ", nome=" + nome + ", img=" + img + ", fileDatas="
 				+ Arrays.toString(fileDatas) + ", lastUpdate=" + lastUpdate + ", url=" + url + "]";
 	}
-
-	
 
 }

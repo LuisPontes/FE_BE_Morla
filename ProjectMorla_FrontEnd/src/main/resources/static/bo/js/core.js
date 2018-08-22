@@ -4,12 +4,18 @@
 //
 function LoadAjaxContent(url){
 	$('.preloader').show();
-		switch(url) {
+	switch(url) {
 	    case "home":
 	    	$('#gestao-Categorias').hide();
+	    	$('#gestao-Conteudos').hide();
 	        break;
 	    case "gestao-Categorias":
 	    	$('#home').hide();
+	    	$('#gestao-Conteudos').hide();
+	        break;
+	    case "gestao-Conteudos":
+	    	$('#home').hide();
+	    	$('#gestao-Categorias').hide();
 	        break;
 	} 
 	

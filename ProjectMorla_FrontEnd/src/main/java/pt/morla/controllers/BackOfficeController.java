@@ -21,7 +21,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
 
+import pt.morla.bo.db.interfaces.IContents;
 import pt.morla.bo.db.interfaces.ISeparadores;
+import pt.morla.bo.db.models.tb_content;
 import pt.morla.bo.db.models.tb_separador;
 
 @Controller
@@ -31,15 +33,19 @@ public class BackOfficeController {
 	protected static Logger log = LoggerFactory.getLogger(BackOfficeController.class);
 	   
     @Autowired
-    ISeparadores dao;
+    ISeparadores daoSep;
+    
+    @Autowired
+    IContents daoCont;
     
     List<tb_separador> categoriasList = null;
+    List<tb_content> contentsList = null;
     
     @PostConstruct
     private void init() {
     	/*get all categorias*/
-		categoriasList = (List<tb_separador>) dao.findAll();
-
+		categoriasList = (List<tb_separador>) daoSep.findAll();
+		contentsList = (List<tb_content>) daoCont.findAll();
     }
     @RequestMapping(value = { "" }, method = { RequestMethod.GET })
 	public String index(HttpServletRequest request, HttpServletResponse response,Model model) {
@@ -48,12 +54,16 @@ public class BackOfficeController {
 	}
 	
 	@RequestMapping(value = { "/addcat" }, method = { RequestMethod.POST })
-	public String add(HttpServletRequest request, HttpServletResponse response,Model model,@ModelAttribute tb_separador new_cat_obj) {
+	public String addcat(HttpServletRequest request, HttpServletResponse response,Model model,@ModelAttribute tb_separador new_cat_obj) {
 		
 		if ( new_cat_obj.getNome()!=null) {
 			new_cat_obj.setLastUpdate(new Date());
-			log.info("Save id: "+dao.save(new_cat_obj));
-			categoriasList = (List<tb_separador>) dao.findAll();
+			new_cat_obj.mappingActive();
+			if ( new_cat_obj.getFileDatas()!=null ) {
+				new_cat_obj = doUpload(request, new_cat_obj);
+			}
+			log.info("Save id: "+daoSep.save(new_cat_obj));
+			categoriasList = (List<tb_separador>) daoSep.findAll();
 		}
 		model = getAttributes(model);
 		return "dashboard/index";
@@ -63,9 +73,29 @@ public class BackOfficeController {
 	public String remove(HttpServletRequest request, HttpServletResponse response,Model model,@ModelAttribute tb_separador new_cat_obj) {
 		
 		if ( new_cat_obj.getId()!=null ) {
-			dao.remove(new_cat_obj.getId());
+			daoSep.remove(new_cat_obj.getId());
+			if ( new_cat_obj.getImg()!=null ) {
+				 File img = new File(new_cat_obj.getImg());
+				if( img.delete() ){
+					log.info("Delete Image [{}]!",new_cat_obj.getImg());
+				}else {
+					log.info("Dont delete image [{}]",new_cat_obj.getImg());
+				}
+			}
 			log.info("Remove cat id: "+new_cat_obj.getId());
-			categoriasList = (List<tb_separador>) dao.findAll();
+			categoriasList = (List<tb_separador>) daoSep.findAll();
+		}
+		model = getAttributes(model);
+		return "dashboard/index";
+	}
+	
+	@RequestMapping(value = { "/addCont" }, method = { RequestMethod.POST })
+	public String addCont(HttpServletRequest request, HttpServletResponse response,Model model,@ModelAttribute tb_content new_cont_obj) {
+		
+		if ( new_cont_obj.getCategoria_id()!=null) {
+			new_cont_obj.mappingActive();
+			log.info("Save id: "+daoCont.save(new_cont_obj));
+			contentsList = (List<tb_content>) daoCont.findAll();
 		}
 		model = getAttributes(model);
 		return "dashboard/index";
@@ -73,7 +103,9 @@ public class BackOfficeController {
 	
 	private Model getAttributes(Model model) {
 		model.addAttribute("catgories", categoriasList);
+		model.addAttribute("contents", contentsList);
 		model.addAttribute("tb_separador", new tb_separador());
+		model.addAttribute("tb_content", new tb_content());
 		return model;
 	}
 	
@@ -82,7 +114,7 @@ public class BackOfficeController {
 		 
 		      try {
 		      // Root Directory.
-		      String uploadRootPath = request.getServletContext().getRealPath("upload");
+		      String uploadRootPath =  "../ProjectMorla_FrontEnd/src/main/resources/static/fe/recursos"; 
 		      System.out.println("uploadRootPath=" + uploadRootPath);
 		 
 		      File uploadRootDir = new File(uploadRootPath);
@@ -113,15 +145,18 @@ public class BackOfficeController {
 		               uploadedFiles.add(serverFile);
 		               System.out.println("Write file: " + serverFile);
 		            } catch (Exception e) {
+		            	e.printStackTrace();
 		               System.out.println("Error Write file: " + name);
 		               failedFiles.add(name);
 		            }
+		            myUploadForm.setImg(uploadRootPath+"/"+name);
 		         }
 		      }
-		      myUploadForm.setImg(uploadRootPath);
+		     
 		     return myUploadForm;
 		      }catch (Exception e) {
-		    	  	return null;
+		    	  e.printStackTrace();
+		    	  return null;
 			}
 		 
 		}

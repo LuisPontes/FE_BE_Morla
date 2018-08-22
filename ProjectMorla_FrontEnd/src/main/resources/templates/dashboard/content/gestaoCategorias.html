@@ -13,8 +13,8 @@
 		<a href="#" class="show-sidebar"> <i class="fa fa-bars"></i>
 		</a>
 		<ol class="breadcrumb pull-left">
-			<li><a href="index.html">Home</a></li>
-			<li><a href="#">Gestão de separadores</a></li>
+			<li><a href="/db">Home</a></li>
+			<li><a href="gestao-Categorias" class="ajax-link">Gestão de Categorias</a></li>
 		</ol>
 		<div id="social" class="pull-right">
 			<a href="#"><i class="fa fa-google-plus"></i></a> <a href="#"><i
@@ -46,7 +46,9 @@
 
 
 			<div class="box-content">
-				<h4 class="page-header">Adicionar</h4>
+			
+			<!-- SEPARADOR -->
+				<h4 class="page-header">Separador - Pagina Inicial</h4>
 
 				<form class="form-horizontal" role="form" action="#" th:action="@{/db/addcat}" th:object="${tb_separador}" method="post" enctype="multipart/form-data">
 
@@ -67,35 +69,35 @@
 								th:field="*{url}">
 						</div>
 					</div>
-					<div class="clearfix"></div>
+					
 
 					<div class="form-group">
+					
 						<label class="col-sm-2 control-label">Imagem Upload</label>
-						
 						<div class="col-sm-4">
-						
 						 <input th:field="*{fileDatas}" type="file"/>
-						 
-							<!-- 
-								<input type="text" class="form-control"
-								placeholder="exemplo: cenas" data-toggle="tooltip"
-								data-placement="bottom" title="Tooltip for name"
-								th:field="*{img}">
-							-->
 						</div>
-
-
+						
+						<label class="col-sm-2 control-label">Activo </label>
+						<div class="col-sm-4">
+							<div class="toggle-switch toggle-switch-success">
+								<label>
+									<input type="checkbox" id="active" name="active" checked>
+									<div class="toggle-switch-inner"></div>
+									<div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
+								</label>
+							</div>
+						</div>
+						
 					</div>
 
-					<div class="clearfix"></div>
+<!-- Butao submit -->
 					<div class="form-group">
-
 						<div class="col-sm-2">
 							<button type="submit" class="btn btn-primary btn-label-left">
 								<span><i class="fa fa-clock-o"></i></span> Guardar
 							</button>
 						</div>
-
 					</div>
 				</form>
 
@@ -136,6 +138,7 @@
 						<td>
 							<form action="#" th:action="@{/db/delcat}" th:object="${tb_separador}" method="post">
 								<input type="hidden" th:value="${cat.id}"  id="id" name="id" />
+								<input type="hidden" th:value="${cat.img}"  id="img" name="img" />
 								<input type="submit" value="Remover"/>
 							</form>
 						</td>
