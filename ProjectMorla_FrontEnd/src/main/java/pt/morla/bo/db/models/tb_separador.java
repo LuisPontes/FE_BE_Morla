@@ -30,7 +30,7 @@ public class tb_separador {
 	@Column(name = "url")
 	private String url;
 	@Column(name = "active")
-	private int active_flag;
+	private Integer active_flag;
 
 	@Transient
 	private String active;
@@ -103,11 +103,11 @@ public class tb_separador {
 		this.fileDatas = fileDatas;
 	}
 
-	public int getActive_flag() {
+	public Integer getActive_flag() {
 		return active_flag;
 	}
 
-	public void setActive_flag(int active_flag) {
+	public void setActive_flag(Integer active_flag) {
 		this.active_flag = active_flag;
 	}
 
@@ -120,10 +120,17 @@ public class tb_separador {
 	}
 
 	public void mappingActive() {
-		if ( this.active.equals("on")) {
-			this.active_flag=1;
-		} else {
-			this.active_flag=0;
+		if ( this.active == null ) 
+		{
+			this.active_flag = 0;
+		}
+		else if (this.active.equals("on") ) 
+		{
+			this.active_flag = 1;
+		} 
+		else 
+		{
+			this.active_flag = 0;
 		}
 	}
 	@Override

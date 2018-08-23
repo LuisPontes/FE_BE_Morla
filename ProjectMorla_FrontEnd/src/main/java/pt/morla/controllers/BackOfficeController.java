@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
@@ -101,11 +102,28 @@ public class BackOfficeController {
 		return "dashboard/index";
 	}
 	
+	@RequestMapping(value = { "/activeOrDesactive" }, method = { RequestMethod.GET })
+	public String activeOrDesactve(HttpServletRequest request, HttpServletResponse response,Model model) {
+		Map<String, String[]> ParameterMap = request.getParameterMap();
+		if ( ParameterMap.get("type")[0].equals("catgories") ) 
+		{
+			daoSep.updateActiveFlag( Long.parseLong(ParameterMap.get("id")[0]),  Integer.parseInt(ParameterMap.get("value")[0]) );
+			categoriasList = (List<tb_separador>) daoSep.findAll();
+		}
+		else if ( ParameterMap.get("type")[0].equals("contents") ) 
+		{
+			daoCont.updateActiveFlag( Long.parseLong(ParameterMap.get("id")[0]),  Integer.parseInt(ParameterMap.get("value")[0]) );
+			contentsList = (List<tb_content>) daoCont.findAll();
+		}
+		model = getAttributes(model);
+		return "dashboard/index";
+	}
+	
 	private Model getAttributes(Model model) {
-		model.addAttribute("catgories", categoriasList);
-		model.addAttribute("contents", contentsList);
-		model.addAttribute("tb_separador", new tb_separador());
-		model.addAttribute("tb_content", new tb_content());
+			model.addAttribute("catgories", categoriasList);
+			model.addAttribute("contents", contentsList);
+			model.addAttribute("tb_separador", new tb_separador());
+			model.addAttribute("tb_content", new tb_content());
 		return model;
 	}
 	

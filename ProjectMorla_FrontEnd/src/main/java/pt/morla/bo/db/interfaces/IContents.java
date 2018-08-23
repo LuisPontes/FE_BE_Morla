@@ -11,4 +11,6 @@ public interface IContents {
 	public Long save(tb_content new_cat_obj);
 
 	public void remove(Long id);
+	
+	public int updateActiveFlag(Long long1,int active);
 }

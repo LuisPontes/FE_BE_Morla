@@ -118,6 +118,7 @@
 					<th>Update</th>
 					<th>url</th>
 					<th>Path Imagem</th>
+					<th>Active</th>
 					<th></th>
 					<th></th>
 				</tr>
@@ -129,6 +130,7 @@
 						<td th:text="${cat.lastUpdate}"></td>
 						<td th:text="${cat.url}"></td>
 						<td th:text="${cat.img}"></td>
+						<td th:text="${cat.active_flag}"></td>
 						<td>
 							<form action="#" th:action="@{/db/editcat}" th:object="${tb_separador}" method="post">
 								<input type="hidden" th:value="${cat.id}"  id="id" name="id" />

@@ -32,4 +32,9 @@ public class SeparadorService implements ISeparadores{
 		repository.deleteById(id);
 	}
 
+	@Override
+	public int updateActiveFlag(Long id, int active) {
+		return repository.updateActiveFlag(id, active);
+	}
+
 }

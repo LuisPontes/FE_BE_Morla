@@ -32,4 +32,9 @@ public class ContentsService implements IContents{
 		repository.deleteById(id);
 	}
 
+	@Override
+	public int updateActiveFlag(Long long1, int active) {
+		return repository.updateActiveFlag(long1, active);
+	}
+
 }

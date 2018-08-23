@@ -51,7 +51,7 @@ public class tb_content {
 	@Column(name = "option2")
 	private String option2;
 	@Column(name = "active")
-	private int active_flag;
+	private Integer active_flag;
 
 	@Transient
 	private String active;
@@ -208,10 +208,25 @@ public class tb_content {
 		this.active = active;
 	}
 
+	public Integer getActive_flag() {
+		return active_flag;
+	}
+
+	public void setActive_flag(Integer active_flag) {
+		this.active_flag = active_flag;
+	}
+
 	public void mappingActive() {
-		if (this.active.equals("on")) {
+		if ( this.active == null ) 
+		{
+			this.active_flag = 0;
+		}
+		else if (this.active.equals("on") ) 
+		{
 			this.active_flag = 1;
-		} else {
+		} 
+		else 
+		{
 			this.active_flag = 0;
 		}
 	}

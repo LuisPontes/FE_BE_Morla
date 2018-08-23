@@ -1,5 +1,8 @@
 
 
+	
+	
+
 //  Function for load content from url and put in $('.ajax-content') block
 //
 function LoadAjaxContent(url){
@@ -190,9 +193,87 @@ $(document).ready(function () {
 	$('#about').on('mouseleave', function(){
 		$('#about').removeClass('about-h');
 	})
+	
+	//change flag active send to controller back office
+	$('#home').ready(function(){
+		$('input').click(function() {
+			if ( this.checked) {//1
+				 window.location.replace("/db/activeOrDesactive?type="+this.id+"&id="+this.value+"&value=1");
+			}else{
+				 window.location.replace("/db/activeOrDesactive?type="+this.id+"&id="+this.value+"&value=0");
+			}
+		});
+		
+	});
 });
 
-
-
+//
+//Helper for run TinyMCE editor with textarea's
+//
+function TinyMCEStart(elem, mode){
+	var plugins = [];
+	if (mode == 'extreme'){
+		plugins = [ "advlist anchor autolink autoresize autosave bbcode charmap code contextmenu directionality ",
+			"emoticons fullpage fullscreen hr image insertdatetime layer legacyoutput",
+			"link lists media nonbreaking noneditable pagebreak paste preview print save searchreplace",
+			"tabfocus table template textcolor visualblocks visualchars wordcount"]
+	}
+	tinymce.init({selector: elem,
+		theme: "modern",
+		plugins: plugins,
+		//content_css: "css/style.css",
+		toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullpage | forecolor backcolor emoticons",
+		style_formats: [
+			{title: 'Header 2', block: 'h2', classes: 'page-header'},
+			{title: 'Header 3', block: 'h3', classes: 'page-header'},
+			{title: 'Header 4', block: 'h4', classes: 'page-header'},
+			{title: 'Header 5', block: 'h5', classes: 'page-header'},
+			{title: 'Header 6', block: 'h6', classes: 'page-header'},
+			{title: 'Bold text', inline: 'b'},
+			{title: 'Red text', inline: 'span', styles: {color: '#ff0000'}},
+			{title: 'Red header', block: 'h1', styles: {color: '#ff0000'}},
+			{title: 'Example 1', inline: 'span', classes: 'example1'},
+			{title: 'Example 2', inline: 'span', classes: 'example2'},
+			{title: 'Table styles'},
+			{title: 'Table row 1', selector: 'tr', classes: 'tablerow1'}
+		]
+	});
+}
+//
+//Function for Dynamically Change input size on Form Layout page
+//
+function FormLayoutExampleInputLength(selector){
+	var steps = [
+		"col-sm-1",
+		"col-sm-2",
+		"col-sm-3",
+		"col-sm-4",
+		"col-sm-5",
+		"col-sm-6",
+		"col-sm-7",
+		"col-sm-8",
+		"col-sm-9",
+		"col-sm-10",
+		"col-sm-11",
+		"col-sm-12"
+	];
+	selector.slider({
+	   range: 'min',
+		value: 1,
+		min: 0,
+		max: 11,
+		step: 1,
+		slide: function(event, ui) {
+			if (ui.value < 1) {
+				return false;
+			}
+			var input = $("#form-styles");
+			var f = input.parent();
+			f.removeClass();
+			f.addClass(steps[ui.value]);
+			input.attr("placeholder",'.'+steps[ui.value]);
+		}
+	});
+}
 
 
