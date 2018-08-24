@@ -53,7 +53,7 @@
 			</div>
 
 
-			<div class="box-content">
+			<div class="box-content" style="display: none;">
 			
 			<!-- Conteudos -->
 				<h4 class="page-header">Adicionar Conteudos</h4>
@@ -274,8 +274,8 @@
 								<div class="col-sm-4">
 									<div class="toggle-switch toggle-switch-success">
 										<label>
-											<input th:if="${cont.active_flag} == 0" type="checkbox" id="catgories" name="active" th:value="${cont.id}" >
-											<input th:if="${cont.active_flag} == 1" type="checkbox" id="catgories" name="active" th:value="${cont.id}" checked>
+											<input th:if="${cont.active_flag} == 0" type="checkbox" id="conteudos" name="active" th:value="${cont.id}" >
+											<input th:if="${cont.active_flag} == 1" type="checkbox" id="conteudos" name="active" th:value="${cont.id}" checked>
 											<div class="toggle-switch-inner"></div>
 											<div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
 										</label>
@@ -284,26 +284,14 @@
 								</td>
 						
 						<td>
-						<!-- 	<form action="#" th:action="@{/db/editCont}" th:object="${tb_content}" method="post">
-								<input type="hidden" th:value="${cont.id}"  id="id" name="id" />
-								<input type="submit" value="Editar"/>
-							</form>
-						</td>
-						<td>
-							<form action="#" th:action="@{/db/delCont}" th:object="${tb_content}" method="post">
-								<input type="hidden" th:value="${cont.id}"  id="id" name="id" />
-								
-								<input type="submit" value="Remover"/>
-							</form> -->
-							
-							
 								<div class="btn-group">
-									<a class="btn btn-primary" href="#"><i class="fa fa-cog"></i> Ações</a>
+									
 									<a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
-									<span class="fa fa-caret-down"></span></a>
+									<span class="fa fa-caret-down">Ações</span>
+									</a>
 									<ul class="dropdown-menu">
 										<li><a href="#"><i class="fa fa-pencil fa-fw"></i> Edit</a></li>
-										<li><a href="#"><i class="fa fa-trash-o fa-fw"></i> Delete</a></li>
+										<li><a th:href="@{/db/delCont(id=${cont.id})}"><i class="fa fa-trash-o fa-fw"></i> Delete</a></li>
 									</ul>
 								</div>
 							

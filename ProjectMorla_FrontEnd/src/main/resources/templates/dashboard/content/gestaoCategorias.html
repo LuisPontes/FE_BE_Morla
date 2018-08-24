@@ -1,8 +1,6 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:dt="http://www.thymeleaf.org/dandelion/datatables">
-<head>
-	
-</head>
+
 <body>
 
 <div th:fragment="gestao-Categorias" id="gestao-Categorias" >
@@ -45,7 +43,7 @@
 			</div>
 
 
-			<div class="box-content">
+			<div class="box-content" style="display: none;">
 			
 			<!-- SEPARADOR -->
 				<h4 class="page-header">Separador - Pagina Inicial</h4>
@@ -130,8 +128,31 @@
 						<td th:text="${cat.lastUpdate}"></td>
 						<td th:text="${cat.url}"></td>
 						<td th:text="${cat.img}"></td>
-						<td th:text="${cat.active_flag}"></td>
+						<td >
+							<div class="col-sm-4">
+									<div class="toggle-switch toggle-switch-success">
+										<label>
+											<input th:if="${cat.active_flag} == 0" type="checkbox" id="Categorias" name="active" th:value="${cat.id}" >
+											<input th:if="${cat.active_flag} == 1" type="checkbox" id="Categorias" name="active" th:value="${cat.id}" checked>
+											<div class="toggle-switch-inner"></div>
+											<div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
+										</label>
+									</div>
+								</div>
+						</td>
 						<td>
+						
+								<div class="btn-group">
+									
+									<a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
+									<span class="fa fa-caret-down">Ações</span>
+									</a>
+									<ul class="dropdown-menu">
+										<li><a href=""><i class="fa fa-pencil fa-fw"></i> Edit</a></li>
+										<li><a th:href="@{/db/delcat(id=${cat.id})}"><i class="fa fa-trash-o fa-fw"></i> Delete</a></li>
+									</ul>
+								</div>
+						<!-- 
 							<form action="#" th:action="@{/db/editcat}" th:object="${tb_separador}" method="post">
 								<input type="hidden" th:value="${cat.id}"  id="id" name="id" />
 								<input type="submit" value="Editar"/>
@@ -143,6 +164,7 @@
 								<input type="hidden" th:value="${cat.img}"  id="img" name="img" />
 								<input type="submit" value="Remover"/>
 							</form>
+							 -->
 						</td>
 				</tr>
 				

@@ -1,8 +1,6 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:dt="http://www.thymeleaf.org/dandelion/datatables">
-<head>
-	
-</head>
+
 <body>
 
 <div th:fragment="home" id="home" >
@@ -30,6 +28,7 @@
 				<h4 class="page-header"></h4>
 			</div>
 		</div>
+		
 		<div id="dashboard-header" class="row"> 
 			<div class="box-content">		
 			 
@@ -57,25 +56,15 @@
 								<div class="col-sm-4">
 									<div class="toggle-switch toggle-switch-success">
 										<label>
-											<input th:if="${cat.active_flag} == 0" type="checkbox" id="catgories" name="active" th:value="${cat.id}" >
-											<input th:if="${cat.active_flag} == 1" type="checkbox" id="catgories" name="active" th:value="${cat.id}" checked>
+											<input th:if="${cat.active_flag} == 0" type="checkbox" id="home-Categorias" name="active" th:value="${cat.id}" >
+											<input th:if="${cat.active_flag} == 1" type="checkbox" id="home-Categorias" name="active" th:value="${cat.id}" checked>
 											<div class="toggle-switch-inner"></div>
 											<div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
 										</label>
 									</div>
 								</div>
 								</td>
-								<!-- 
-								<td th:if="${cat.active_flag} == 0" th:text="Não"></td>
-								<td th:if="${cat.active_flag} == 1" th:text="Sim"></td>
-								<td>
-									<form action="#" th:action="@{/db/activeOrDesactve}" th:object="${tb_separador}" method="post">
-										<input type="hidden" th:value="${cat.id}"  id="id" name="id" />
-										<input type="hidden" th:value="${cat.active_flag}"  id="active_flag" name="active_flag" />
-										<input type="submit" value="Visivel"/>
-									</form>
-								</td>
-								 -->
+								
 							</tr>
 								
 								
@@ -115,8 +104,8 @@
 								<div class="col-sm-4">
 									<div class="toggle-switch toggle-switch-success">
 										<label>
-											<input th:if="${cont.active_flag} == 0" type="checkbox" id="contents" name="active" th:value="${cont.id}">
-											<input th:if="${cont.active_flag} == 1" type="checkbox" id="contents" name="active" th:value="${cont.id}" checked>
+											<input th:if="${cont.active_flag} == 0" type="checkbox" id="home-Conteudos" name="active" th:value="${cont.id}">
+											<input th:if="${cont.active_flag} == 1" type="checkbox" id="home-Conteudos" name="active" th:value="${cont.id}" checked>
 											<div class="toggle-switch-inner"></div>
 											<div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
 										</label>

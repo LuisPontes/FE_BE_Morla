@@ -1,8 +1,4 @@
-
-
-	
-	
-
+//
 //  Function for load content from url and put in $('.ajax-content') block
 //
 function LoadAjaxContent(url){
@@ -21,7 +17,7 @@ function LoadAjaxContent(url){
 	    	$('#gestao-Categorias').hide();
 	        break;
 	} 
-	
+	document.getElementsByName("redirectPage")[0].setAttribute("content", url); 
 	$('#'+url).show();
 	
 	
@@ -55,11 +51,14 @@ $(document).ready(function () {
 		$('div#main').toggleClass('sidebar-show');
 		setTimeout(MessagesMenuWidth, 250);
 	});
-	var ajax_url = location.hash.replace(/^#/, '');
+	
+	var ajax_url = document.getElementsByName("redirectPage")[0].getAttribute("content");
+	//var ajax_url = location.hash.replace(/^#/, '');
 	if (ajax_url.length < 1) {
 		ajax_url = 'home';
 	}
 	LoadAjaxContent(ajax_url);
+	
 	var item = $('.main-menu li a[href$="' + ajax_url + '"]');
 	item.addClass('active-parent active');
 	$('.dropdown:has(li:has(a.active)) > a').addClass('active-parent active');
@@ -196,8 +195,8 @@ $(document).ready(function () {
 	
 	//change flag active send to controller back office
 	$('#home').ready(function(){
-		$('input').click(function() {
-			if ( this.checked) {//1
+		$('input[type=checkbox]').click(function() {
+			if ( this.checked) {
 				 window.location.replace("/db/activeOrDesactive?type="+this.id+"&id="+this.value+"&value=1");
 			}else{
 				 window.location.replace("/db/activeOrDesactive?type="+this.id+"&id="+this.value+"&value=0");

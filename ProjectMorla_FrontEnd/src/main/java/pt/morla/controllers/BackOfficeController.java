@@ -50,7 +50,7 @@ public class BackOfficeController {
     }
     @RequestMapping(value = { "" }, method = { RequestMethod.GET })
 	public String index(HttpServletRequest request, HttpServletResponse response,Model model) {
-    	model = getAttributes(model);
+    	model = setAttributes(model,"home");
 		return "dashboard/index";
 	}
 	
@@ -66,27 +66,35 @@ public class BackOfficeController {
 			log.info("Save id: "+daoSep.save(new_cat_obj));
 			categoriasList = (List<tb_separador>) daoSep.findAll();
 		}
-		model = getAttributes(model);
+		model = setAttributes(model,"gestao-Categorias");
 		return "dashboard/index";
 	}
 
-	@RequestMapping(value = { "/delcat" }, method = { RequestMethod.POST })
-	public String remove(HttpServletRequest request, HttpServletResponse response,Model model,@ModelAttribute tb_separador new_cat_obj) {
+	@RequestMapping(value = { "/delcat" }, method = { RequestMethod.GET })
+	public String remove(HttpServletRequest request, HttpServletResponse response,Model model) {
 		
-		if ( new_cat_obj.getId()!=null ) {
-			daoSep.remove(new_cat_obj.getId());
-			if ( new_cat_obj.getImg()!=null ) {
-				 File img = new File(new_cat_obj.getImg());
-				if( img.delete() ){
-					log.info("Delete Image [{}]!",new_cat_obj.getImg());
-				}else {
-					log.info("Dont delete image [{}]",new_cat_obj.getImg());
+		Map<String, String[]> ParameterMap = request.getParameterMap();
+		Long idToRemove = Long.parseLong(ParameterMap.get("id")[0]);
+		tb_separador catRemove = null;
+		if ( idToRemove!=null ) {
+			for (tb_separador t : categoriasList) {
+				if( idToRemove.equals(t.getId()) || idToRemove == t.getId() ){
+					catRemove = t;
 				}
 			}
-			log.info("Remove cat id: "+new_cat_obj.getId());
+			daoSep.remove(catRemove.getId());
+			if ( catRemove.getImg()!=null ) {
+				File img = new File(catRemove.getImg());
+				if( img.delete() ){
+					log.info("Delete Image [{}]!",catRemove.getImg());
+				}else {
+					log.info("Dont delete image [{}]",catRemove.getImg());
+				}
+			}
 			categoriasList = (List<tb_separador>) daoSep.findAll();
 		}
-		model = getAttributes(model);
+		
+		model = setAttributes(model,"gestao-Categorias");
 		return "dashboard/index";
 	}
 	
@@ -98,32 +106,48 @@ public class BackOfficeController {
 			log.info("Save id: "+daoCont.save(new_cont_obj));
 			contentsList = (List<tb_content>) daoCont.findAll();
 		}
-		model = getAttributes(model);
+		
+		model = setAttributes(model,"gestao-Conteudos");
 		return "dashboard/index";
 	}
 	
 	@RequestMapping(value = { "/activeOrDesactive" }, method = { RequestMethod.GET })
 	public String activeOrDesactve(HttpServletRequest request, HttpServletResponse response,Model model) {
 		Map<String, String[]> ParameterMap = request.getParameterMap();
-		if ( ParameterMap.get("type")[0].equals("catgories") ) 
+		String pagename = null,type = ParameterMap.get("type")[0];
+		
+		if ( type.startsWith("home") ) 
+		{
+			type = ParameterMap.get("type")[0].split("-")[1];
+		}
+		if ( type.equals("Categorias") ) 
 		{
 			daoSep.updateActiveFlag( Long.parseLong(ParameterMap.get("id")[0]),  Integer.parseInt(ParameterMap.get("value")[0]) );
 			categoriasList = (List<tb_separador>) daoSep.findAll();
+			pagename = "gestao-Categorias";
 		}
-		else if ( ParameterMap.get("type")[0].equals("contents") ) 
+		else if ( type.equals("Conteudos") ) 
 		{
 			daoCont.updateActiveFlag( Long.parseLong(ParameterMap.get("id")[0]),  Integer.parseInt(ParameterMap.get("value")[0]) );
 			contentsList = (List<tb_content>) daoCont.findAll();
+			pagename = "gestao-Conteudos";
 		}
-		model = getAttributes(model);
+		if ( ParameterMap.get("type")[0].startsWith("home") ) 
+		{
+			pagename = "home";
+		}
+		
+		model = setAttributes(model,pagename);
 		return "dashboard/index";
 	}
 	
-	private Model getAttributes(Model model) {
+
+	private Model setAttributes(Model model,String page) {
 			model.addAttribute("catgories", categoriasList);
 			model.addAttribute("contents", contentsList);
 			model.addAttribute("tb_separador", new tb_separador());
 			model.addAttribute("tb_content", new tb_content());
+			model.addAttribute("redirectPage", page);
 		return model;
 	}
 	
