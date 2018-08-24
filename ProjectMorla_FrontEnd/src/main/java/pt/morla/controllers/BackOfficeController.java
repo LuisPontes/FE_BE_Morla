@@ -111,11 +111,31 @@ public class BackOfficeController {
 		return "dashboard/index";
 	}
 	
+	@RequestMapping(value = { "/delCont" }, method = { RequestMethod.GET })
+	public String removeCont(HttpServletRequest request, HttpServletResponse response,Model model) {
+		
+		Map<String, String[]> ParameterMap = request.getParameterMap();
+		Long idToRemove = Long.parseLong(ParameterMap.get("id")[0]);
+		tb_content contRemove = null;
+		if ( idToRemove!=null ) {
+			for (tb_content t : contentsList) {
+				if( idToRemove.equals(t.getId()) || idToRemove == t.getId() ){
+					contRemove = t;
+				}
+			}
+			daoCont.remove(contRemove.getId());
+			
+			contentsList = (List<tb_content>) daoCont.findAll();
+		}
+		
+		model = setAttributes(model,"gestao-Conteudos");
+		return "dashboard/index";
+	}
+	
 	@RequestMapping(value = { "/activeOrDesactive" }, method = { RequestMethod.GET })
 	public String activeOrDesactve(HttpServletRequest request, HttpServletResponse response,Model model) {
 		Map<String, String[]> ParameterMap = request.getParameterMap();
 		String pagename = null,type = ParameterMap.get("type")[0];
-		
 		if ( type.startsWith("home") ) 
 		{
 			type = ParameterMap.get("type")[0].split("-")[1];
@@ -136,7 +156,6 @@ public class BackOfficeController {
 		{
 			pagename = "home";
 		}
-		
 		model = setAttributes(model,pagename);
 		return "dashboard/index";
 	}
