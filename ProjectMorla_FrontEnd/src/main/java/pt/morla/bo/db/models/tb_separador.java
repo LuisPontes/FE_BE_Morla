@@ -31,7 +31,9 @@ public class tb_separador {
 	private String url;
 	@Column(name = "active")
 	private Integer active_flag;
-
+	@Column(name = "orderView")
+	private Integer orderView;
+	
 	@Transient
 	private String active;
 	@Transient
@@ -119,6 +121,15 @@ public class tb_separador {
 		this.active = active;
 	}
 
+	
+	public Integer getOrderView() {
+		return orderView;
+	}
+
+	public void setOrderView(Integer orderView) {
+		this.orderView = orderView;
+	}
+
 	public void mappingActive() {
 		if ( this.active == null ) 
 		{
@@ -133,10 +144,13 @@ public class tb_separador {
 			this.active_flag = 0;
 		}
 	}
+
 	@Override
 	public String toString() {
-		return "tb_separador [id=" + id + ", nome=" + nome + ", img=" + img + ", fileDatas="
-				+ Arrays.toString(fileDatas) + ", lastUpdate=" + lastUpdate + ", url=" + url + "]";
+		return "tb_separador [id=" + id + ", nome=" + nome + ", img=" + img + ", lastUpdate=" + lastUpdate + ", url="
+				+ url + ", active_flag=" + active_flag + ", orderView=" + orderView + ", active=" + active
+				+ ", fileDatas=" + Arrays.toString(fileDatas) + "]";
 	}
+	
 
 }

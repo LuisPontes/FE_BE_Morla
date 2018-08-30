@@ -37,4 +37,8 @@ public class SeparadorService implements ISeparadores{
 		return repository.updateActiveFlag(id, active);
 	}
 
+	@Override
+	public List<tb_separador> findAllActive() {
+		return repository.findAllActive();
+	}
 }

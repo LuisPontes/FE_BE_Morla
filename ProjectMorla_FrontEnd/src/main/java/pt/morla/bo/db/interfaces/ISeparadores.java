@@ -13,4 +13,6 @@ public interface ISeparadores {
 	public void remove(Long id);
 	
 	public int updateActiveFlag(Long long1,int active);
+	
+	public List<tb_separador> findAllActive();
 }

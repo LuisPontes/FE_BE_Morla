@@ -37,4 +37,9 @@ public class ContentsService implements IContents{
 		return repository.updateActiveFlag(long1, active);
 	}
 
+	@Override
+	public List<tb_content> findAllActive() {
+		return repository.findAllActive();
+	}
+
 }

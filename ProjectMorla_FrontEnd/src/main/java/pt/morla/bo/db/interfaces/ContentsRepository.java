@@ -1,5 +1,7 @@
 package pt.morla.bo.db.interfaces;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -17,4 +19,8 @@ public interface ContentsRepository extends CrudRepository<tb_content, Long>{
 	@Query("update tb_content s set s.active_flag = :active_flag where s.id = :id")
 	@Transactional
 	public int updateActiveFlag(@Param("id") Long id,@Param("active_flag") Integer active_flag);
+	
+	@Query(value = "SELECT u FROM tb_content u where u.active_flag = 1")
+	List<tb_content> findAllActive();
+	
 }

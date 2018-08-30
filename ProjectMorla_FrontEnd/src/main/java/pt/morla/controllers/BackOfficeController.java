@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
 
+import pt.morla.bo.build.createHtmlIndexFile;
 import pt.morla.bo.db.interfaces.IContents;
 import pt.morla.bo.db.interfaces.ISeparadores;
 import pt.morla.bo.db.models.tb_content;
@@ -35,9 +37,11 @@ public class BackOfficeController {
 	   
     @Autowired
     ISeparadores daoSep;
-    
     @Autowired
     IContents daoCont;
+    
+    @Autowired
+    private Environment props;
     
     List<tb_separador> categoriasList = null;
     List<tb_content> contentsList = null;
@@ -48,8 +52,10 @@ public class BackOfficeController {
 		categoriasList = (List<tb_separador>) daoSep.findAll();
 		contentsList = (List<tb_content>) daoCont.findAll();
     }
+    
     @RequestMapping(value = { "" }, method = { RequestMethod.GET })
 	public String index(HttpServletRequest request, HttpServletResponse response,Model model) {
+    	
     	model = setAttributes(model,"home");
 		return "dashboard/index";
 	}
@@ -160,10 +166,18 @@ public class BackOfficeController {
 		return "dashboard/index";
 	}
 	
+	@RequestMapping(value = { "/build" }, method = { RequestMethod.GET })
+	public String build(HttpServletRequest request, HttpServletResponse response,Model model) {
+	
+		createHtmlIndexFile c = new createHtmlIndexFile(daoSep,daoCont);
+		model = setAttributes(model,"home");
+		return "dashboard/index";
+	}
 
 	private Model setAttributes(Model model,String page) {
 			model.addAttribute("catgories", categoriasList);
 			model.addAttribute("contents", contentsList);
+			model.addAttribute("nTotalCat", categoriasList.size());
 			model.addAttribute("tb_separador", new tb_separador());
 			model.addAttribute("tb_content", new tb_content());
 			model.addAttribute("redirectPage", page);
@@ -175,7 +189,7 @@ public class BackOfficeController {
 		 
 		      try {
 		      // Root Directory.
-		      String uploadRootPath =  "../ProjectMorla_FrontEnd/src/main/resources/static/fe/recursos"; 
+		      String uploadRootPath =  props.getProperty("upload.image.path ");
 		      System.out.println("uploadRootPath=" + uploadRootPath);
 		 
 		      File uploadRootDir = new File(uploadRootPath);

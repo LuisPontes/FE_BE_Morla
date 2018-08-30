@@ -24,7 +24,7 @@
 			<div class="box-content">	
 				<h4 class="page-header">Accões</h4>	
 				<a class="btn btn-success btn-label-center" href="/" target="_blank" ><span><i class="fa fa-clock-o"></i></span>Ver Pagina Principal</a>
-				<button type="button" class="btn btn-danger btn-label-left"><span><i class="fa fa-clock-o"></i></span>Build/Update Pagina Principal</button>
+				<a type="button" class="btn btn-danger btn-label-left"  href="/db/build" ><span><i class="fa fa-clock-o"></i></span>Build/Update Pagina Principal</a>
 				<h4 class="page-header"></h4>
 			</div>
 		</div>
@@ -41,8 +41,10 @@
 									<th>Update</th>
 									<th>url</th>
 									<th>Path Imagem</th>
+									<th>Sequencia</th>
 									<th>Visível</th>
-									<th></th>
+									
+									
 								</tr>
 							</thead>
 							<tbody>
@@ -52,6 +54,7 @@
 								<td th:text="${cat.lastUpdate}"></td>
 								<td th:text="${cat.url}"></td>
 								<td th:text="${cat.img}"></td>
+								<td th:text="${cat.orderView}"></td>
 								<td>
 								<div class="col-sm-4">
 									<div class="toggle-switch toggle-switch-success">
@@ -64,6 +67,7 @@
 									</div>
 								</div>
 								</td>
+								
 								
 							</tr>
 								

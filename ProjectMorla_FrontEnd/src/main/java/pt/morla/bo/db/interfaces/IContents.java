@@ -13,4 +13,6 @@ public interface IContents {
 	public void remove(Long id);
 	
 	public int updateActiveFlag(Long long1,int active);
+	
+	public List<tb_content> findAllActive();
 }

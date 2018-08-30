@@ -1,0 +1,85 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:dt="http://www.thymeleaf.org/dandelion/datatables">
+<head>
+	
+</head>
+<body>
+	
+	<header th:fragment="carousel" id="myCarousel" class="carousel slide">
+
+		<!-- Indicators -->
+		<ol class="carousel-indicators" id="indx">
+			<li id="ind0" data-target="#myCarousel" data-slide-to="0"class="active"></li>
+			<li id="ind1" data-target="#myCarousel" data-slide-to="1"></li>
+			<li id="ind2" data-target="#myCarousel" data-slide-to="2"></li>
+			<li id="ind3" data-target="#myCarousel" data-slide-to="3"></li>
+			<li id="ind4" data-target="#myCarousel" data-slide-to="4"></li>
+		</ol>
+
+		<!-- Wrapper for Slides -->
+		<div class="carousel-inner">
+			<!-- ************************************************************************************************* -->
+			<div class="item active" id="0">
+				<!-- Set the second background image using inline CSS below. -->
+				<div class="fill" style="background-image: url(fe/recursos/bg.jpg);"></div>
+				<div class="carousel-caption">
+					<h2>
+						<a href="#role0"> Catarina Morla </a>
+					</h2>
+				</div>
+			</div>
+
+			<!-- ************************************************************************************************* -->
+			<div class="item" id="1">
+				<!-- Set the first background image using inline CSS below. -->
+				<div class="fill" style="background-image: url(fe/recursos/1.jpg);"></div>
+				<div class="carousel-caption">
+					<h2>
+						<a href="#role1">Coreografia</a>
+					</h2>
+				</div>
+			</div>
+			<!-- ************************************************************************************************* -->
+			<div class="item" id="2">
+				<!-- Set the second background image using inline CSS below. -->
+				<div class="fill" style="background-image: url(fe/recursos/4.jpg);"></div>
+				<div class="carousel-caption">
+					<h2>
+						<a href="#role2">Figurinos</a>
+					</h2>
+				</div>
+			</div>
+			<!-- ************************************************************************************************* -->
+			<div class="item" id="3">
+				<!-- Set the third background image using inline CSS below. -->
+				<div class="fill" style="background-image: url(fe/recursos/2.jpg);"></div>
+				<div class="carousel-caption">
+					<h2>
+						<a href="#role3">Vestuário</a>
+					</h2>
+				</div>
+			</div>
+			<!-- ************************************************************************************************* -->
+			<div class="item" id="4">
+				<!-- Set the third background image using inline CSS below. -->
+				<div class="fill" style="background-image: url(fe/recursos/3.jpg);"></div>
+				<div class="carousel-caption">
+					<h2>
+						<a href="#role4">S.C.A.R.F.S</a>
+					</h2>
+				</div>
+			</div>
+			<!-- ************************************************************************************************* -->
+		</div>
+
+		<!-- Controls -->
+		<a onclick="bodySlide(10)" class="left carousel-control"
+			href="#myCarousel" data-slide="prev"> <span class="icon-prev"></span>
+		</a> <a onclick="bodySlide(10)" class="right carousel-control"
+			href="#myCarousel" data-slide="next"> <span class="icon-next"></span>
+		</a>
+
+	</header>
+
+</body>
+</html>
