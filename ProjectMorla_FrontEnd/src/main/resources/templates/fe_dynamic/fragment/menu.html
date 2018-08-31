@@ -1,0 +1,52 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:dt="http://www.thymeleaf.org/dandelion/datatables">
+<head>
+	<link type="text/css" th:href="@{/css/menu.css}" rel="stylesheet" />
+</head>
+<body>
+  <div  th:fragment="menu">
+	 <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+        
+        
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                
+               <div th:each="cat : ${categorias}">
+               		 <span th:if="${cat.orderView} == 0"  class="sr-only">Toggle navigation</span>
+               		 <span th:unless="${cat.orderView} != 0"class="icon-bar"></span>
+               </div>
+              
+                </button>
+                
+                <a th:onclick="|bodySlide('${categorias[0].orderView}')|" class="navbar-brand" href="#role0" th:text="${categorias[0].nome}" ></a> 
+               
+                 
+            </div>
+            
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav" id="menu_head">
+                
+                
+              <li th:each="cat:${categorias}">
+             	 <a th:if="${cat.orderView} != 0"  th:onclick="|bodySlide('${cat.orderView}')|" th:href="@{'#role'+${cat.orderView}}" th:text="${cat.nome}" ></a>
+              </li> 
+               
+                                
+					<li id="loader">
+                        
+                    </li>
+                </ul>
+            </div>
+            
+            
+            <!-- /.navbar-collapse -->
+        </div>
+     </nav> 
+      <script type="text/javascript" th:src="@{/fe/js/menu.js}"></script>
+	</div>
+</body>
+</html>

@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
 
-import pt.morla.bo.build.createHtmlIndexFile;
 import pt.morla.bo.db.interfaces.IContents;
 import pt.morla.bo.db.interfaces.ISeparadores;
 import pt.morla.bo.db.models.tb_content;
@@ -166,13 +165,17 @@ public class BackOfficeController {
 		return "dashboard/index";
 	}
 	
-	@RequestMapping(value = { "/build" }, method = { RequestMethod.GET })
-	public String build(HttpServletRequest request, HttpServletResponse response,Model model) {
-	
-		createHtmlIndexFile c = new createHtmlIndexFile(daoSep,daoCont);
-		model = setAttributes(model,"home");
-		return "dashboard/index";
-	}
+//	@RequestMapping(value = { "/build" }, method = { RequestMethod.GET })
+//	public String build(HttpServletRequest request, HttpServletResponse response,Model model) {
+//	
+//		/*
+//		 * criar um ficheiro estatico
+//		//createHtmlIndexFile c = new createHtmlIndexFile(daoSep,daoCont,props);
+//		*/
+//		
+//		model = setAttributes(model,"home");
+//		return "dashboard/index";
+//	}
 
 	private Model setAttributes(Model model,String page) {
 			model.addAttribute("catgories", categoriasList);
@@ -189,7 +192,7 @@ public class BackOfficeController {
 		 
 		      try {
 		      // Root Directory.
-		      String uploadRootPath =  props.getProperty("upload.image.path ");
+		      String uploadRootPath =  props.getProperty("upload.image.path");
 		      System.out.println("uploadRootPath=" + uploadRootPath);
 		 
 		      File uploadRootDir = new File(uploadRootPath);
