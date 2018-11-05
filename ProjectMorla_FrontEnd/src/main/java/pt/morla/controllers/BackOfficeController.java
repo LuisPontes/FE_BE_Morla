@@ -50,6 +50,13 @@ public class BackOfficeController {
     	/*get all categorias*/
 		categoriasList = (List<tb_separador>) daoSep.findAll();
 		contentsList = (List<tb_content>) daoCont.findAll();
+		for (tb_separador ts : categoriasList) {
+			for (tb_content tc : contentsList) {
+				if ( tc.getCategoria_id().equals(ts.getId()+"") ) {
+					tc.setCategoria_name(ts.getNome());
+				}
+			}
+		}
     }
     
     @RequestMapping(value = { "" }, method = { RequestMethod.GET })

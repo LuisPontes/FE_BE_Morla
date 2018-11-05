@@ -18,6 +18,9 @@ public class tb_content {
 	private Long id;
 	@Column(name = "categoria_id")
 	private String categoria_id;
+	
+	private String categoria_name;
+	
 	@Column(name = "titulo")
 	private String titulo;
 	@Column(name = "sinopse")
@@ -214,6 +217,14 @@ public class tb_content {
 
 	public void setActive_flag(Integer active_flag) {
 		this.active_flag = active_flag;
+	}
+
+	public String getCategoria_name() {
+		return categoria_name;
+	}
+
+	public void setCategoria_name(String categoria_name) {
+		this.categoria_name = categoria_name;
 	}
 
 	public void mappingActive() {

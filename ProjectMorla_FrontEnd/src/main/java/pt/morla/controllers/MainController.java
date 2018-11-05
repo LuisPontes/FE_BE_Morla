@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import pt.morla.bo.build.BuildindexPageStatic;
 import pt.morla.bo.db.interfaces.IContents;
 import pt.morla.bo.db.interfaces.ISeparadores;
 import pt.morla.bo.db.models.tb_content;
@@ -34,6 +35,7 @@ public class MainController {
     List<tb_separador> categoriasListActive = null;
     List<tb_content> contentsListActive = null;
     Model model = null;
+    StringBuilder INDEX_PAGE = null;
     
     @PostConstruct
     private void init() { 
@@ -41,14 +43,28 @@ public class MainController {
     	contentsListActive = daoCont.findAllActive();
     	categoriasListActive = daoSep.findAllActive();
     	
+    	
     }
     
 	@RequestMapping(value = { "/", "/index" }, method = { RequestMethod.GET, RequestMethod.POST })
 	public String index( Model model ) {
-		model.addAttribute("categorias", categoriasListActive);
-		model.addAttribute("conteudos", contentsListActive);
+//		model.addAttribute("categorias", categoriasListActive);
+//		model.addAttribute("conteudos", contentsListActive);
+		
+//		categoriasList = (List<tb_separador>) daoSep.findAll();
+//		contentsList =  (List<tb_content>) daoCont.findAll();
+//		BuildindexPageStatic b = new BuildindexPageStatic(categoriasList,contentsList);
+//    	try {
+//			b.build();
+//			INDEX_PAGE=b.getINDEX_PAGE();
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//
+//		model.addAttribute("html", INDEX_PAGE.toString());
 
-		return "fe_dynamic/index";
+//		return "indextestes";
+		return "redirect:./indextestes.html";
 	}
 
 	@RequestMapping(value = { "/db/refresh","/dashboard/refresh" }, method = { RequestMethod.GET })
@@ -59,8 +75,16 @@ public class MainController {
 		
 		
 		categoriasList = (List<tb_separador>) daoSep.findAll();
+		contentsList =  (List<tb_content>) daoCont.findAll();
+		for (tb_separador ts : categoriasList) {
+			for (tb_content tc : contentsList) {
+				if ( tc.getCategoria_id().equals(ts.getId()+"") ) {
+					tc.setCategoria_name(ts.getNome());
+				}
+			}
+		}
 		model.addAttribute("catgories", categoriasList);
-		model.addAttribute("contents", (List<tb_content>) daoCont.findAll());
+		model.addAttribute("contents",contentsList);
 		model.addAttribute("nTotalCat", categoriasList.size());
 		model.addAttribute("tb_separador", new tb_separador());
 		model.addAttribute("tb_content", new tb_content());
@@ -70,11 +94,20 @@ public class MainController {
 		return "dashboard/index";
 	}
 	
-	@RequestMapping(value = { "/db/build","/dashboard/refresh" }, method = { RequestMethod.GET })
+	@RequestMapping(value = { "/db/build","/dashboard/build" }, method = { RequestMethod.GET })
 	public String build(HttpServletRequest request, HttpServletResponse response,Model model) {
 		
+		categoriasList = (List<tb_separador>) daoSep.findAll();
+		contentsList =  (List<tb_content>) daoCont.findAll();
 		
+		BuildindexPageStatic b = new BuildindexPageStatic(categoriasList,contentsList);
 		
+		try {
+			b.build();
+			b.saveAndReplaceFile();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return "dashboard/index";
 	}
 	

@@ -252,7 +252,8 @@
 		<table class="table beauty-table table-hover">
 			<thead>
 				<tr>
-					<th>Categoria</th>
+					<th>Categoria Nome</th>
+					<th>Categoria ID</th>
 					<th>Titulo</th>
 					<th>sinopse</th>
 					<th>ano</th>
@@ -265,6 +266,7 @@
 			<tbody>
 <!-- id, , , , , interpretacao, musica, figurinos, edicaoMusical, fotografia, video, duracao, classE, ap_publicas, agradecimentos, option1, option2, , edicao_musical,  -->
 				<tr th:each="cont : ${contents}">
+						<td th:text="${cont.categoria_name}"></td>
 						<td th:text="${cont.categoria_id}"></td>
 						<td th:text="${cont.titulo}"></td>
 						<td th:text="${cont.sinopse}"></td>
