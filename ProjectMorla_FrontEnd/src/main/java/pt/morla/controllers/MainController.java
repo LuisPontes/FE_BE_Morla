@@ -27,7 +27,6 @@ public class MainController {
     ISeparadores daoSep;
     @Autowired
     IContents daoCont;
-    
    
     
     List<tb_separador> categoriasList = null;
@@ -44,8 +43,6 @@ public class MainController {
     	
     }
     
-    
-    
 	@RequestMapping(value = { "/", "/index" }, method = { RequestMethod.GET, RequestMethod.POST })
 	public String index( Model model ) {
 		model.addAttribute("categorias", categoriasListActive);
@@ -54,9 +51,13 @@ public class MainController {
 		return "fe_dynamic/index";
 	}
 
-	@RequestMapping(value = { "/db/build","/dashboard/build" }, method = { RequestMethod.GET })
-	public String build(HttpServletRequest request, HttpServletResponse response,Model model) {
+	@RequestMapping(value = { "/db/refresh","/dashboard/refresh" }, method = { RequestMethod.GET })
+	public String refresh(HttpServletRequest request, HttpServletResponse response,Model model) {
+		
+		//refresh varables golbal
 		init();
+		
+		
 		categoriasList = (List<tb_separador>) daoSep.findAll();
 		model.addAttribute("catgories", categoriasList);
 		model.addAttribute("contents", (List<tb_content>) daoCont.findAll());
@@ -64,8 +65,17 @@ public class MainController {
 		model.addAttribute("tb_separador", new tb_separador());
 		model.addAttribute("tb_content", new tb_content());
 		model.addAttribute("redirectPage", "home");
+		
+		
 		return "dashboard/index";
 	}
 	
+	@RequestMapping(value = { "/db/build","/dashboard/refresh" }, method = { RequestMethod.GET })
+	public String build(HttpServletRequest request, HttpServletResponse response,Model model) {
+		
+		
+		
+		return "dashboard/index";
+	}
 	
 }
