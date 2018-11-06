@@ -61,7 +61,7 @@ public class BackOfficeController {
     
     @RequestMapping(value = { "" }, method = { RequestMethod.GET })
 	public String index(HttpServletRequest request, HttpServletResponse response,Model model) {
-    	
+    	init();
     	model = setAttributes(model,"home");
 		return "dashboard/index";
 	}

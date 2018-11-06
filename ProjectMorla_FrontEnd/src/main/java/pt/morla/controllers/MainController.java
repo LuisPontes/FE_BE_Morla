@@ -39,32 +39,20 @@ public class MainController {
     
     @PostConstruct
     private void init() { 
-    	
     	contentsListActive = daoCont.findAllActive();
     	categoriasListActive = daoSep.findAllActive();
-    	
-    	
     }
     
 	@RequestMapping(value = { "/", "/index" }, method = { RequestMethod.GET, RequestMethod.POST })
 	public String index( Model model ) {
-//		model.addAttribute("categorias", categoriasListActive);
-//		model.addAttribute("conteudos", contentsListActive);
 		
-//		categoriasList = (List<tb_separador>) daoSep.findAll();
-//		contentsList =  (List<tb_content>) daoCont.findAll();
-//		BuildindexPageStatic b = new BuildindexPageStatic(categoriasList,contentsList);
-//    	try {
-//			b.build();
-//			INDEX_PAGE=b.getINDEX_PAGE();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//
-//		model.addAttribute("html", INDEX_PAGE.toString());
+		init();
+		
+		model.addAttribute("categorias", categoriasListActive);
+		model.addAttribute("conteudos", contentsListActive);
+		
 
-//		return "indextestes";
-		return "redirect:./indextestes.html";
+		return "fe/index";
 	}
 
 	@RequestMapping(value = { "/db/refresh","/dashboard/refresh" }, method = { RequestMethod.GET })
@@ -72,7 +60,6 @@ public class MainController {
 		
 		//refresh varables golbal
 		init();
-		
 		
 		categoriasList = (List<tb_separador>) daoSep.findAll();
 		contentsList =  (List<tb_content>) daoCont.findAll();
@@ -89,7 +76,6 @@ public class MainController {
 		model.addAttribute("tb_separador", new tb_separador());
 		model.addAttribute("tb_content", new tb_content());
 		model.addAttribute("redirectPage", "home");
-		
 		
 		return "dashboard/index";
 	}

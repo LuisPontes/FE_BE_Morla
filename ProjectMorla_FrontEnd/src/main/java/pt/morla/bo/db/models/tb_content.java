@@ -18,7 +18,7 @@ public class tb_content {
 	private Long id;
 	@Column(name = "categoria_id")
 	private String categoria_id;
-	
+	@Transient
 	private String categoria_name;
 	
 	@Column(name = "titulo")

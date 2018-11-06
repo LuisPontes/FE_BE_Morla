@@ -39,6 +39,17 @@ public class tb_separador {
 	@Transient
 	private MultipartFile[] fileDatas;
 
+	@Transient
+	private tb_content content ;
+	
+	public tb_content getContent() {
+		return content;
+	}
+
+	public void setContent(tb_content content) {
+		this.content = content;
+	}
+
 	public tb_separador() {
 	}
 

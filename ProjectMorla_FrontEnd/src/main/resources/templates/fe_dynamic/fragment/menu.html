@@ -14,11 +14,9 @@
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                 
-               <div th:each="cat : ${categorias}">
-               		 <span th:if="${cat.orderView} == 0"  class="sr-only">Toggle navigation</span>
-               		 <span th:unless="${cat.orderView} != 0"class="icon-bar"></span>
-               </div>
-              
+	               <span th:each="cat : ${categorias}" th:if="${cat.orderView} == 0"  class="sr-only">Toggle navigation</span>
+	               <span th:each="cat : ${categorias}" th:unless="${cat.orderView} != 0"class="icon-bar"></span>
+                
                 </button>
                 
                 <a th:onclick="|bodySlide('${categorias[0].orderView}')|" class="navbar-brand" href="#role0" th:text="${categorias[0].nome}" ></a> 

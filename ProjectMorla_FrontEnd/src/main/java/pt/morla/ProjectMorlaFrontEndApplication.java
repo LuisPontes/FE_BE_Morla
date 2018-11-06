@@ -10,5 +10,6 @@ public class ProjectMorlaFrontEndApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ProjectMorlaFrontEndApplication.class, args);
+		
 	}
 }

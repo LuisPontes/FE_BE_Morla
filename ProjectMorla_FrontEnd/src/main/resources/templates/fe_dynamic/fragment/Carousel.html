@@ -5,8 +5,9 @@
 </head>
 <body>
 	
-	<header th:fragment="carousel" id="myCarousel" class="carousel slide">
+	<div th:fragment="carousel" >
 
+	<header id="myCarousel" class="carousel slide">
 		<!-- Indicators -->
 		<ol class="carousel-indicators" id="indx" th:each="cat : ${categorias}" >
 		
@@ -101,8 +102,8 @@
 		</a> <a onclick="bodySlide(10)" class="right carousel-control"
 			href="#myCarousel" data-slide="next"> <span class="icon-next"></span>
 		</a>
-
 	</header>
+	</div>
 
 </body>
 </html>
