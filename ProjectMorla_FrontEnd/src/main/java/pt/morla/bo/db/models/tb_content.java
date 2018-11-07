@@ -55,7 +55,8 @@ public class tb_content {
 	private String option2;
 	@Column(name = "active")
 	private Integer active_flag;
-
+	
+	
 	@Transient
 	private String active;
 
@@ -226,6 +227,7 @@ public class tb_content {
 	public void setCategoria_name(String categoria_name) {
 		this.categoria_name = categoria_name;
 	}
+
 
 	public void mappingActive() {
 		if ( this.active == null ) 

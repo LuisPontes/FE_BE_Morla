@@ -54,10 +54,13 @@
       </div>
     </nav>
 
-<!-- /recurses/img/header.jpg background-position: center center;  background-size: cover;-->
-    <header class="masthead text-center text-white d-flex"  th:style="'background:url(' + @{${categorias[0].img}} + ');background-position: center center; background-size: cover;'" >
+<!-- /recurses/img/header.jpg background-position: center center;  background-size: cover;
+    <header class="masthead text-center text-white d-flex" th:if="${categorias} != null or ${categorias[0].img} != null"  th:style="'background:url(' + @{${categorias[0].img}} + ');background-position: center center; background-size: cover;'" >
+    -->
+    <header class="masthead text-center text-white d-flex" th:each="cat:${categorias}" th:if="${cat.orderView} != 0">
     
       <div class="container my-auto">
+      <!-- 
         <div class="row">
           <div class="col-lg-10 mx-auto">
             <h1 class="text-uppercase">
@@ -70,22 +73,24 @@
             <a class="btn btn-primary btn-xl js-scroll-trigger" href="#about">Find Out More</a>
           </div>
         </div>
-      </div>
+       -->
+        </div>
     </header>
     
     
     
-     <section style="margin-bottom: 15px;" class="bg-dark text-white" th:each="cat:${categorias}" th:if="${cat.orderView} != 0" th:id="@{${cat.nome}}">
+     <section  th:each="cat:${categorias}" th:if="${cat.orderView} != 0" th:id="@{${cat.nome}}"
+     th:style="'background:url(' + @{${cat.img}} + ');background-position: center center; background-size: cover; margin-top: 7px;margin-bottom: 7px;'">
       
      
-	      <div class="container" th:each="con:${conteudos}" th:if="${cat.id} == ${con.categoria_id}">
+	      <div class="container" th:each="con:${conteudos}" th:if="${cat.id} == ${con.categoria_id} and ${cat.img} == null">
 	        <div class="row">
 	          <div class="col-lg-8 mx-auto text-center">
 	            
 	           
 	            
 	            <h2 class="section-heading text-white"  th:if="${con.id} != null" th:text="${con.id}"></h2>
-	            <hr class="light my-4">
+	            
 	            
 	            <p class="text-faded mb-4"  th:if="${con.titulo} != null" th:text="${con.titulo}"></p>
 	            <p class="text-faded mb-4" th:if="${cat.img} != null" th:text="${cat.img}"></p>
@@ -95,7 +100,22 @@
 	          </div>
 	        </div>
 	      </div>
+	      
+	      <div class="container" th:each="con:${conteudos}" th:if="${cat.id} == ${con.categoria_id} and ${cat.img} != null">
+	        <div class="row">
+	        
+	        </div>
+	      </div>
       
+	    <section class="p-0" th:id="@{${cat.nome}}" >
+	     	 <div class="container-fluid p-0">
+	     	 	 <div class="row no-gutters popup-gallery">
+	     	 	 
+	     	 	 </div>
+	         </div>
+	    </section>
+	    
+	    
      </section>
     
 <!-- 

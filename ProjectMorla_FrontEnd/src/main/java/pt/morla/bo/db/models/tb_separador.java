@@ -33,6 +33,8 @@ public class tb_separador {
 	private Integer active_flag;
 	@Column(name = "orderView")
 	private Integer orderView;
+	@Column(name = "typeContent")
+	private String type;
 	
 	@Transient
 	private String active;
@@ -139,6 +141,14 @@ public class tb_separador {
 
 	public void setOrderView(Integer orderView) {
 		this.orderView = orderView;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	public void mappingActive() {
