@@ -54,8 +54,9 @@
       </div>
     </nav>
 
-
-    <header class="masthead text-center text-white d-flex">
+<!-- /recurses/img/header.jpg background-position: center center;  background-size: cover;-->
+    <header class="masthead text-center text-white d-flex"  th:style="'background:url(' + @{${categorias[0].img}} + ');background-position: center center; background-size: cover;'" >
+    
       <div class="container my-auto">
         <div class="row">
           <div class="col-lg-10 mx-auto">
@@ -77,23 +78,23 @@
      <section style="margin-bottom: 15px;" class="bg-dark text-white" th:each="cat:${categorias}" th:if="${cat.orderView} != 0" th:id="@{${cat.nome}}">
       
      
-      <div class="container" th:each="con:${conteudos}" th:if="${cat.id} == ${con.categoria_id}">
-        <div class="row">
-          <div class="col-lg-8 mx-auto text-center">
-            
-           
-            
-            <h2 class="section-heading text-white"  th:if="${con.id} != null" th:text="${con.id}"></h2>
-            <hr class="light my-4">
-            
-            <p class="text-faded mb-4"  th:if="${con.titulo} != null" th:text="${con.titulo}"></p>
-            <p class="text-faded mb-4" th:if="${cat.img} != null" th:text="${cat.img}"></p>
-             
-            <a class="btn btn-light btn-xl js-scroll-trigger" href="#services">Get Started!</a>
-            
-          </div>
-        </div>
-      </div>
+	      <div class="container" th:each="con:${conteudos}" th:if="${cat.id} == ${con.categoria_id}">
+	        <div class="row">
+	          <div class="col-lg-8 mx-auto text-center">
+	            
+	           
+	            
+	            <h2 class="section-heading text-white"  th:if="${con.id} != null" th:text="${con.id}"></h2>
+	            <hr class="light my-4">
+	            
+	            <p class="text-faded mb-4"  th:if="${con.titulo} != null" th:text="${con.titulo}"></p>
+	            <p class="text-faded mb-4" th:if="${cat.img} != null" th:text="${cat.img}"></p>
+	             
+	            <a class="btn btn-light btn-xl js-scroll-trigger" href="#services">Get Started!</a>
+	            
+	          </div>
+	        </div>
+	      </div>
       
      </section>
     

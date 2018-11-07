@@ -234,7 +234,7 @@ public class BackOfficeController {
 		               System.out.println("Error Write file: " + name);
 		               failedFiles.add(name);
 		            }
-		            myUploadForm.setImg(uploadRootPath+"/"+name);
+		            myUploadForm.setImg(props.getProperty("image.path")+"/"+name);
 		         }
 		      }
 		     

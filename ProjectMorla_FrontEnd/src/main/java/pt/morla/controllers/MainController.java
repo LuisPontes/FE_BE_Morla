@@ -47,7 +47,6 @@ public class MainController {
 	public String index( Model model ) {
 		
 		init();
-		
 		model.addAttribute("categorias", categoriasListActive);
 		model.addAttribute("conteudos", contentsListActive);
 		
@@ -60,7 +59,6 @@ public class MainController {
 		
 		//refresh varables golbal
 		init();
-		
 		categoriasList = (List<tb_separador>) daoSep.findAll();
 		contentsList =  (List<tb_content>) daoCont.findAll();
 		for (tb_separador ts : categoriasList) {
