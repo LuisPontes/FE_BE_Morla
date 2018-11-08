@@ -7,8 +7,7 @@ public class Contants {
 		
 		TYPE_HEADER("type_header"),
 		TYPE_BIOGRAFIA("type_biografia"),
-		TYPE_FOTO_GALERIA("type_foto_galeria"),
-		TYPE_VIDEO_GALERIA("type_video_galeria"),
+		TYPE_PROJECTO("type_projecto"),
 		TYPE_FOOTER("type_footer");
 		
 		String type;
