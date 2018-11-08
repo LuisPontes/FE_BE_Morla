@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="2.5">
+  
+  <welcome-file-list>
+    <welcome-file>pages/index.jsp</welcome-file>
+  </welcome-file-list>
+  
+		<servlet>
+		  <servlet-name>springmvc</servlet-name>
+		  <servlet-class>
+		    org.springframework.web.servlet.DispatcherServlet
+		  </servlet-class>
+		  <init-param>
+		    <param-name>contextConfigLocation</param-name>
+		    <param-value>
+		      /WEB-INF/spring-context.xml
+		    </param-value>
+		  </init-param>
+		  <load-on-startup>1</load-on-startup>
+		</servlet>
+		
+	
+		<servlet-mapping>
+		  <servlet-name>springmvc</servlet-name>
+			  <url-pattern>/index.jsp</url-pattern>
+			   <url-pattern>/DashMultimedia.jsp</url-pattern>
+			  <url-pattern>/DashBoard.jsp</url-pattern>
+			  <url-pattern>/login.jsp</url-pattern>
+			  <!-- <url-pattern>/add_container.jsp</url-pattern> -->
+			  <url-pattern>/add_multimedia.jsp</url-pattern>
+			  <url-pattern>/show_container.jsp</url-pattern>
+		</servlet-mapping> 
+
+
+</web-app>

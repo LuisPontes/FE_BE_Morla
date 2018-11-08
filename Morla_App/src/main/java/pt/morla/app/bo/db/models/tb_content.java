@@ -1,5 +1,7 @@
 package pt.morla.app.bo.db.models;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,6 +18,8 @@ public class tb_content {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id")
 	private Long id;
+	@Column(name = "lastUpdate")
+	private Date lastUpdate;
 	@Column(name = "categoria_id")
 	private String categoria_id;
 	@Transient
@@ -228,6 +232,14 @@ public class tb_content {
 		this.categoria_name = categoria_name;
 	}
 
+
+	public Date getLastUpdate() {
+		return lastUpdate;
+	}
+
+	public void setLastUpdate(Date lastUpdate) {
+		this.lastUpdate = lastUpdate;
+	}
 
 	public void mappingActive() {
 		if ( this.active == null ) 

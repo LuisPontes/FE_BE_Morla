@@ -63,6 +63,9 @@ public class BackOfficeController {
 	public String index(HttpServletRequest request, HttpServletResponse response,Model model) {
     	init();
     	model = setAttributes(model,"home");
+		model.addAttribute("categorias", categoriasList);
+		model.addAttribute("conteudos", contentsList);
+		
 		return "dashboard/index";
 	}
 	
