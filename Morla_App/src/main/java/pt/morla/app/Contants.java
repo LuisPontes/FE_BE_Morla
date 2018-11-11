@@ -3,11 +3,13 @@ package pt.morla.app;
 
 public class Contants {
 
+	public static final String[] TypesCategorias = {"TYPE_HEADER" ,"TYPE_APRESENTACAO","TYPE_PROJECTOS","TYPE_FOOTER"}; 
+	
 	public enum TypeCategoria {
 		
 		TYPE_HEADER("type_header"),
-		TYPE_BIOGRAFIA("type_biografia"),
-		TYPE_PROJECTO("type_projecto"),
+		TYPE_APRESENTACAO("type_apresentaçao"),
+		TYPE_PROJECTOS("type_projectos"),
 		TYPE_FOOTER("type_footer");
 		
 		String type;

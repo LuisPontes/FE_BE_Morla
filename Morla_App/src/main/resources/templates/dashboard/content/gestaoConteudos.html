@@ -1,65 +1,352 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:dt="http://www.thymeleaf.org/dandelion/datatables">
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:dt="http://www.thymeleaf.org/dandelion/datatables">
 <head>
 	<script type="text/javascript">
-
-			$(document).ready(function() {
-				// Create Wysiwig editor for textare
-				TinyMCEStart('#wysiwig_simple', 'extreme');
-				TinyMCEStart('#wysiwig_full', 'extreme');
-				
-			});
+		$(document).ready(function() {
+			// Create Wysiwig editor for textare
+			TinyMCEStart('#wysiwig_simple', 'extreme');
+			TinyMCEStart('#wysiwig_full', 'extreme');
+	
+		});
 	</script>
 </head>
 <body>
 
-<div th:fragment="gestao-Conteudos" id="gestao-Conteudos" >
+	<div th:fragment="gestao-Conteudos" id="gestao-Conteudos">
 
-<!--Start Breadcrumb-->
-<div class="row">
-	<div id="breadcrumb" class="col-xs-12">
-		<a href="#" class="show-sidebar"> <i class="fa fa-bars"></i>
-		</a>
-		<ol class="breadcrumb pull-left">
-			<li><a href="/db">Home</a></li>
-			<li><a href="gestao-Conteudos" class="ajax-link" >Gestão de Conteudos</a></li>
-		</ol>
-		<div id="social" class="pull-right">
-			<a href="#"><i class="fa fa-google-plus"></i></a> <a href="#"><i
-				class="fa fa-facebook"></i></a> <a href="#"><i class="fa fa-twitter"></i></a>
-			<a href="#"><i class="fa fa-linkedin"></i></a> <a href="#"><i
-				class="fa fa-youtube"></i></a>
+		<!--Start Breadcrumb-->
+		<div class="row">
+			<div id="breadcrumb" class="col-xs-12">
+				<a href="#" class="show-sidebar"> <i class="fa fa-bars"></i>
+				</a>
+				<ol class="breadcrumb pull-left">
+					<li><a href="/db">Home</a></li>
+					<li><a href="gestao-Conteudos" class="ajax-link">Gestão	de Conteudos</a></li>
+				</ol>
+				<div id="social" class="pull-right">
+					<a href="#"><i class="fa fa-google-plus"></i></a> <a href="#"><i
+						class="fa fa-facebook"></i></a> <a href="#"><i
+						class="fa fa-twitter"></i></a> <a href="#"><i
+						class="fa fa-linkedin"></i></a> <a href="#"><i
+						class="fa fa-youtube"></i></a>
+				</div>
+			</div>
+		</div>
+		<!--End Breadcrumb-->
+
+
+		<!--START PLUS Projecto  TIPO APRESENTACAO-->
+		<div class="row">
+			<div class="col-xs-12 col-sm-12">
+				<div class="box">
+
+					<div class="box-header">
+						<div class="box-name">
+							<i class="fa fa-search"></i> <span>Adicionar conteudo: TIPO APRESENTACAO</span>
+						</div>
+						<div class="box-icons">
+							<a class="collapse-link"> <i class="fa fa-chevron-up"></i>
+							</a> <a class="expand-link"> <i class="fa fa-expand"></i>
+							</a> <a class="close-link"> <i class="fa fa-times"></i>
+							</a>
+						</div>
+						<div class="no-move"></div>
+					</div>
+					
+				<div class="box-content" style="display: none;">
+
+					<!-- Conteudos -->
+				
+					
+					
+					<form 	class="form-horizontal" 
+							role="form" action="#" 
+							th:action="@{/bo/addCont}" 
+							th:object="${projectosObj}" 
+							method="post" 
+							enctype="multipart/form-data">
+					
+	 					<div class="form-group">
+	 							<label class="col-sm-2 control-label">titulo</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control"
+										placeholder="exemplo: cenas" data-toggle="tooltip"
+										data-placement="bottom" title="Tooltip for name"
+										th:field="*{titulo}">
+								</div>
+		 										
+							<label class="col-sm-2 control-label">Imagem Upload</label>
+								<div class="col-sm-4">
+									<input th:field="*{fileDatas}" type="file" />
+								</div>
+								
+	 					</div>
+	 					
+						<div class="form-group">
+							<label class="col-sm-2 control-label" for="form-styles">Descricao</label>
+							<div class="col-sm-10">
+									<textarea class="form-control" rows="5" id="wysiwig_simple" th:field="*{descricao}" ></textarea>
+							</div>
+						</div>
+	 					<!--  -->
+						<h4 class="page-header"></h4>
+	 					<div class="form-group">
+	 						<label class="col-sm-2 control-label">Categoria</label>
+								<div class="col-sm-4">
+									<select th:field="*{categoria_id}">
+									  <option th:each="type : ${catgories}"
+									  		  th:if="${type.type}=='TYPE_APRESENTACAO'" 
+									          th:value="${type.id}" 
+									          th:text="${type.nome}"></option>
+									        
+									</select>
+								</div>	
+	 						<label class="col-sm-2 control-label">Sequencia</label>
+								<div class="col-sm-4">
+									<select th:field="*{orderView}">
+										<option th:each="i: ${#numbers.sequence(0, nTotalCat )}"
+											th:value="${i}" th:text="${i}"></option>
+									</select>
+								</div>
+	 					</div>
+	 					<!-- Butao submit -->
+	 					<h4 class="page-header"></h4>
+						<div class="form-group">
+							<div class="col-sm-2">
+								<button type="submit" class="btn btn-primary btn-label-left">
+									<span><i class="fa fa-clock-o"></i></span> Guardar
+								</button>
+							</div>
+						</div>
+ 					</form>
+				</div>
+				
+				</div>
+			</div>
+		</div>
+		<!--END TIPO APRESENTACAO-->
+			
+		<!--START PLUS Projecto  TIPO PROJECTOS-->
+		<div class="row">
+			<div class="col-xs-12 col-sm-12">
+				<div class="box">
+
+					<div class="box-header">
+						<div class="box-name">
+							<i class="fa fa-search"></i> <span>Adicionar conteudo:  TIPO PROJECTOS</span>
+						</div>
+						<div class="box-icons">
+							<a class="collapse-link"> <i class="fa fa-chevron-up"></i>
+							</a> <a class="expand-link"> <i class="fa fa-expand"></i>
+							</a> <a class="close-link"> <i class="fa fa-times"></i>
+							</a>
+						</div>
+						<div class="no-move"></div>
+					</div>
+
+
+					<div class="box-content" style="display: none;">
+
+						<!-- Conteudos -->
+						
+						<form 	class="form-horizontal" 
+								role="form" 
+								action="#" 
+								th:action="@{/bo/addCont}" 
+								th:object="${projectosObj}" 
+								method="post" 
+								enctype="multipart/form-data">
+								
+		 					<div class="form-group">
+	 							<label class="col-sm-2 control-label">titulo</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control"
+										placeholder="exemplo: cenas" data-toggle="tooltip"
+										data-placement="bottom" title="Tooltip for name"
+										th:field="*{titulo}">
+								</div>
+		 										
+							<label class="col-sm-2 control-label">Imagem Capa</label>
+								<div class="col-sm-4">
+									<input th:field="*{fileDatas}" type="file" />
+								</div>
+								
+	 						</div>
+	 						
+	 					
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="form-styles">Sinopse</label>
+								<div class="col-sm-10">
+										<textarea class="form-control" rows="5" id="wysiwig_simple" th:field="*{descricao}" ></textarea>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="form-styles">Ficha técnica</label>
+								<div class="col-sm-10">
+										<textarea class="form-control" rows="5" id="wysiwig_simple" th:field="*{ficha_tecnica}" ></textarea>
+								</div>
+							</div>
+							
+							<div class="form-group">
+	
+									<label class="col-sm-2 control-label">Foto Galeria</label>
+									<div class="col-sm-4">
+										<input th:field="*{fileDatas}" type="file" />
+									</div>
+									<label class="col-sm-2 control-label">Movie Galeria</label>
+									<div class="col-sm-4">
+										<input th:field="*{fileMovieDatas}" type="file" />
+									</div>
+									
+							</div>
+			 				<!-- Back Ground -->
+							<h4 class="page-header"></h4>
+		 					<div class="form-group">
+		 						<label class="col-sm-2 control-label">Categoria</label>
+									<div class="col-sm-4">
+										<select th:field="*{categoria_id}">
+										  <option th:each="type : ${catgories}"
+										  		  th:if="${type.type}=='TYPE_PROJECTOS'" 
+										          th:value="${type.id}" 
+										          th:text="${type.nome}"></option>
+										        
+										</select>
+									</div>	
+		 						<label class="col-sm-2 control-label">Sequencia</label>
+									<div class="col-sm-4">
+										<select th:field="*{orderView}">
+											<option th:each="i: ${#numbers.sequence(0, nTotalPro )}"
+												th:value="${i}" th:text="${i}"></option>
+										</select>
+									</div>
+		 					</div>
+			 					
+							<!-- Butao submit -->
+						<h4 class="page-header"></h4>
+						<div class="form-group">
+							<div class="col-sm-2">
+								<button type="submit" class="btn btn-primary btn-label-left">
+									<span><i class="fa fa-clock-o"></i></span> Guardar
+								</button>
+							</div>
+						</div>
+							
+	 					</form>
+ 					
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--END TIPO APRESENTACAO-->
+		
+		
+		<!--START PLUS Projecto  TIPO FOOTER-->
+		<div class="row">
+			<div class="col-xs-12 col-sm-12">
+				<div class="box">
+
+					<div class="box-header">
+						<div class="box-name">
+							<i class="fa fa-search"></i> <span>Adicionar conteudo: TIPO FOOTER</span>
+						</div>
+						<div class="box-icons">
+							<a class="collapse-link"> <i class="fa fa-chevron-up"></i>
+							</a> <a class="expand-link"> <i class="fa fa-expand"></i>
+							</a> <a class="close-link"> <i class="fa fa-times"></i>
+							</a>
+						</div>
+						<div class="no-move"></div>
+					</div>
+					
+				<div class="box-content" style="display: none;">
+
+					<!-- Conteudos -->
+				
+					
+					
+					<form 	class="form-horizontal" 
+							role="form" action="#" 
+							th:action="@{/bo/addCont}" 
+							th:object="${projectosObj}" 
+							method="post" 
+							enctype="multipart/form-data">
+					
+	 					
+	 					<!-- Butao submit -->
+	 					<h4 class="page-header"></h4>
+						<div class="form-group">
+							<div class="col-sm-2">
+								<button type="submit" class="btn btn-primary btn-label-left">
+									<span><i class="fa fa-clock-o"></i></span> Guardar
+								</button>
+							</div>
+						</div>
+ 					</form>
+				</div>
+				
+				</div>
+			</div>
+		</div>
+		<!--END TIPO FOOTER-->
+		
+		
+		<!--TABLE RESULT-->
+	<div id="dashboard-header" class="row"> 
+			<div class="box-proent">		
+			 
+			 <h4 class="page-header">Projectos</h4>
+			<table class="table beauty-table table-hover">
+			<thead>
+				<tr>
+					<th>Categoria_id</th>
+					<th>Titulo</th>
+					<th>Descricao</th>
+					<th>Ficha Tecnica</th>
+					<th>Foto Galeria</th>
+					<th>VideovGaleria</th>
+					<th></th>
+					<th></th>
+				</tr>
+			</thead>
+					<tbody>
+						<tr th:each="pro : ${projectos}">
+							<td th:text="${pro.categoria_id}"></td>
+							<td th:text="${pro.titulo}"></td>
+							<td th:text="${pro.descricao}"></td>
+							<td th:text="${pro.ficha_tecnica}"></td>
+							<td th:text="${pro.foto_galeria}"></td>
+							<td th:text="${pro.video_galeria}"></td>
+							<td>
+								<div class="col-sm-4">
+									<div class="toggle-switch toggle-switch-success">
+										<label>
+											<input th:if="${pro.active_flag} == 0" type="checkbox" id="home-proeudos" name="active" th:value="${pro.id}">
+											<input th:if="${pro.active_flag} == 1" type="checkbox" id="home-proeudos" name="active" th:value="${pro.id}" checked>
+											<div class="toggle-switch-inner"></div>
+											<div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
+										</label>
+									</div>
+								</div>
+								</td>
+								<td>
+								<div class="btn-group">
+									<a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
+									<span class="fa fa-caret-down">Ações</span>
+									</a>
+									<ul class="dropdown-menu">
+										<li><a href=""><i class="fa fa-pencil fa-fw"></i> Edit</a></li>
+										<li><a th:href="@{/bo/delCont(id=${pro.id})}"><i class="fa fa-trash-o fa-fw"></i> Delete</a></li>
+									</ul>
+								</div>
+								</td>
+						</tr>
+
+
+					</tbody>
+				</table>
+					</div>
 		</div>
 	</div>
-</div>
-
-	<div class="row" th:each="cat : ${categorias}" th:class="${cat.type}!='TYPE_HEADER'?'hidden':''">
-	
-				<!-- TYPE_HEADER -->
-				<div id="type_header" th:replace="dashboard/content/type_content/type_header :: type_header"></div>
-				
-	</div>
-	<div class="row" th:each="cat : ${categorias}" th:class="${cat.type}!='TYPE_BIOGRAFIA'?'hidden':''">
-	
-				<!-- TYPE_BIOGRAFIA -->
-				<div id="type_biografia" th:replace="dashboard/content/type_content/type_biografia :: type_biografia"></div>
-				
-	</div>
-	<div class="row" th:each="cat : ${categorias}" th:class="${cat.type}!='TYPE_PROJECTO'?'hidden':''">
-	
-				<!-- TYPE_PROJECTO -->
-				<div id="type_projecto" th:replace="dashboard/content/type_content/type_projecto :: type_projecto"></div>
-				
-	</div>
-	<div class="row" th:each="cat : ${categorias}" th:class="${cat.type}!='TYPE_FOOTER'?'hidden':''">
-	
-				<!-- TYPE_FOOTER -->
-				<div id="type_footer" th:replace="dashboard/content/type_content/type_footer :: type_footer"></div>
-	
-	</div>
-	
-</div>
-
-
 </body>
 </html>

@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication(scanBasePackages={"pt.morla.app.*"})
-@EnableJpaRepositories(basePackageClasses= {pt.morla.app.bo.db.interfaces.ISeparadores.class ,pt.morla.app.bo.db.interfaces.SeparadorRepository.class})
+@EnableJpaRepositories(basePackageClasses= {pt.morla.app.bo.db.interfaces.CategoriasRepository.class,pt.morla.app.bo.db.interfaces.ProjectosRepository.class})
 public class MorlaAppApplication {
 
 	public static void main(String[] args) {

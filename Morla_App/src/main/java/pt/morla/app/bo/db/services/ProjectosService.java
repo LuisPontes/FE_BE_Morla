@@ -5,25 +5,25 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import pt.morla.app.bo.db.interfaces.ContentsRepository;
-import pt.morla.app.bo.db.interfaces.IContents;
-import pt.morla.app.bo.db.models.tb_content;
+import pt.morla.app.bo.db.interfaces.IProjectos;
+import pt.morla.app.bo.db.interfaces.ProjectosRepository;
+import pt.morla.app.bo.db.models.projectos_tb;
 
 @Service
-public class ContentsService implements IContents{
+public class ProjectosService implements IProjectos{
 
 	@Autowired
-    private ContentsRepository repository;
+    private ProjectosRepository repository;
 	
 	@Override
-	public List<tb_content> findAll() {
-		List<tb_content> result = (List<tb_content>) repository.findAll();
+	public List<projectos_tb> findAll() {
+		List<projectos_tb> result = (List<projectos_tb>) repository.findAll();
         return result;
 	}
 
 	@Override
-	public Long save(tb_content new_cat_obj) {
-		tb_content newObj = repository.save(new_cat_obj);
+	public Long save(projectos_tb new_cat_obj) {
+		projectos_tb newObj = repository.save(new_cat_obj);
 		return newObj.getId();
 	}
 
@@ -38,8 +38,9 @@ public class ContentsService implements IContents{
 	}
 
 	@Override
-	public List<tb_content> findAllActive() {
+	public List<projectos_tb> findAllActive() {
 		return repository.findAllActive();
 	}
+
 
 }

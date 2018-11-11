@@ -9,17 +9,16 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import pt.morla.app.bo.db.models.tb_separador;
-
+import pt.morla.app.bo.db.models.projectos_tb;
 
 @Repository
-public interface SeparadorRepository extends CrudRepository<tb_separador, Long>{
+public interface ProjectosRepository extends CrudRepository<projectos_tb, Long>{
 
 	@Modifying
-	@Query("update tb_separador s set s.active_flag = :active_flag where s.id = :id")
+	@Query("update projectos_tb s set s.active_flag = :active_flag where s.id = :id")
 	@Transactional
 	public int updateActiveFlag(@Param("id") Long id,@Param("active_flag") Integer active_flag);
 	
-	@Query(value = "SELECT u FROM tb_separador u where u.active_flag = 1")
-	List<tb_separador> findAllActive();
+	@Query(value = "SELECT u FROM projectos_tb u where u.active_flag = 1")
+	List<projectos_tb> findAllActive();
 }

@@ -197,9 +197,9 @@ $(document).ready(function () {
 	$('#home').ready(function(){
 		$('input[type=checkbox]').click(function() {
 			if ( this.checked) {
-				 window.location.replace("/db/activeOrDesactive?type="+this.id+"&id="+this.value+"&value=1");
+				 window.location.replace("/bo/activeOrDesactive?type="+this.id+"&id="+this.value+"&value=1");
 			}else{
-				 window.location.replace("/db/activeOrDesactive?type="+this.id+"&id="+this.value+"&value=0");
+				 window.location.replace("/bo/activeOrDesactive?type="+this.id+"&id="+this.value+"&value=0");
 			}
 		});
 		
