@@ -72,19 +72,23 @@ public class BOController {
 		}
 		else if(userObj.getName()!=null && userObj.getPass()!=null ) {
 			//autenticar
-			
-			userObj.setIsauth(true);
-			user = userObj;
-			model = setAttributes(model,"home");
-			return "dashboard/index";
+			if ( userObj.getName().equals("morla")) {
+				if ( userObj.getPass().equals("morla")) {
+					userObj.setIsauth(true);
+					user = userObj;
+					model = setAttributes(model,"home");
+					return "dashboard/index";
+				}
+			}
 		}
+		model.addAttribute("userObj", new user_obj());
 		return "dashboard/page_login";
     	
 	}
     
 	/**
-	 * *Categorias
-	 * */
+	 * Categorias
+	 */
 	@RequestMapping(value = { "/addcat" }, method = { RequestMethod.POST })
 	public String addcat(HttpServletRequest request, HttpServletResponse response,Model model,@ModelAttribute categorias_tb new_cat_obj) {
 		
@@ -166,6 +170,14 @@ public class BOController {
 	}
 	
 	/**********************************************************************************************************************/
+	@RequestMapping(value = { "/logout" }, method = { RequestMethod.GET })
+	public String logout(Model model) {
+    
+		user=null;
+		model.addAttribute("userObj", new user_obj());
+		return "dashboard/page_login";
+    	
+	}
 	/* ACTIVETOR */
 	@RequestMapping(value = { "/activeOrDesactive" }, method = { RequestMethod.GET })
 	public String activeOrDesactve(HttpServletRequest request, HttpServletResponse response,Model model) {
@@ -177,11 +189,11 @@ public class BOController {
 		}
 		if ( type.equals("Categorias") ) 
 		{
-			daoCat.updateActiveFlag( Long.parseLong(ParameterMap.get("id")[0]),  Integer.parseInt(ParameterMap.get("value")[0]) );
+			int cenas = daoCat.updateActiveFlag( Long.parseLong(ParameterMap.get("id")[0]),  Integer.parseInt(ParameterMap.get("value")[0]) );
 			categoriasList = (List<categorias_tb>) daoCat.findAll();
 			pagename = "gestao-Categorias";
 		}
-		else if ( type.equals("Conteudos") ) 
+		else if ( type.equals("projecto") ) 
 		{
 			daoPro.updateActiveFlag( Long.parseLong(ParameterMap.get("id")[0]),  Integer.parseInt(ParameterMap.get("value")[0]) );
 			projectosList = (List<projectos_tb>) daoPro.findAll();
@@ -196,7 +208,7 @@ public class BOController {
 	}
 	
     /*UPLOAD FILES*/
-	 private String doUpload(HttpServletRequest request, MultipartFile[] multipartFiles) {
+	private String doUpload(HttpServletRequest request, MultipartFile[] multipartFiles) {
 		 
 	      try {
 	      // Root Directory.
@@ -247,6 +259,7 @@ public class BOController {
 		return null;
 	 
 	}
+	 
     private Model setAttributes(Model model,String page) {
 		model.addAttribute("catgories", categoriasList);
 		model.addAttribute("projectos", projectosList);

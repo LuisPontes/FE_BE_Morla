@@ -154,7 +154,7 @@ public class BackOfficeController {
 		}
 		if ( type.equals("Categorias") ) 
 		{
-			daoSep.updateActiveFlag( Long.parseLong(ParameterMap.get("id")[0]),  Integer.parseInt(ParameterMap.get("value")[0]) );
+			int cenas = daoSep.updateActiveFlag( Long.parseLong(ParameterMap.get("id")[0]),  Integer.parseInt(ParameterMap.get("value")[0]) );
 			categoriasList = (List<tb_separador>) daoSep.findAll();
 			pagename = "gestao-Categorias";
 		}

@@ -34,7 +34,7 @@ public class CategoriasService implements ICategorias{
 
 	@Override
 	public int updateActiveFlag(Long long1, int active) {
-		return 0;
+		return repository.updateActiveFlag(long1, active);
 	}
 
 	@Override
