@@ -9,9 +9,6 @@
 			TinyMCEStart('#wysiwig_full', 'extreme');
 	
 		});
-		function addNewImage(){
-			document.getElementById("newImageDiv").innerHTML = "Please select file1 :<input type="file" name="file"> File Description1: <input type="text" name="description">"; 
-		}
 	</script>
 	
 </head>
@@ -195,18 +192,10 @@
 							
 							<h4 class="page-header"></h4>
 							<div class="form-group" >
-  
 									<label class="col-sm-2 control-label">Foto Galeria</label>
 									<div class="col-sm-4" >
-											<!--<input th:field="*{fileDatas}" type="file" />
-											Please select file1 :<input type="file" name="file">-->	
-											
-											<input type="file" name="file" multiple>
-											
+											 <input type="file" name="file" multiple>
 									</div>
-							
-									
-									
 							</div>
 							
 							
@@ -215,7 +204,8 @@
 							<div class="form-group">		
 									<label class="col-sm-2 control-label">Movie Galeria</label>
 									<div class="col-sm-4">
-										<input th:field="*{fileMovieDatas}" type="file" />
+									 <input type="file" name="movies" multiple>
+										<!--   <input th:field="*{fileMovieDatas}" type="file" /> -->
 									</div>
 									
 							</div>
@@ -291,7 +281,50 @@
 							method="post" 
 							enctype="multipart/form-data">
 					
+					
+	 						<div class="form-group">
+	 						<label class="col-sm-2 control-label">Categoria</label>
+								<div class="col-sm-4">
+									<select th:field="*{categoria_id}">
+									  <option th:each="type : ${catgories}"
+									  		  th:if="${type.type}=='TYPE_FOOTER'" 
+									          th:value="${type.id}" 
+									          th:text="${type.nome}"></option>
+									        
+									</select>
+								</div>	
+							</div>
+	 						<h4 class="page-header"></h4>
+							<div class="form-group">
+	 							<label class="col-sm-2 control-label">Facebook</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control"
+										placeholder="exemplo: cenas" data-toggle="tooltip"
+										data-placement="bottom" title="Tooltip for name"
+										th:field="*{titulo}">
+								</div>
+	 						</div>
 	 					
+	 						<div class="form-group">
+	 							<label class="col-sm-2 control-label">LinkDin</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control"
+										placeholder="exemplo: cenas" data-toggle="tooltip"
+										data-placement="bottom" title="Tooltip for name"
+										th:field="*{titulo}">
+								</div>
+	 						</div>
+	 						
+	 						<div class="form-group">
+	 							<label class="col-sm-2 control-label">Twitter</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control"
+										placeholder="exemplo: cenas" data-toggle="tooltip"
+										data-placement="bottom" title="Tooltip for name"
+										th:field="*{titulo}">
+								</div>
+	 						</div>
+	 						
 	 					<!-- Butao submit -->
 	 					<h4 class="page-header"></h4>
 						<div class="form-group">
@@ -368,5 +401,7 @@
 		</div>
 	</div>
 	
+	
+        
 </body>
 </html>

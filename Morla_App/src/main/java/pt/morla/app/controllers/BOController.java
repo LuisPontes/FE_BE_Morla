@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -38,8 +39,7 @@ public class BOController {
 
 	
 	protected static Logger log = LoggerFactory.getLogger(BOController.class);
-	   
-
+	
 	user_obj user = null;
 	
 	@Autowired
@@ -52,11 +52,12 @@ public class BOController {
     
     List<categorias_tb> categoriasList = null;
     List<projectos_tb> projectosList = null;
-    
+    String separatorFiles = null; 
     @PostConstruct
     private void init() {
     	categoriasList = (List<categorias_tb>) daoCat.findAll();
 		projectosList = (List<projectos_tb>) daoPro.findAll();
+		separatorFiles = props.getProperty("separator.files");
     }
 
 	@RequestMapping(value = { "" }, method = { RequestMethod.GET,RequestMethod.POST })
@@ -98,7 +99,7 @@ public class BOController {
 			new_cat_obj.setLastUpdate(new Date());
 			new_cat_obj.mappingActive();
 			if ( new_cat_obj.getFileDatas()!=null ) {
-				new_cat_obj.setImg_backGround(doUpload(request, new_cat_obj.getFileDatas()));
+				new_cat_obj.setImg_backGround(doUpload(request, new_cat_obj.getFileDatas(),props.getProperty("upload.capa.path")));
 			}
 			log.info("Save id: "+daoCat.save(new_cat_obj));
 			categoriasList = (List<categorias_tb>) daoCat.findAll();
@@ -121,7 +122,7 @@ public class BOController {
 			}
 			daoCat.remove(catRemove.getId());
 			if ( catRemove.getImg_backGround()!=null ) {
-				File img = new File(catRemove.getImg_backGround());
+				File img = new File(props.getProperty("upload.capa.path")+File.separator+catRemove.getImg_backGround());
 				if( img.delete() ){
 					log.info("Delete Image [{}]!",catRemove.getImg_backGround());
 				}else {
@@ -135,9 +136,7 @@ public class BOController {
 		return "dashboard/index";
 	}
 	
-	/**PROJECTOS
-	 * @throws IOException 
-	 * @throws IllegalStateException */
+	/**PROJECTOS */
 
 	@RequestMapping(value = { "/addCont" }, method = { RequestMethod.POST })
 	public String addCont(
@@ -145,25 +144,25 @@ public class BOController {
 			HttpServletResponse response,
 			Model model,
 			@ModelAttribute projectos_tb new_cont_obj,
-			@RequestParam("file") MultipartFile[] files) throws IllegalStateException, IOException 
-	{
+			@RequestParam("file") MultipartFile[] files,
+			@RequestParam("movies") MultipartFile[] movies
+			){
 		
-//		for(MultipartFile uploadedFile : files) {
-//	            File file = new File(props.getProperty("upload.image.path")+File.separator + uploadedFile.getOriginalFilename());
-//	            uploadedFile.transferTo(file);
-//	    }
-		 
-		
-		if ( new_cont_obj.getCategoria_id()!=null) {
-			new_cont_obj.mappingActive();
-			
-			new_cont_obj.setFoto_galeria(doUpload(request, files));
-			
-			
-			log.info("Save id: "+daoPro.save(new_cont_obj));
-			projectosList = (List<projectos_tb>) daoPro.findAll();
+		try {	
+				if ( new_cont_obj.getCategoria_id()!=null) {
+					new_cont_obj.mappingActive();
+
+					new_cont_obj.setImg_capa(doUpload(request, new_cont_obj.getFileDatas(), props.getProperty("upload.capa.path")));
+					new_cont_obj.setFoto_galeria(doUpload(request, files, props.getProperty("upload.image.path")));
+					new_cont_obj.setVideo_galeria(doUpload(request, movies, props.getProperty("upload.movies.path")));
+					
+					log.info("Save id: "+daoPro.save(new_cont_obj));
+					projectosList = (List<projectos_tb>) daoPro.findAll();
+				}
+		}catch (Exception e) {
+			e.printStackTrace();
 		}
-		
+	
 		model = setAttributes(model,"gestao-Conteudos");
 		return "dashboard/index";
 	}
@@ -180,8 +179,28 @@ public class BOController {
 					contRemove = t;
 				}
 			}
-			daoPro.remove(contRemove.getId());
 			
+			if ( !contRemove.getFoto_galeria().equals("") || contRemove.getFoto_galeria()!=null ) {
+				for (String  path : contRemove.getFoto_galeria().split(separatorFiles) ) {
+					File img = new File( props.getProperty("upload.image.path")+File.separator+path);
+					if( img.delete() ){
+						log.info("Delete Image [{}]!",path);
+					}else {
+						log.info("Dont delete image [{}]",path);
+					}
+				}
+			}
+			if ( !contRemove.getVideo_galeria().equals("") || contRemove.getVideo_galeria()!=null ) {
+				for (String  path : contRemove.getVideo_galeria().split(separatorFiles) ) {
+					File img = new File( props.getProperty("upload.movies.path")+File.separator+path);
+					if( img.delete() ){
+						log.info("Delete Image [{}]!",path);
+					}else {
+						log.info("Dont delete image [{}]",path);
+					}
+				}
+			}
+			daoPro.remove(contRemove.getId());
 			projectosList = (List<projectos_tb>) daoPro.findAll();
 		}
 		
@@ -223,17 +242,19 @@ public class BOController {
 		{
 			pagename = "home";
 		}
+		response.setHeader(HttpHeaders.LOCATION, "/bo");
+		
+		System.out.println(request.getRequestDispatcher("/bo"));
 		model = setAttributes(model,pagename);
 		return "dashboard/index";
 	}
 	
     /*UPLOAD FILES*/
-	private String doUpload(HttpServletRequest request, MultipartFile[] multipartFiles) {
-		 
+	private String doUpload(HttpServletRequest request, MultipartFile[] multipartFiles,String uploadRootPath) {
+
+		 StringBuilder pathFotoGalary = new StringBuilder();
+
 	      try {
-	      // Root Directory.
-	      String uploadRootPath =  props.getProperty("upload.image.path");
-	      System.out.println("uploadRootPath=" + uploadRootPath);
 	 
 	      File uploadRootDir = new File(uploadRootPath);
 	      // Create directory if it not exists.
@@ -244,7 +265,7 @@ public class BOController {
 	      //
 	      List<File> uploadedFiles = new ArrayList<File>();
 	      List<String> failedFiles = new ArrayList<String>();
-	 
+	     
 	      for (MultipartFile fileData : fileDatas) {
 	 
 	         // Client File Name
@@ -262,7 +283,7 @@ public class BOController {
 	               //
 	               uploadedFiles.add(serverFile);
 	               System.out.println("Write file: " + serverFile);
-	               return props.getProperty("image.path")+"/"+name;
+	               pathFotoGalary.append(name+separatorFiles);
 	               
 	            } catch (Exception e) {
 	            	e.printStackTrace();
@@ -276,7 +297,7 @@ public class BOController {
 	    	  e.printStackTrace();
 	    	  return null;
 		}
-		return null;
+		return pathFotoGalary.toString();
 	 
 	}
 	 

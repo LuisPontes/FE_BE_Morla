@@ -26,7 +26,10 @@ public class projectos_tb {
 	private String titulo;
 	
 	@Column(name = "descricao")
-	private String descricao;
+	private String descricao;	
+	
+	@Column(name = "img_capa")
+	private String img_capa;
 	
 	@Column(name = "ficha_tecnica")
 	private String ficha_tecnica;
@@ -161,6 +164,16 @@ public class projectos_tb {
 
 	public void setFileMovieDatas(MultipartFile[] fileMovieDatas) {
 		this.fileMovieDatas = fileMovieDatas;
+	}
+	
+	
+
+	public String getImg_capa() {
+		return img_capa;
+	}
+
+	public void setImg_capa(String img_capa) {
+		this.img_capa = img_capa;
 	}
 
 	public void mappingActive() {
