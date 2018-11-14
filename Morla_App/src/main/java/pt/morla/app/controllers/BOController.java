@@ -3,6 +3,7 @@ package pt.morla.app.controllers;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -21,6 +22,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import pt.morla.app.Contants;
@@ -133,11 +135,24 @@ public class BOController {
 		return "dashboard/index";
 	}
 	
-	/**PROJECTOS*/
+	/**PROJECTOS
+	 * @throws IOException 
+	 * @throws IllegalStateException */
 
 	@RequestMapping(value = { "/addCont" }, method = { RequestMethod.POST })
-	public String addCont(HttpServletRequest request, HttpServletResponse response,Model model,@ModelAttribute projectos_tb new_cont_obj) {
-		
+	public String addCont(
+			HttpServletRequest request, 
+			HttpServletResponse response,
+			Model model,
+			@ModelAttribute projectos_tb new_cont_obj,
+			@RequestParam("file") MultipartFile[] files) throws IllegalStateException, IOException 
+	{
+		 for(MultipartFile uploadedFile : files) {
+	            File file = new File(props.getProperty("upload.image.path") + uploadedFile.getOriginalFilename());
+	            uploadedFile.transferTo(file);
+	        }
+		 
+		System.out.println(files);
 		if ( new_cont_obj.getCategoria_id()!=null) {
 			new_cont_obj.mappingActive();
 			log.info("Save id: "+daoPro.save(new_cont_obj));
@@ -189,7 +204,7 @@ public class BOController {
 		}
 		if ( type.equals("Categorias") ) 
 		{
-			int cenas = daoCat.updateActiveFlag( Long.parseLong(ParameterMap.get("id")[0]),  Integer.parseInt(ParameterMap.get("value")[0]) );
+			daoCat.updateActiveFlag( Long.parseLong(ParameterMap.get("id")[0]),  Integer.parseInt(ParameterMap.get("value")[0]) );
 			categoriasList = (List<categorias_tb>) daoCat.findAll();
 			pagename = "gestao-Categorias";
 		}
