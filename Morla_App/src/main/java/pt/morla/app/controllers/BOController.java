@@ -147,14 +147,19 @@ public class BOController {
 			@ModelAttribute projectos_tb new_cont_obj,
 			@RequestParam("file") MultipartFile[] files) throws IllegalStateException, IOException 
 	{
-		 for(MultipartFile uploadedFile : files) {
-	            File file = new File(props.getProperty("upload.image.path") + uploadedFile.getOriginalFilename());
-	            uploadedFile.transferTo(file);
-	        }
+		
+//		for(MultipartFile uploadedFile : files) {
+//	            File file = new File(props.getProperty("upload.image.path")+File.separator + uploadedFile.getOriginalFilename());
+//	            uploadedFile.transferTo(file);
+//	    }
 		 
-		System.out.println(files);
+		
 		if ( new_cont_obj.getCategoria_id()!=null) {
 			new_cont_obj.mappingActive();
+			
+			new_cont_obj.setFoto_galeria(doUpload(request, files));
+			
+			
 			log.info("Save id: "+daoPro.save(new_cont_obj));
 			projectosList = (List<projectos_tb>) daoPro.findAll();
 		}

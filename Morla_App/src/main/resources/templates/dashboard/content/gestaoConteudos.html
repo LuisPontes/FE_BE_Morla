@@ -68,7 +68,7 @@
 							role="form" action="#" 
 							th:action="@{/bo/addCont}" 
 							th:object="${projectosObj}" 
-							method="post" 
+							method="POST" 
 							enctype="multipart/form-data">
 					
 	 					<div class="form-group">
@@ -158,11 +158,10 @@
 						
 						<form 	class="form-horizontal" 
 								role="form" 
-								action="#" 
 								th:action="@{/bo/addCont}" 
 								th:object="${projectosObj}" 
-								method="post" 
-								enctype="multipart/form-data">
+								method="POST" 
+								enctype="multipart/form-data" >
 								
 		 					<div class="form-group">
 	 							<label class="col-sm-2 control-label">titulo</label>
@@ -202,7 +201,7 @@
 											<!--<input th:field="*{fileDatas}" type="file" />
 											Please select file1 :<input type="file" name="file">-->	
 											
-											<input type="file" name="file[]" multiple>
+											<input type="file" name="file" multiple>
 											
 									</div>
 							
