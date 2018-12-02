@@ -21,4 +21,10 @@ public interface ProjectosRepository extends CrudRepository<projectos_tb, Long>{
 	
 	@Query(value = "SELECT u FROM projectos_tb u where u.active_flag = 1")
 	List<projectos_tb> findAllActive();
+
+	
+	@Query(value = "SELECT u FROM projectos_tb u where u.id = :id")
+	List<projectos_tb> findbyId(@Param("id") Long id);
+	
+	
 }

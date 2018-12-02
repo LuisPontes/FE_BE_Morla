@@ -47,27 +47,27 @@
 							<i class="fa fa-search"></i> <span>Adicionar conteudo: TIPO APRESENTACAO</span>
 						</div>
 						<div class="box-icons">
-							<a class="collapse-link"> <i class="fa fa-chevron-up"></i>
+							<a class="collapse-link"> <i th:class="${editMode} == 'TYPE_APRESENTACAO'? 'fa fa-chevron-down': 'fa fa-chevron-up'" ></i>
 							</a> <a class="expand-link"> <i class="fa fa-expand"></i>
-							</a> <a class="close-link"> <i class="fa fa-times"></i>
+							
 							</a>
 						</div>
 						<div class="no-move"></div>
 					</div>
 					
-				<div class="box-content" style="display: none;">
+				<div class="box-content"  th:style="${editMode} == 'TYPE_APRESENTACAO'? 'display: block;': 'display: none;'">
 
 					<!-- Conteudos -->
-				
-					
 					
 					<form 	class="form-horizontal" 
 							role="form" action="#" 
-							th:action="@{/bo/addCont}" 
+							th:action="@{${editMode} == 'TYPE_APRESENTACAO'? '/bo/upCont': '/bo/addCont'}" 
 							th:object="${projectosObj}" 
 							method="POST" 
 							enctype="multipart/form-data">
 					
+						<input type="text" class="hidden" th:field="*{id}">					
+						
 	 					<div class="form-group">
 	 							<label class="col-sm-2 control-label">titulo</label>
 								<div class="col-sm-4">
@@ -76,12 +76,12 @@
 										data-placement="bottom" title="Tooltip for name"
 										th:field="*{titulo}">
 								</div>
-		 										
+		 				<!-- 						
 							<label class="col-sm-2 control-label">Imagem Upload</label>
 								<div class="col-sm-4">
 									<input th:field="*{fileDatas}" type="file" />
 								</div>
-								
+								 -->
 	 					</div>
 	 					
 						<div class="form-group">
@@ -140,26 +140,29 @@
 							<i class="fa fa-search"></i> <span>Adicionar conteudo:  TIPO PROJECTOS</span>
 						</div>
 						<div class="box-icons">
-							<a class="collapse-link"> <i class="fa fa-chevron-up"></i>
+							<a class="collapse-link"> <i th:class="${editMode} == 'TYPE_PROJECTOS'? 'fa fa-chevron-down': 'fa fa-chevron-up'"></i>
 							</a> <a class="expand-link"> <i class="fa fa-expand"></i>
-							</a> <a class="close-link"> <i class="fa fa-times"></i>
+							
 							</a>
 						</div>
 						<div class="no-move"></div>
 					</div>
 
 
-					<div class="box-content" style="display: none;">
+					<div class="box-content" th:style="${editMode} == 'TYPE_PROJECTOS'? 'display: block;': 'display: none;'">
 
 						<!-- Conteudos -->
 						
 						<form 	class="form-horizontal" 
-								role="form" 
-								th:action="@{/bo/addCont}" 
+								role="form"  
+								th:action="@{${editMode} == 'TYPE_PROJECTOS'? '/bo/upCont': '/bo/addCont'}" 
 								th:object="${projectosObj}" 
 								method="POST" 
 								enctype="multipart/form-data" >
 								
+							<input type="text" class="hidden" th:field="*{id}">
+							
+							
 		 					<div class="form-group">
 	 							<label class="col-sm-2 control-label">titulo</label>
 								<div class="col-sm-4">
@@ -194,7 +197,22 @@
 							<div class="form-group" >
 									<label class="col-sm-2 control-label">Foto Galeria</label>
 									<div class="col-sm-4" >
-											 <input type="file" name="file" multiple>
+										<input type="file" name="file" multiple>
+									</div>
+									
+									<div th:style="${editMode} == 'TYPE_PROJECTOS'? '': 'display:none;'" class="col-sm-4" >
+									<div class="row">
+										<label class="col-sm-8 control-label">Foto Galeria existentes:</label>
+									</div>
+									<div class="row">
+										 <div class="col-lg-3 col-md-4 col-xs-6 thumb"  th:each="img : ${projectosObj.listPathsFotoGaleria}">
+							                <a th:href="'/fe/recursos/imgs/' + ${img}" class="fancybox" rel="ligthbox" th:data-fancybox="${projectosObj.titulo}" >
+							                    <img  th:src="'/fe/recursos/imgs/' + ${img}" class="zoom img-fluid "  alt="">
+							                </a>
+							            </div>
+							         </div>
+						         
+										<input type="text" style="width: 100%;" th:field="*{foto_galeria}" >
 									</div>
 							</div>
 							
@@ -202,10 +220,14 @@
 							
 							<h4 class="page-header"></h4>		
 							<div class="form-group">		
-									<label class="col-sm-2 control-label">Movie Galeria</label>
+									<label class="col-sm-2 control-label">Link Video</label>
 									<div class="col-sm-4">
-									 <input type="file" name="movies" multiple>
-										<!--   <input th:field="*{fileMovieDatas}" type="file" /> -->
+									<input type="text" class="form-control"
+										placeholder="exemplo: https://www.youtube.com/embed/tgbNymZ7vqY" data-toggle="tooltip"
+										data-placement="bottom" title="Tooltip for name"
+										th:field="*{video_link}">
+										
+										<!--    <input type="file" name="movies" multiple> <input th:field="*{video_link}" type="file" /> -->
 									</div>
 									
 							</div>
@@ -260,27 +282,25 @@
 							<i class="fa fa-search"></i> <span>Adicionar conteudo: TIPO FOOTER</span>
 						</div>
 						<div class="box-icons">
-							<a class="collapse-link"> <i class="fa fa-chevron-up"></i>
+							<a class="collapse-link"> <i th:class="${editMode} == 'TYPE_FOOTER'? 'fa fa-chevron-down': 'fa fa-chevron-up'"></i>
 							</a> <a class="expand-link"> <i class="fa fa-expand"></i>
-							</a> <a class="close-link"> <i class="fa fa-times"></i>
+							
 							</a>
 						</div>
 						<div class="no-move"></div>
 					</div>
 					
-				<div class="box-content" style="display: none;">
+				<div class="box-content" th:style="${editMode} == 'TYPE_FOOTER'? 'display: block;': 'display: none;'">
 
-					<!-- Conteudos -->
-				
-					
-					
+					<!-- Conteudos -->					
 					<form 	class="form-horizontal" 
 							role="form" action="#" 
-							th:action="@{/bo/addCont}" 
+							th:action="@{${editMode} == 'TYPE_FOOTER'? '/bo/upCont': '/bo/addCont'}" 
 							th:object="${projectosObj}" 
 							method="post" 
 							enctype="multipart/form-data">
 					
+					<input type="text" class="hidden" th:field="*{id}">
 					
 	 						<div class="form-group">
 	 						<label class="col-sm-2 control-label">Categoria</label>
@@ -294,6 +314,7 @@
 									</select>
 								</div>	
 							</div>
+							
 	 						<h4 class="page-header"></h4>
 							<div class="form-group">
 	 							<label class="col-sm-2 control-label">Facebook</label>
@@ -301,17 +322,17 @@
 									<input type="text" class="form-control"
 										placeholder="exemplo: cenas" data-toggle="tooltip"
 										data-placement="bottom" title="Tooltip for name"
-										th:field="*{titulo}">
+										th:field="*{facebook}">
 								</div>
 	 						</div>
 	 					
 	 						<div class="form-group">
-	 							<label class="col-sm-2 control-label">LinkDin</label>
+	 							<label class="col-sm-2 control-label">LinkeDin</label>
 								<div class="col-sm-4">
 									<input type="text" class="form-control"
 										placeholder="exemplo: cenas" data-toggle="tooltip"
 										data-placement="bottom" title="Tooltip for name"
-										th:field="*{titulo}">
+										th:field="*{linkeDin}">
 								</div>
 	 						</div>
 	 						
@@ -321,10 +342,39 @@
 									<input type="text" class="form-control"
 										placeholder="exemplo: cenas" data-toggle="tooltip"
 										data-placement="bottom" title="Tooltip for name"
-										th:field="*{titulo}">
+										th:field="*{twitter}">
 								</div>
 	 						</div>
 	 						
+	 						<div class="form-group">
+	 							<label class="col-sm-2 control-label">Instagram</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control"
+										placeholder="exemplo: cenas" data-toggle="tooltip"
+										data-placement="bottom" title="Tooltip for name"
+										th:field="*{instagram}">
+								</div>
+	 						</div>
+	 						
+	 						<div class="form-group">
+	 							<label class="col-sm-2 control-label">Email</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control"
+										placeholder="exemplo: cenas" data-toggle="tooltip"
+										data-placement="bottom" title="Tooltip for name"
+										th:field="*{email}">
+								</div>
+	 						</div>
+	 						
+	 						<div class="form-group">
+	 							<label class="col-sm-2 control-label">Telemovel</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control"
+										placeholder="exemplo: cenas" data-toggle="tooltip"
+										data-placement="bottom" title="Tooltip for name"
+										th:field="*{telemovel}">
+								</div>
+	 						</div>
 	 					<!-- Butao submit -->
 	 					<h4 class="page-header"></h4>
 						<div class="form-group">
@@ -351,24 +401,26 @@
 			<table class="table beauty-table table-hover">
 			<thead>
 				<tr>
-					<th>Categoria_id</th>
+					<th>Categoria Nome</th>
 					<th>Titulo</th>
-					<th>Descricao</th>
-					<th>Ficha Tecnica</th>
+					<th>TYPE</th>
+					<!-- <th>Descricao</th> -->
+					<!-- <th>Ficha Tecnica</th> -->
 					<th>Foto Galeria</th>
-					<th>VideovGaleria</th>
+					<th>Video Link</th>
 					<th></th>
 					<th></th>
 				</tr>
 			</thead>
 					<tbody>
 						<tr th:each="pro : ${projectos}">
-							<td th:text="${pro.categoria_id}"></td>
+							<td th:each="cat : ${catgories}" th:if="${pro.categoria_id}==${cat.id}" th:text="${cat.nome}"></td>
 							<td th:text="${pro.titulo}"></td>
-							<td th:text="${pro.descricao}"></td>
-							<td th:text="${pro.ficha_tecnica}"></td>
+							<td th:each="cat : ${catgories}" th:if="${pro.categoria_id}==${cat.id}" th:text="${cat.type}"></td>
+							<!-- <td th:text="${pro.descricao}"></td> -->
+							<!-- <td th:text="${pro.ficha_tecnica}"></td> -->
 							<td th:text="${pro.foto_galeria}"></td>
-							<td th:text="${pro.video_galeria}"></td>
+							<td th:text="${pro.video_link}"></td>
 							<td>
 								<div class="col-sm-4">
 									<div class="toggle-switch toggle-switch-success">
@@ -387,7 +439,7 @@
 									<span class="fa fa-caret-down">Ações</span>
 									</a>
 									<ul class="dropdown-menu">
-										<li><a href=""><i class="fa fa-pencil fa-fw"></i> Edit</a></li>
+										<li><a  th:href="@{/bo/editCont(id=${pro.id})}"  ><i class="fa fa-pencil fa-fw"></i> Edit</a></li>
 										<li><a th:href="@{/bo/delCont(id=${pro.id})}"><i class="fa fa-trash-o fa-fw"></i> Delete</a></li>
 									</ul>
 								</div>
@@ -397,11 +449,13 @@
 
 					</tbody>
 				</table>
-					</div>
+			</div>
 		</div>
+		
+
 	</div>
-	
-	
         
+        
+
 </body>
 </html>

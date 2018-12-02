@@ -24,8 +24,10 @@
 			<div class="box-proent">	
 				<h4 class="page-header">Accões</h4>	
 				<a class="btn btn-success btn-label-center" href="/" target="_blank" ><span><i class="fa fa-clock-o"></i></span>Ver Pagina Principal</a>
+				<!-- 
 				<a type="button" class="btn btn-danger btn-label-left"  href="/db/refresh" ><span><i class="fa fa-clock-o"></i></span>Refresh Pagina Principal</a>
 				<a type="button" class="btn btn-danger btn-label-left"  href="/db/build" ><span><i class="fa fa-clock-o"></i></span>Build Static Pagina Principal</a>
+				 -->
 				<h4 class="page-header"></h4>
 			</div>
 		</div>
@@ -94,7 +96,7 @@
 				<tr>
 					<th>Categoria_id</th>
 					<th>Titulo</th>
-					<th>Descricao</th>
+					<!-- <th>Descricao</th> -->
 					<th>Ficha Tecnica</th>
 					<th>Foto Galeria</th>
 					<th>VideovGaleria</th>
@@ -106,10 +108,10 @@
 						<tr th:each="pro : ${projectos}">
 							<td th:text="${pro.categoria_id}"></td>
 							<td th:text="${pro.titulo}"></td>
-							<td th:text="${pro.descricao}"></td>
-							<td th:text="${pro.ficha_tecnica}"></td>
+							<!-- <td th:text="${pro.descricao}"></td> -->
+							<!-- <td th:text="${pro.ficha_tecnica}"></td> -->
 							<td th:text="${pro.foto_galeria}"></td>
-							<td th:text="${pro.video_galeria}"></td>
+							<td th:text="${pro.video_link}"></td>
 							<td>
 								<div class="col-sm-4">
 									<div class="toggle-switch toggle-switch-success">

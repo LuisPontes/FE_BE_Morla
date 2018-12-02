@@ -1,6 +1,7 @@
 package pt.morla.app.bo.db.interfaces;
 
 import java.util.List;
+import java.util.Optional;
 
 import pt.morla.app.bo.db.models.projectos_tb;
 
@@ -15,4 +16,6 @@ public interface IProjectos {
 	public int updateActiveFlag(Long long1,int active);
 	
 	public List<projectos_tb> findAllActive();
+
+	public List<projectos_tb> findbyId(Long id);
 }

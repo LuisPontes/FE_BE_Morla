@@ -88,5 +88,23 @@
       tError: '<a href="%url%">The image #%curr%</a> could not be loaded.'
     }
   });
+	
+   	 
+ 	 var height = window.innerHeight - 49;
+	$('#page-top').css('min-height', height).on('click', '.collapse-link',
+			function(e) {
+				e.preventDefault();
+				var box = $(this).closest('div.box');
 
+				var content = box.find('div.box-content');
+				content.slideToggle('fast');
+
+				setTimeout(function() {
+					box.resize();
+					box.find('[id^=map-]').resize();
+				}, 50);
+			});
+	
+	
+	
 })(jQuery); // End of use strict

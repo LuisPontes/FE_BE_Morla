@@ -46,7 +46,8 @@ public class categorias_tb {
 	@Column(name = "typeContent")
 	private String type;
 
-	
+	@Transient
+	private String slug;
 	@Transient
 	private String active;
 	@Transient
@@ -139,6 +140,14 @@ public class categorias_tb {
 	public void setFileDatas(MultipartFile[] fileDatas) {
 		this.fileDatas = fileDatas;
 	}
+	
+	public String getSlug() {
+		return slug;
+	}
+
+	public void setSlug(String slug) {
+		this.slug = slug;
+	}
 
 	public void mappingActive() {
 		if ( this.active == null ) 
@@ -157,11 +166,11 @@ public class categorias_tb {
 
 	@Override
 	public String toString() {
-		return "Categorias_tb [id=" + id + ", nome=" + nome + ", img_backGround=" + img_backGround + ", cor_backGround="
+		return "categorias_tb [id=" + id + ", nome=" + nome + ", img_backGround=" + img_backGround + ", cor_backGround="
 				+ cor_backGround + ", orderView=" + orderView + ", url=" + url + ", active_flag=" + active_flag
-				+ ", lastUpdate=" + lastUpdate + ", type=" + type + ", active=" + active + ", fileDatas="
-				+ Arrays.toString(fileDatas) + "]";
+				+ ", lastUpdate=" + lastUpdate + ", type=" + type + ", slug=" + slug + ", active=" + active
+				+ ", fileDatas=" + Arrays.toString(fileDatas) + "]";
 	}
-	
+
 	
 }

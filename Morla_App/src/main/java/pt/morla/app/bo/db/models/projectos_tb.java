@@ -21,46 +21,64 @@ public class projectos_tb {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id")
 	private Long id;
-	
+
 	@Column(name = "titulo")
 	private String titulo;
-	
-	@Column(name = "descricao")
-	private String descricao;	
-	
+
+	@Column(name = "descricao",length =50000)
+	private String descricao;
+
 	@Column(name = "img_capa")
 	private String img_capa;
-	
-	@Column(name = "ficha_tecnica")
+
+	@Column(name = "ficha_tecnica",length =50000)
 	private String ficha_tecnica;
-	
+
 	@Column(name = "foto_galeria")
 	private String foto_galeria;
-	
+
 	@Column(name = "video_galeria")
-	private String video_galeria;
-	
+	private String video_link;
+
 	@Column(name = "active")
 	private Integer active_flag;
-	
+
 	@Column(name = "lastUpdate")
 	private Date lastUpdate;
-	
+
 	@Column(name = "categoria_id")
 	private String categoria_id;
 
 	@Column(name = "orderView")
-	private Integer orderView;	
-	
+	private Integer orderView;
+
+	@Column(name = "facebook")
+	private String facebook;
+
+	@Column(name = "linkeDin")
+	private String linkeDin;
+
+	@Column(name = "twitter")
+	private String twitter;
+
+	@Column(name = "instagram")
+	private String instagram;
+
+	@Column(name = "email")
+	private String email;
+
+	@Column(name = "telemovel")
+	private String telemovel;
+
 	@Transient
 	private String active;
-	
+
 	@Transient
 	private MultipartFile[] fileDatas;
-	
+
 	@Transient
-	private MultipartFile[] fileMovieDatas;
-	
+	private String[] listPathsFotoGaleria;
+
 	public Long getId() {
 		return id;
 	}
@@ -101,14 +119,6 @@ public class projectos_tb {
 		this.foto_galeria = foto_galeria;
 	}
 
-	public String getVideo_galeria() {
-		return video_galeria;
-	}
-
-	public void setVideo_galeria(String video_galeria) {
-		this.video_galeria = video_galeria;
-	}
-
 	public Integer getActive_flag() {
 		return active_flag;
 	}
@@ -132,8 +142,7 @@ public class projectos_tb {
 	public void setCategoria_id(String categoria_id) {
 		this.categoria_id = categoria_id;
 	}
-	
-	
+
 	public String getActive() {
 		return active;
 	}
@@ -158,16 +167,6 @@ public class projectos_tb {
 		this.orderView = orderView;
 	}
 
-	public MultipartFile[] getFileMovieDatas() {
-		return fileMovieDatas;
-	}
-
-	public void setFileMovieDatas(MultipartFile[] fileMovieDatas) {
-		this.fileMovieDatas = fileMovieDatas;
-	}
-	
-	
-
 	public String getImg_capa() {
 		return img_capa;
 	}
@@ -176,29 +175,89 @@ public class projectos_tb {
 		this.img_capa = img_capa;
 	}
 
+	public String getFacebook() {
+		return facebook;
+	}
+
+	public void setFacebook(String facebook) {
+		this.facebook = facebook;
+	}
+
+	public String getLinkeDin() {
+		return linkeDin;
+	}
+
+	public void setLinkeDin(String linkeDin) {
+		this.linkeDin = linkeDin;
+	}
+
+	public String getTwitter() {
+		return twitter;
+	}
+
+	public void setTwitter(String twitter) {
+		this.twitter = twitter;
+	}
+
+	public String getInstagram() {
+		return instagram;
+	}
+
+	public void setInstagram(String instagram) {
+		this.instagram = instagram;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getTelemovel() {
+		return telemovel;
+	}
+
+	public void setTelemovel(String telemovel) {
+		this.telemovel = telemovel;
+	}
+	public String[] getListPathsFotoGaleria() {
+		return listPathsFotoGaleria;
+	}
+
+	public void setListPathsFotoGaleria(String[] split) {
+		this.listPathsFotoGaleria = split;
+	}
+
+	public String getVideo_link() {
+		return video_link;
+	}
+
+	public void setVideo_link(String video_link) {
+		this.video_link = video_link;
+	}
+
 	public void mappingActive() {
-		if ( this.active == null ) 
-		{
-			this.active_flag = 0;
-		}
-		else if (this.active.equals("on") ) 
-		{
+		if (this.active == null) {
 			this.active_flag = 1;
-		} 
-		else 
-		{
+		} else if (this.active.equals("on")) {
+			this.active_flag = 1;
+		} else {
 			this.active_flag = 0;
 		}
 	}
 
 	@Override
 	public String toString() {
-		return "Projectos_tb [id=" + id + ", titulo=" + titulo + ", descricao=" + descricao + ", ficha_tecnica="
-				+ ficha_tecnica + ", foto_galeria=" + foto_galeria + ", video_galeria=" + video_galeria
+		return "projectos_tb [id=" + id + ", titulo=" + titulo + ", descricao=" + descricao + ", img_capa=" + img_capa
+				+ ", ficha_tecnica=" + ficha_tecnica + ", foto_galeria=" + foto_galeria + ", video_link=" + video_link
 				+ ", active_flag=" + active_flag + ", lastUpdate=" + lastUpdate + ", categoria_id=" + categoria_id
-				+ ", active=" + active + ", fileDatas=" + Arrays.toString(fileDatas) + "]";
+				+ ", orderView=" + orderView + ", facebook=" + facebook + ", linkeDin=" + linkeDin + ", twitter="
+				+ twitter + ", instagram=" + instagram + ", email=" + email + ", telemovel=" + telemovel + ", active="
+				+ active + ", fileDatas=" + Arrays.toString(fileDatas) + ", listPathsFotoGaleria="
+				+ Arrays.toString(listPathsFotoGaleria) + "]";
 	}
-	
-	
-	
+
+
 }

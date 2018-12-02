@@ -42,5 +42,11 @@ public class ProjectosService implements IProjectos{
 		return repository.findAllActive();
 	}
 
+	@Override
+	public List<projectos_tb> findbyId(Long id) {
+		return repository.findbyId(id);
+	}
+	
+
 
 }

@@ -40,8 +40,17 @@ public class FECOntroller {
     
     @PostConstruct
     private void init() {
-    	categoriasList = (List<categorias_tb>) daoCat.findAll();
-		projectosList = (List<projectos_tb>) daoPro.findAll();
+    	categoriasList = (List<categorias_tb>)  daoCat.findAllActive();
+    	for (categorias_tb c : categoriasList) {
+			c.setSlug(c.getNome().replace(" ",""));
+			c.setNome(c.getNome().toUpperCase());
+		}
+		projectosList = (List<projectos_tb>) daoPro.findAllActive();
+		for (projectos_tb p : projectosList) {
+			if ( p.getFoto_galeria()!=null ) {
+				p.setListPathsFotoGaleria(p.getFoto_galeria().split(props.getProperty("separator.files")));
+			}
+		}
 		separatorFiles = props.getProperty("separator.files");
     }
 

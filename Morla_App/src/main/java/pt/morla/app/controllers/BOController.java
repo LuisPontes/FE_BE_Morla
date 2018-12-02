@@ -3,11 +3,11 @@ package pt.morla.app.controllers;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
@@ -57,6 +57,11 @@ public class BOController {
     private void init() {
     	categoriasList = (List<categorias_tb>) daoCat.findAll();
 		projectosList = (List<projectos_tb>) daoPro.findAll();
+		for (projectos_tb p : projectosList) {
+			if ( p.getFoto_galeria()!=null ) {
+				p.setListPathsFotoGaleria(p.getFoto_galeria().split(props.getProperty("separator.files")));
+			}
+		}
 		separatorFiles = props.getProperty("separator.files");
     }
 
@@ -89,23 +94,61 @@ public class BOController {
     	
 	}
     
-	/**
-	 * Categorias
-	 */
-	@RequestMapping(value = { "/addcat" }, method = { RequestMethod.POST })
+	/**Categorias*/
+	@RequestMapping(value = { "/addcat","/upCat" }, method = { RequestMethod.POST })
 	public String addcat(HttpServletRequest request, HttpServletResponse response,Model model,@ModelAttribute categorias_tb new_cat_obj) {
-		
-		if ( new_cat_obj.getNome()!=null) {
+
+		if (new_cat_obj.getNome() != null) {
+
+			if (request.getRequestURL().toString().endsWith("/upCat")) {
+				remove(request, response, model);
+			}
+
+			if (new_cat_obj.getFileDatas() != null) {
+					new_cat_obj.setImg_backGround(doUpload(request, new_cat_obj.getFileDatas(), props.getProperty("upload.capa.path")));
+			}
+
+			
 			new_cat_obj.setLastUpdate(new Date());
 			new_cat_obj.mappingActive();
-			if ( new_cat_obj.getFileDatas()!=null ) {
-				new_cat_obj.setImg_backGround(doUpload(request, new_cat_obj.getFileDatas(),props.getProperty("upload.capa.path")));
-			}
-			log.info("Save id: "+daoCat.save(new_cat_obj));
-			categoriasList = (List<categorias_tb>) daoCat.findAll();
+
+			log.info("Save id: " + daoCat.save(new_cat_obj));
 		}
+		
+		categoriasList = (List<categorias_tb>) daoCat.findAll();
+		
 		model = setAttributes(model,"gestao-Categorias");
 		return "dashboard/index";
+	}
+	
+	@RequestMapping(value = { "/editCat" }, method = { RequestMethod.GET })
+	public String editCat(HttpServletRequest request, HttpServletResponse response,Model model){
+		
+		model = setAttributes(model,"gestao-Categorias");
+		
+		Map<String, String[]> ParameterMap = request.getParameterMap();
+		Long idToEdit = Long.parseLong(ParameterMap.get("id")[0]);
+		
+		categorias_tb categoriasObj = null;
+		for (categorias_tb p : categoriasList) {
+			if (p.getId()==idToEdit) {
+				categoriasObj = p;
+				 break;
+			}
+		}
+//		if ( projectosObj.getFoto_galeria()!=null && !projectosObj.getFoto_galeria().equals("")) {
+//						
+//		}
+//		if ( projectosObj.getFoto_galeria()!=null && !projectosObj.getFoto_galeria().equals("")) {
+//			
+//		}
+		if ( categoriasObj!=null) {
+			model.addAttribute("categoriasObj", categoriasObj);
+			model.addAttribute("editMode", "TYPE_Categoria");
+		}
+		
+		return "dashboard/index";
+		
 	}
 	
 	@RequestMapping(value = { "/delcat" }, method = { RequestMethod.GET })
@@ -136,35 +179,94 @@ public class BOController {
 		return "dashboard/index";
 	}
 	
-	/**PROJECTOS */
+	/**CONTEUDOS */
 
-	@RequestMapping(value = { "/addCont" }, method = { RequestMethod.POST })
-	public String addCont(
+	@RequestMapping(value = { "/addCont","/upCont" }, method = { RequestMethod.POST })
+	public String add_OR_upCont(
 			HttpServletRequest request, 
 			HttpServletResponse response,
 			Model model,
 			@ModelAttribute projectos_tb new_cont_obj,
-			@RequestParam("file") MultipartFile[] files,
-			@RequestParam("movies") MultipartFile[] movies
+			@RequestParam("file") MultipartFile[] files			
 			){
 		
 		try {	
-				if ( new_cont_obj.getCategoria_id()!=null) {
-					new_cont_obj.mappingActive();
-
-					new_cont_obj.setImg_capa(doUpload(request, new_cont_obj.getFileDatas(), props.getProperty("upload.capa.path")));
-					new_cont_obj.setFoto_galeria(doUpload(request, files, props.getProperty("upload.image.path")));
-					new_cont_obj.setVideo_galeria(doUpload(request, movies, props.getProperty("upload.movies.path")));
+			List<projectos_tb> projectBackUp = null;
+			if ( request.getRequestURL().toString().endsWith("/upCont") ) 
+			{
+				projectBackUp = daoPro.findbyId(new_cont_obj.getId());
+				removeCont(request, response, model);
+			}	
+			try{
+			
+//					if ( new_cont_obj.getVideo_link()!=null && new_cont_obj.getVideo_link().equals(",") ) {
+//						new_cont_obj.setVideo_link("");
+//					}
+//					if ( new_cont_obj.getVideo_link()!=null && new_cont_obj.getVideo_link().startsWith(",") ) {
+//						new_cont_obj.setVideo_link(new_cont_obj.getVideo_link().replaceAll(",", ""));
+//					}
 					
-					log.info("Save id: "+daoPro.save(new_cont_obj));
-					projectosList = (List<projectos_tb>) daoPro.findAll();
-				}
+					if ( files!=null && files.length > 0 ) {
+						if( new_cont_obj.getFoto_galeria()==null || new_cont_obj.getFoto_galeria().isEmpty() ) {
+							new_cont_obj.setFoto_galeria(doUpload(request, files, props.getProperty("upload.image.path")));
+						}else {
+							new_cont_obj.setFoto_galeria(new_cont_obj.getFoto_galeria()+separatorFiles+doUpload(request, files, props.getProperty("upload.image.path")));
+						}
+					}
+					if ( new_cont_obj.getFileDatas()!=null && new_cont_obj.getFileDatas()[0].getSize()>0) {
+						new_cont_obj.setImg_capa(doUpload(request, new_cont_obj.getFileDatas(), props.getProperty("upload.capa.path")));
+					}
+					
+				new_cont_obj.mappingActive();
+				
+				log.info("Save id: "+daoPro.save(new_cont_obj));
+				
+			}catch (Exception e) {
+				log.info("\n\nError__:__BACKUP["+projectBackUp.get(0).toString()+"] ->Save id: "+daoPro.save(projectBackUp.get(0)));
+			}
+			projectosList = (List<projectos_tb>) daoPro.findAll();
+	
+				
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
 	
 		model = setAttributes(model,"gestao-Conteudos");
 		return "dashboard/index";
+	}
+	
+	@RequestMapping(value = { "/editCont" }, method = { RequestMethod.GET })
+	public String editCont(HttpServletRequest request, HttpServletResponse response,Model model){
+		
+		model = setAttributes(model,"gestao-Conteudos");
+		
+		Map<String, String[]> ParameterMap = request.getParameterMap();
+		Long idToEdit = Long.parseLong(ParameterMap.get("id")[0]);
+		projectos_tb projectosObj = null;
+		for (projectos_tb p : projectosList) {
+			if (p.getId()==idToEdit) {
+				 projectosObj = p;
+				 break;
+			}
+		}
+//		if ( projectosObj.getFoto_galeria()!=null && !projectosObj.getFoto_galeria().equals("")) {
+//						
+//		}
+//		if ( projectosObj.getFoto_galeria()!=null && !projectosObj.getFoto_galeria().equals("")) {
+//			
+//		}
+		if ( projectosObj!=null) {
+			model.addAttribute("projectosObj", projectosObj);
+			for (categorias_tb c : categoriasList) {
+				if ( projectosObj.getCategoria_id().equals(c.getId().toString()) ) {
+					model.addAttribute("editMode", c.getType());
+					break;
+				}
+			}
+		}
+		
+		return "dashboard/index";
+		
 	}
 	
 	@RequestMapping(value = { "/delCont" }, method = { RequestMethod.GET })
@@ -190,16 +292,7 @@ public class BOController {
 					}
 				}
 			}
-			if ( !contRemove.getVideo_galeria().equals("") || contRemove.getVideo_galeria()!=null ) {
-				for (String  path : contRemove.getVideo_galeria().split(separatorFiles) ) {
-					File img = new File( props.getProperty("upload.movies.path")+File.separator+path);
-					if( img.delete() ){
-						log.info("Delete Image [{}]!",path);
-					}else {
-						log.info("Dont delete image [{}]",path);
-					}
-				}
-			}
+		
 			daoPro.remove(contRemove.getId());
 			projectosList = (List<projectos_tb>) daoPro.findAll();
 		}
@@ -297,7 +390,16 @@ public class BOController {
 	    	  e.printStackTrace();
 	    	  return null;
 		}
-		return pathFotoGalary.toString();
+	    
+	    if ( pathFotoGalary.toString().endsWith(separatorFiles) ) 
+	    {
+			return pathFotoGalary.toString().substring(0, pathFotoGalary.toString().length()-3);
+		}
+	    else 
+		{
+			return pathFotoGalary.toString();
+		}
+		
 	 
 	}
 	 
@@ -310,6 +412,7 @@ public class BOController {
 		model.addAttribute("projectosObj", new projectos_tb());
 		model.addAttribute("TypesCategorias",Contants.TypesCategorias);
 		model.addAttribute("redirectPage", page);
+		model.addAttribute("editMode", "notEDIT");
 	return model;
 }
 }

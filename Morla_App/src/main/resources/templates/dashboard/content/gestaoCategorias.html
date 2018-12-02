@@ -40,22 +40,24 @@
 						<div class="box-icons">
 							<a class="collapse-link"> <i class="fa fa-chevron-up"></i>
 							</a> <a class="expand-link"> <i class="fa fa-expand"></i>
-							</a> <a class="close-link"> <i class="fa fa-times"></i>
+							<!-- </a> <a class="close-link"> <i class="fa fa-times"></i> -->
 							</a>
 						</div>
 						<div class="no-move"></div>
 					</div>
 
 
-					<div class="box-content" style="display: none;">
+					<div class="box-content" th:style="${editMode} == 'TYPE_Categoria'? 'display: block;': 'display: none;'">
 
 						<!-- SEPARADOR -->
 						
 
 						<form class="form-horizontal" role="form" action="#"
-							th:action="@{/bo/addcat}" th:object="${categoriasObj}"
+							th:action="@{${editMode} == 'TYPE_Categoria'? '/bo/upCat': '/bo/addcat'}" 
+							th:object="${categoriasObj}"
 							method="post" enctype="multipart/form-data">
 
+							<input type="text" class="hidden" th:field="*{id}">
 
 							<div class="form-group">
 								<label class="col-sm-2 control-label">Nome</label>
@@ -65,7 +67,7 @@
 										data-placement="bottom" title="Tooltip for name"
 										th:field="*{nome}">
 								</div>
-
+<!-- 
 								<label class="col-sm-2 control-label">Url</label>
 								<div class="col-sm-4">
 									<input type="text" class="form-control"
@@ -73,6 +75,7 @@
 										data-placement="bottom" title="Tooltip for last name"
 										th:field="*{url}">
 								</div>
+								 -->
 							</div>
 							
 							<div class="form-group">
@@ -185,7 +188,7 @@
 									<span class="fa fa-caret-down">Ações</span>
 									</a>
 									<ul class="dropdown-menu">
-										<li><a href=""><i class="fa fa-pencil fa-fw"></i> Edit</a></li>
+										<li><a  th:href="@{/bo/editCat(id=${cat.id})}"  ><i class="fa fa-pencil fa-fw"></i> Edit</a></li>
 										<li><a th:href="@{/bo/delcat(id=${cat.id})}"><i class="fa fa-trash-o fa-fw"></i> Delete</a></li>
 									</ul>
 								</div>
