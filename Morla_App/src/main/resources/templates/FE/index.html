@@ -11,19 +11,19 @@
 
     <title>Morla</title>
 
-   <link type="text/css" th:href="@{/recurses/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet" /> 
+   <link type="text/css" th:href="@{/fe/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet" /> 
    
   
     <!-- Custom fonts for this template -->
-    <link type="text/css" th:href="@{/recurses/vendor/fontawesome-free/css/all.min.css}" rel="stylesheet" /> 
+    <link type="text/css" th:href="@{/fe/vendor/fontawesome-free/css/all.min.css}" rel="stylesheet" /> 
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
 	
     <!-- Plugin CSS -->
- 	<link type="text/css" th:href="@{/recurses/vendor/magnific-popup/magnific-popup.css}" rel="stylesheet" /> 
+ 	<link type="text/css" th:href="@{/fe/vendor/magnific-popup/magnific-popup.css}" rel="stylesheet" /> 
  
     <!-- Custom styles for this template -->
-     <link type="text/css" th:href="@{/recurses/css/creative.css}" rel="stylesheet" /> 
+     <link type="text/css" th:href="@{/fe/css/creative.css}" rel="stylesheet" /> 
 
 	<!-- GALERIA -->
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.2/jquery.fancybox.min.css" rel="stylesheet" />
@@ -84,8 +84,6 @@
       </div>
     </nav>
 
-
-
     <header 
 	    class="masthead text-center text-white d-flex" 
 	    th:each="cat:${categorias}" 
@@ -104,7 +102,7 @@
 	     th:each="cat:${categorias}" 
 	     th:if="${cat.orderView} != 0 and ${cat.type} == 'TYPE_APRESENTACAO'" 
 	     th:id="@{${cat.slug}}"     
-	     th:style="${cat.img_backGround} != null ? 'background:url(/fe/recursos/imgs/' + @{${cat.img_backGround}} + ');background-position: center center; background-size: cover; margin-top: 7px;margin-bottom: 7px; : background-color:@{${cat.cor_backGround}'"
+	     th:style="${cat.img_backGround} != null ? 'background:url(/fe/recursos/imgs/' + @{${cat.img_backGround}} + ');background-position: center center; background-size: cover; margin-top: 7px;margin-bottom: 7px;' : 'background-color:@{${cat.cor_backGround}'"
 	    >
       	    <div 	class="container" 
 		      	    th:each="con:${conteudos}" 
@@ -278,12 +276,12 @@
 	      <a href="#">luispontes.it.freelancer@gmail.com</a>
 	    </div>
 	    
-      <script type="text/javascript" th:src="@{/recurses/vendor/jquery/jquery.min.js}" ></script>
-      <script type="text/javascript" th:src="@{/recurses/vendor/bootstrap/js/bootstrap.bundle.min.js}" ></script>
-      <script type="text/javascript" th:src="@{/recurses/vendor/jquery-easing/jquery.easing.min.js}" ></script>
-      <script type="text/javascript" th:src="@{/recurses/vendor/scrollreveal/scrollreveal.min.js}" ></script>
-      <script type="text/javascript" th:src="@{/recurses/vendor/magnific-popup/jquery.magnific-popup.min.js}" ></script>
-      <script type="text/javascript" th:src="@{/recurses/js/creative.js}" ></script>
+      <script type="text/javascript" th:src="@{/fe/vendor/jquery/jquery.min.js}" ></script>
+      <script type="text/javascript" th:src="@{/fe/vendor/bootstrap/js/bootstrap.bundle.min.js}" ></script>
+      <script type="text/javascript" th:src="@{/fe/vendor/jquery-easing/jquery.easing.min.js}" ></script>
+      <script type="text/javascript" th:src="@{/fe/vendor/scrollreveal/scrollreveal.min.js}" ></script>
+      <script type="text/javascript" th:src="@{/fe/vendor/magnific-popup/jquery.magnific-popup.min.js}" ></script>
+      <script type="text/javascript" th:src="@{/fe/js/creative.js}" ></script>
 	   <!-- GALERIA -->
 	  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.2/jquery.fancybox.min.js"></script>
 

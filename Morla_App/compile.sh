@@ -7,9 +7,13 @@
     echo "Compile ...[OK]" 
   }  
  function startProject() { 
-    echo "Run Project..." 
-    java -jar target/MORLA.app-0.0.1-SNAPSHOT.jar
+    echo "Run Project..." java -jar target/MORLA.app-0.0.1-SNAPSHOT.jar
   }  
+  function upload(){
+  	echo "UpLoad to server... " 
+	echo scp -r target/MORLA.app-0.0.1-SNAPSHOT.jar master@192.168.1.104:/tmp
+  }
+    
 
 
 
@@ -24,7 +28,11 @@ case "$1" in
   "all") 
     	compile 
     	startProject 
-  		;; 
+  		;;
+	
+	"up")
+		upload
+		;;
   *)	
   		echo "Comandos:{ compile[c] | start project[run] | corre tudo (compile e upload)[all] }" 
   		exit 1

@@ -25,13 +25,13 @@ public class projectos_tb {
 	@Column(name = "titulo")
 	private String titulo;
 
-	@Column(name = "descricao",length =50000)
+	@Column(name = "descricao")
 	private String descricao;
 
 	@Column(name = "img_capa")
 	private String img_capa;
 
-	@Column(name = "ficha_tecnica",length =50000)
+	@Column(name = "ficha_tecnica")
 	private String ficha_tecnica;
 
 	@Column(name = "foto_galeria")
