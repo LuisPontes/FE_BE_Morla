@@ -22,16 +22,16 @@ public class projectos_tb {
 	@Column(name = "id")
 	private Long id;
 
-	@Column(name = "titulo")
+	@Column(name = "titulo",columnDefinition="VARCHAR(5000)")
 	private String titulo;
 
-	@Column(name = "descricao")
+	@Column(name = "descricao",columnDefinition="VARCHAR(5000)")
 	private String descricao;
 
 	@Column(name = "img_capa")
 	private String img_capa;
 
-	@Column(name = "ficha_tecnica")
+	@Column(name = "ficha_tecnica",columnDefinition="VARCHAR(5000)")
 	private String ficha_tecnica;
 
 	@Column(name = "foto_galeria")

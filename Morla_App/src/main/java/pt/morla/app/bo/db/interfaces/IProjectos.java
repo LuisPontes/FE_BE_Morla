@@ -1,7 +1,6 @@
 package pt.morla.app.bo.db.interfaces;
 
 import java.util.List;
-import java.util.Optional;
 
 import pt.morla.app.bo.db.models.projectos_tb;
 

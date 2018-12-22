@@ -206,8 +206,8 @@
 									</div>
 									<div class="row">
 										 <div class="col-lg-3 col-md-4 col-xs-6 thumb"  th:each="img : ${projectosObj.listPathsFotoGaleria}">
-							                <a th:href="'/fe/recursos/imgs/' + ${img}" class="fancybox" rel="ligthbox" th:data-fancybox="${projectosObj.titulo}" >
-							                    <img  th:src="'/fe/recursos/imgs/' + ${img}" class="zoom img-fluid "  alt="">
+							                <a  th:each=" imgId : ${#strings.arraySplit(img, ',')}" th:href="'data:image/jpeg;base64,'+${imagens['__${#strings.trim(imgId)}__'].encode_to_str_Img}" class="fancybox" rel="ligthbox" th:data-fancybox="${projectosObj.titulo}" >
+							                    <img  th:src="'data:image/jpeg;base64,'+${imagens['__${#strings.trim(imgId)}__'].encode_to_str_Img}" class="zoom img-fluid "/>
 							                </a>
 							            </div>
 							         </div>

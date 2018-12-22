@@ -88,7 +88,7 @@
 	    class="masthead text-center text-white d-flex" 
 	    th:each="cat:${categorias}" 
 	    th:if="${cat.orderView} == 0"
-	    th:style="'background:url(/fe/recursos/imgs/capas/' + @{${cat.img_backGround}} + ');background-position: center center; background-size: cover;'"
+	    th:style="'background:url(data:image/jpeg;base64,' + @{${cat.img_backGround}} + ');background-position: center center; background-size: cover;'"
     >
     
       <div class="container my-auto">
@@ -102,7 +102,7 @@
 	     th:each="cat:${categorias}" 
 	     th:if="${cat.orderView} != 0 and ${cat.type} == 'TYPE_APRESENTACAO'" 
 	     th:id="@{${cat.slug}}"     
-	     th:style="${cat.img_backGround} != null ? 'background:url(/fe/recursos/imgs/' + @{${cat.img_backGround}} + ');background-position: center center; background-size: cover; margin-top: 7px;margin-bottom: 7px;' : 'background-color:@{${cat.cor_backGround}'"
+	     th:style="${cat.img_backGround} != null ? 'background:url(data:image/jpeg;base64,' + @{${cat.img_backGround}} + ');background-position: center center; background-size: cover; margin-top: 7px;margin-bottom: 7px;' : 'background-color:@{${cat.cor_backGround}'"
 	    >
       	    <div 	class="container" 
 		      	    th:each="con:${conteudos}" 
@@ -152,7 +152,7 @@
 								th:href="@{'#p'+${con.id}}"	
 							>
 	
-	<section th:style="'background:url(/fe/recursos/imgs/' + @{${con.img_capa}} + ');background-position: center center; background-size: cover;height:150px'" ></section> 
+	<section th:style="'background:url(data:image/jpeg;base64,' + @{${con.img_capa}} + ');background-position: center center; background-size: cover;height:150px'" ></section> 
 							
 								<div class="portfolio-box-caption" >
 									<div class="portfolio-box-caption-content">
@@ -186,15 +186,22 @@
 									</iframe>
 								</div>
 							</div>
-							
+						
 							<div class="container page-top" style="padding-top:5%">
 								<div class="row">
-									 <div class="col-lg-3 col-md-4 col-xs-6 thumb"  th:each="img : ${con.listPathsFotoGaleria}">
-						                <a th:href="'/fe/recursos/imgs/' + ${img}" class="fancybox" rel="ligthbox" th:data-fancybox="${con.titulo}" >
-						                    <img  th:src="'/fe/recursos/imgs/' + ${img}" class="zoom img-fluid "  alt="">
-						                </a>
-						            </div>
-						         </div>
+									 <div class="col-lg-3 col-md-4 col-xs-6 thumb" th:each=" imgId : ${#strings.arraySplit(con.foto_galeria, ',')}">
+
+											<a
+												th:href="'data:image/jpeg;base64,'+${imagens['__${#strings.trim(imgId)}__'].encode_to_str_Img}"
+												class="fancybox" rel="ligthbox"
+												th:data-fancybox="${imagens['__${#strings.trim(imgId)}__'].titulo}">
+												<img
+												th:src="'data:image/jpeg;base64,'+${imagens['__${#strings.trim(imgId)}__'].encode_to_str_Img}"
+												class="zoom img-fluid " 
+												ID="'data:image/jpeg;base64,'+${imagens['__${#strings.trim(imgId)}__'].encode_to_str_Img}"/>
+											</a>
+
+										</div>
 							</div>
 				
 						</div>
@@ -212,7 +219,7 @@
 	     th:each="cat:${categorias}" 
 	     th:if="${cat.orderView} != 0 and ${cat.type} == 'TYPE_FOOTER'" 
 	     th:id="@{${cat.slug}}"     
-	     th:style="${cat.img_backGround} != null ? 'background:url(/fe/recursos/imgs/' + @{${cat.img_backGround}} + ');background-position: center center; background-size: cover; margin-top: 7px;margin-bottom: 7px; : background-color:@{${cat.cor_backGround}'"
+	     th:style="${cat.img_backGround} != null ? 'background:url(data:image/jpeg;base64,' + @{${cat.img_backGround}} + ');background-position: center center; background-size: cover; margin-top: 7px;margin-bottom: 7px; : background-color:@{${cat.cor_backGround}'"
 	    >
 	    
 		<hr class="separator" />

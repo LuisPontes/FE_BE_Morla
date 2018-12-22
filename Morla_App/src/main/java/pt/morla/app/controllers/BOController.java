@@ -1,13 +1,12 @@
 package pt.morla.app.controllers;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Base64;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
@@ -28,8 +27,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import pt.morla.app.Contants;
 import pt.morla.app.bo.db.interfaces.ICategorias;
+import pt.morla.app.bo.db.interfaces.IImages;
 import pt.morla.app.bo.db.interfaces.IProjectos;
 import pt.morla.app.bo.db.models.categorias_tb;
+import pt.morla.app.bo.db.models.images_tb;
 import pt.morla.app.bo.db.models.projectos_tb;
 import pt.morla.app.bo.db.models.user_obj;
 
@@ -46,13 +47,18 @@ public class BOController {
 	ICategorias daoCat;
     @Autowired
     IProjectos daoPro;
+    @Autowired
+    IImages daoImg;
     
     @Autowired
     private Environment props;
     
-    List<categorias_tb> categoriasList = null;
-    List<projectos_tb> projectosList = null;
-    String separatorFiles = null; 
+    private ArrayList<Long> List_Img_Ids = null;
+    private List<categorias_tb> categoriasList = null;
+    private List<projectos_tb> projectosList = null;
+    private HashMap<String, images_tb> imagesMap = null;
+    //private String separatorFiles = null; 
+    
     @PostConstruct
     private void init() {
     	categoriasList = (List<categorias_tb>) daoCat.findAll();
@@ -60,31 +66,41 @@ public class BOController {
 		for (projectos_tb p : projectosList) {
 			if ( p.getFoto_galeria()!=null ) {
 				p.setListPathsFotoGaleria(p.getFoto_galeria().split(props.getProperty("separator.files")));
+				p.setFoto_galeria(p.getFoto_galeria().replaceAll(" ", ""));
+				System.out.println(p.getFoto_galeria());
 			}
 		}
-		separatorFiles = props.getProperty("separator.files");
+		List<images_tb> imagesList = daoImg.findAll();
+		if (imagesList.size()>0) {
+			imagesMap = new HashMap<>();
+			for (images_tb img : imagesList) {
+				img.setEncode_to_str_Img(Base64.getEncoder().encodeToString(img.getImage()));				
+				imagesMap.put(img.getId()+"", img);
+			}
+		}
+		//separatorFiles = props.getProperty("separator.files");
     }
+
 
 	@RequestMapping(value = { "" }, method = { RequestMethod.GET,RequestMethod.POST })
 	public String index(HttpServletRequest request, HttpServletResponse response,Model model,@ModelAttribute user_obj userObj) {
     
 		if( user!=null && user.isIsauth() ) {
-			init();
-	    	model = setAttributes(model,"home");
+				init();
+		    	model = setAttributes(model,"home");
 			return "dashboard/index";
 		}
 		else if ( user==null && userObj.getName()==null && userObj.getPass()==null && userObj.isIsauth()==false ) {
-   
-    		model.addAttribute("userObj", new user_obj());
+    			model.addAttribute("userObj", new user_obj());
     		return "dashboard/page_login";
 		}
 		else if(userObj.getName()!=null && userObj.getPass()!=null ) {
 			//autenticar
 			if ( userObj.getName().equals("morla")) {
 				if ( userObj.getPass().equals("morla")) {
-					userObj.setIsauth(true);
-					user = userObj;
-					model = setAttributes(model,"home");
+						userObj.setIsauth(true);
+						user = userObj;
+						model = setAttributes(model,"home");
 					return "dashboard/index";
 				}
 			}
@@ -94,6 +110,7 @@ public class BOController {
     	
 	}
     
+	
 	/**Categorias*/
 	@RequestMapping(value = { "/addcat","/upCat" }, method = { RequestMethod.POST })
 	public String addcat(HttpServletRequest request, HttpServletResponse response,Model model,@ModelAttribute categorias_tb new_cat_obj) {
@@ -103,11 +120,11 @@ public class BOController {
 			if (request.getRequestURL().toString().endsWith("/upCat")) {
 				remove(request, response, model);
 			}
-
-			if (new_cat_obj.getFileDatas() != null) {
-					new_cat_obj.setImg_backGround(doUpload(request, new_cat_obj.getFileDatas(), props.getProperty("upload.capa.path")));
-			}
-
+//			if (new_cat_obj.getFileDatas() != null) {
+//				new_cat_obj.setImg_backGround(doUpload(request, new_cat_obj.getFileDatas(), props.getProperty("upload.capa.path")));
+//			}
+			new_cat_obj.setImg_backGround(saveImages(new_cat_obj.getFileDatas()));
+			
 			
 			new_cat_obj.setLastUpdate(new Date());
 			new_cat_obj.mappingActive();
@@ -120,7 +137,9 @@ public class BOController {
 		model = setAttributes(model,"gestao-Categorias");
 		return "dashboard/index";
 	}
-	
+		
+
+
 	@RequestMapping(value = { "/editCat" }, method = { RequestMethod.GET })
 	public String editCat(HttpServletRequest request, HttpServletResponse response,Model model){
 		
@@ -164,12 +183,14 @@ public class BOController {
 				}
 			}
 			daoCat.remove(catRemove.getId());
-			if ( catRemove.getImg_backGround()!=null ) {
-				File img = new File(props.getProperty("upload.capa.path")+File.separator+catRemove.getImg_backGround());
-				if( img.delete() ){
-					log.info("Delete Image [{}]!",catRemove.getImg_backGround());
-				}else {
-					log.info("Dont delete image [{}]",catRemove.getImg_backGround());
+			
+			if ( catRemove.getImg_backGround()!=null && catRemove.getImg_backGround().equals("") ) {
+
+				String[] splits =  catRemove.getImg_backGround().split(",");
+				ArrayList<String> arrayList = new ArrayList<>(Arrays.asList(splits));
+				for (String id : arrayList) {
+					daoImg.remove(Long.valueOf(id.trim()));
+					log.info("Delete Image [{}]!",id);					
 				}
 			}
 			categoriasList = (List<categorias_tb>) daoCat.findAll();
@@ -207,14 +228,20 @@ public class BOController {
 //					}
 					
 					if ( files!=null && files.length > 0 ) {
+						
+						new_cont_obj.setFoto_galeria(saveImages(files));
+						
+						/*
 						if( new_cont_obj.getFoto_galeria()==null || new_cont_obj.getFoto_galeria().isEmpty() ) {
 							new_cont_obj.setFoto_galeria(doUpload(request, files, props.getProperty("upload.image.path")));
 						}else {
 							new_cont_obj.setFoto_galeria(new_cont_obj.getFoto_galeria()+separatorFiles+doUpload(request, files, props.getProperty("upload.image.path")));
 						}
+						*/
 					}
 					if ( new_cont_obj.getFileDatas()!=null && new_cont_obj.getFileDatas()[0].getSize()>0) {
-						new_cont_obj.setImg_capa(doUpload(request, new_cont_obj.getFileDatas(), props.getProperty("upload.capa.path")));
+						new_cont_obj.setImg_capa(saveImages(new_cont_obj.getFileDatas()));
+						//new_cont_obj.setImg_capa(doUpload(request, new_cont_obj.getFileDatas(), props.getProperty("upload.capa.path")));
 					}
 					
 				new_cont_obj.mappingActive();
@@ -282,15 +309,15 @@ public class BOController {
 				}
 			}
 			
-			if ( !contRemove.getFoto_galeria().equals("") || contRemove.getFoto_galeria()!=null ) {
-				for (String  path : contRemove.getFoto_galeria().split(separatorFiles) ) {
-					File img = new File( props.getProperty("upload.image.path")+File.separator+path);
-					if( img.delete() ){
-						log.info("Delete Image [{}]!",path);
-					}else {
-						log.info("Dont delete image [{}]",path);
-					}
+			if ( contRemove.getFoto_galeria()!=null && !contRemove.getFoto_galeria().equals("") || contRemove.getFoto_galeria()!=null ) {
+				
+				String[] splits =  contRemove.getFoto_galeria().split(",");
+				ArrayList<String> arrayList = new ArrayList<>(Arrays.asList(splits));
+				for (String id : arrayList) {
+					daoImg.remove(Long.valueOf(id.trim()));
+					log.info("Delete Image [{}]!",id);
 				}
+			
 			}
 		
 			daoPro.remove(contRemove.getId());
@@ -342,7 +369,7 @@ public class BOController {
 		return "dashboard/index";
 	}
 	
-    /*UPLOAD FILES*/
+    /*UPLOAD FILES
 	private String doUpload(HttpServletRequest request, MultipartFile[] multipartFiles,String uploadRootPath) {
 
 		 StringBuilder pathFotoGalary = new StringBuilder();
@@ -402,10 +429,41 @@ public class BOController {
 		
 	 
 	}
-	 
+	 */
+	private String saveImages(MultipartFile[] new_cat_obj) {
+		
+		if (new_cat_obj != null) {
+			List_Img_Ids = new ArrayList<>();
+			
+			for (MultipartFile file : new_cat_obj ) {
+				try {
+					if (file.getSize()==0) {
+						break;
+					}
+					images_tb new_obj_img = new images_tb();
+					new_obj_img.setImage(file.getBytes());
+						
+							new_obj_img.setTitulo(file.getOriginalFilename());
+						/*
+							new_obj_img.setAutor(autor);
+							new_obj_img.setDescricao(descricao);
+						*/
+					long id = daoImg.save(new_obj_img);
+					log.info("Save Image id: " +  id );
+					List_Img_Ids.add(id);
+					
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+
+		}
+		return List_Img_Ids.toString().replace("[","").replace("]","");		
+	}
     private Model setAttributes(Model model,String page) {
 		model.addAttribute("catgories", categoriasList);
 		model.addAttribute("projectos", projectosList);
+		model.addAttribute("imagens", imagesMap);
 		model.addAttribute("nTotalCat", categoriasList.size());
 		model.addAttribute("nTotalPro", projectosList.size());
 		model.addAttribute("categoriasObj", new categorias_tb());
