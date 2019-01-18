@@ -11,9 +11,9 @@ body {
 }
 
 .separator{
-	height: 2.5px;
+	height: 0.3px;
 	background-color: rgba(240, 95, 64, 0.9);
-	max-width: 70%;
+	max-width: 100%;
 }
 
 a {
@@ -32,7 +32,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: 'Open Sans', 'Helvetica Neue', Arial, sans-serif;
+  font-family: 'AR BONNIE','Open Sans', 'Helvetica Neue', Arial, sans-serif;
 }
 
 .bg-primary {

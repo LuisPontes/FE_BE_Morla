@@ -15,7 +15,75 @@
 <body>
 
 	<div th:fragment="gestao-Conteudos" id="gestao-Conteudos">
+	
 
+  <!-- Fine Uploader Thumbnails template w/ customization
+    ====================================================================== -->
+    <script type="text/template" id="qq-template-manual-trigger">
+        <div class="qq-uploader-selector qq-uploader" qq-drop-area-text="Drop files here">
+            <div class="qq-total-progress-bar-container-selector qq-total-progress-bar-container">
+                <div role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" class="qq-total-progress-bar-selector qq-progress-bar qq-total-progress-bar"></div>
+            </div>
+            <div class="qq-upload-drop-area-selector qq-upload-drop-area" qq-hide-dropzone>
+                <span class="qq-upload-drop-area-text-selector"></span>
+            </div>
+            <div class="buttons">
+                <div class="qq-upload-button-selector qq-upload-button">
+                    <div>Select files</div>
+                </div>
+                <button type="button" id="trigger-upload" class="btn btn-primary">
+                    <i class="icon-upload icon-white"></i> Upload
+                </button>
+
+            </div>
+            <span class="qq-drop-processing-selector qq-drop-processing">
+                <span>Processing dropped files...</span>
+                <span class="qq-drop-processing-spinner-selector qq-drop-processing-spinner"></span>
+            </span>
+            <ul class="qq-upload-list-selector qq-upload-list" aria-live="polite" aria-relevant="additions removals">
+                <li>
+                    <div class="qq-progress-bar-container-selector">
+                        <div role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" class="qq-progress-bar-selector qq-progress-bar"></div>
+                    </div>
+                    <span class="qq-upload-spinner-selector qq-upload-spinner"></span>
+                    <img class="qq-thumbnail-selector" qq-max-size="100" qq-server-scale>
+                    <span class="qq-upload-file-selector qq-upload-file"></span>
+                    <span class="qq-edit-filename-icon-selector qq-edit-filename-icon" aria-label="Edit filename"></span>
+                    <input class="qq-edit-filename-selector qq-edit-filename" tabindex="0" type="text">
+                    <span class="qq-upload-size-selector qq-upload-size"></span>
+                    <button type="button" class="qq-btn qq-upload-cancel-selector qq-upload-cancel">Cancel</button>
+                    <button type="button" class="qq-btn qq-upload-retry-selector qq-upload-retry">Retry</button>
+                    <button type="button" class="qq-btn qq-upload-delete-selector qq-upload-delete">Delete</button>
+                    <span role="status" class="qq-upload-status-text-selector qq-upload-status-text"></span>
+                </li>
+            </ul>
+
+            <dialog class="qq-alert-dialog-selector">
+                <div class="qq-dialog-message-selector"></div>
+                <div class="qq-dialog-buttons">
+                    <button type="button" class="qq-cancel-button-selector">Close</button>
+                </div>
+            </dialog>
+
+            <dialog class="qq-confirm-dialog-selector">
+                <div class="qq-dialog-message-selector"></div>
+                <div class="qq-dialog-buttons">
+                    <button type="button" class="qq-cancel-button-selector">No</button>
+                    <button type="button" class="qq-ok-button-selector">Yes</button>
+                </div>
+            </dialog>
+
+            <dialog class="qq-prompt-dialog-selector">
+                <div class="qq-dialog-message-selector"></div>
+                <input type="text">
+                <div class="qq-dialog-buttons">
+                    <button type="button" class="qq-cancel-button-selector">Cancel</button>
+                    <button type="button" class="qq-ok-button-selector">Ok</button>
+                </div>
+            </dialog>
+        </div>
+    </script>
+  
 		<!--Start Breadcrumb-->
 		<div class="row">
 			<div id="breadcrumb" class="col-xs-12">
@@ -176,7 +244,9 @@
 								<div class="col-sm-4">
 									<input th:field="*{fileDatas}" type="file" />
 								</div>
-								
+								<div class="col-sm-4">
+									<img th:src="'http://'+ @{${ipServer}}+''+ @{*{img_capa}}" style="width:300px;height:80px;">
+								</div>
 	 						</div>
 	 						
 	 					
@@ -193,31 +263,6 @@
 								</div>
 							</div>
 							
-							<h4 class="page-header"></h4>
-							<div class="form-group" >
-									<label class="col-sm-2 control-label">Foto Galeria</label>
-									<div class="col-sm-4" >
-										<input type="file" name="file" multiple>
-									</div>
-									
-									<div th:style="${editMode} == 'TYPE_PROJECTOS'? '': 'display:none;'" class="col-sm-4" >
-									<div class="row">
-										<label class="col-sm-8 control-label">Foto Galeria existentes:</label>
-									</div>
-									<div class="row">
-										 <div class="col-lg-3 col-md-4 col-xs-6 thumb"  th:each="img : ${projectosObj.listPathsFotoGaleria}">
-							                <a  th:each=" imgId : ${#strings.arraySplit(img, ',')}" th:href="'data:image/jpeg;base64,'+${imagens['__${#strings.trim(imgId)}__'].encode_to_str_Img}" class="fancybox" rel="ligthbox" th:data-fancybox="${projectosObj.titulo}" >
-							                    <img  th:src="'data:image/jpeg;base64,'+${imagens['__${#strings.trim(imgId)}__'].encode_to_str_Img}" class="zoom img-fluid "/>
-							                </a>
-							            </div>
-							         </div>
-						         
-										<input type="text" style="width: 100%;" th:field="*{foto_galeria}" >
-									</div>
-							</div>
-							
-							
-							
 							<h4 class="page-header"></h4>		
 							<div class="form-group">		
 									<label class="col-sm-2 control-label">Link Video</label>
@@ -231,6 +276,7 @@
 									</div>
 									
 							</div>
+							
 			 				<!-- Back Ground -->
 							<h4 class="page-header"></h4>
 		 					<div class="form-group">
@@ -393,11 +439,88 @@
 		<!--END TIPO FOOTER-->
 		
 		
+		<!-- FOTO GALLARY -->
+		
+		<div class="row">
+			<div class="col-xs-12 col-sm-12">
+				<div class="box">
+
+					<div class="box-header">
+						<div class="box-name">
+							<i class="fa fa-search"></i> <span>Adicionar foto galeria</span>
+						</div>
+						<div class="box-icons">
+							<a class="collapse-link"> <i th:class="${editMode} == 'TYPE_IMAGES'? 'fa fa-chevron-down': 'fa fa-chevron-up'"></i>
+							</a> <a class="expand-link"> <i class="fa fa-expand"></i>
+							
+							</a>
+						</div>
+						<div class="no-move"></div>
+					</div>
+					
+				<div class="box-content" th:style="${editMode} == 'TYPE_IMAGES'? 'display: block;': 'display: none;'">
+				
+		
+		
+		<form 	class="form-horizontal" 
+				role="form"  
+				th:object="${projectosObj}" 
+				method="POST" 
+				enctype="multipart/form-data" >
+					
+					ID : <input type="text" class="field left" readonly="readonly" id="proj_Galary_id" th:field="*{id}">		
+					Nome : <input type="text" class="field left" readonly="readonly" th:field="*{titulo}">		
+		</form>
+		
+		  <!-- File upload -->
+		<link type="text/css" th:href="@{bo/plugins/fineuploader/fine-uploader-new.css}" rel="stylesheet"/>
+		<script type="text/javascript" th:src="@{plugins/fineuploader/fine-uploader.js}"></script>
+
+			<button type="button" id="addImages" >Adicionar fotos a este Projeto...</button>
+			<!-- Fine Uploader DOM Element
+		    ====================================================================== -->
+		    <div class="form-group" id="fine-uploader-manual-trigger"></div>	
+		     
+		     
+		    <h4 class="page-header">GALLARY</h4>
+			<table class="table beauty-table table-hover">
+			<thead>
+				<tr>
+					<th>Foto</th>
+					<th>Titulo</th>
+					<th>Autor</th>
+					<th>ID_Father</th>
+					<th></th>
+		    </tr>
+			</thead>
+					<tbody>
+						<tr th:each="img: ${imagens}" th:if="${img.idFather}==${projectosObj.id}" >
+						 	
+							<td >
+								<img th:src="'http://'+ @{${ipServer}}+''+ @{*{img.path_show}}" style="width:100px;height:40px;">
+							</td>
+							<td th:text="${img.titulo}"></td>
+							<td th:text="${img.autor}"></td>
+							<td th:text="${img.idFather}"></td>
+							<td>
+								<div class="btn-group">
+									<a  th:href="@{/bo/delImage(id=${img.id},idProj=${img.idFather})}"  ><i class="fa fa-pencil fa-fw"></i> Apagar</a>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+				
+				</div>
+			</div>
+		</div>
+		
 		<!--TABLE RESULT-->
 	<div id="dashboard-header" class="row"> 
 			<div class="box-proent">		
 			 
-			 <h4 class="page-header">Projectos</h4>
+			<h4 class="page-header">Projectos</h4>
 			<table class="table beauty-table table-hover">
 			<thead>
 				<tr>
@@ -406,10 +529,10 @@
 					<th>TYPE</th>
 					<!-- <th>Descricao</th> -->
 					<!-- <th>Ficha Tecnica</th> -->
-					<th>Foto Galeria</th>
-					<th>Video Link</th>
+					<!-- <th>Foto Galeria</th> -->
+					<!-- <th>Video Link</th> -->
 					<th></th>
-					<th></th>
+					
 				</tr>
 			</thead>
 					<tbody>
@@ -417,10 +540,10 @@
 							<td th:each="cat : ${catgories}" th:if="${pro.categoria_id}==${cat.id}" th:text="${cat.nome}"></td>
 							<td th:text="${pro.titulo}"></td>
 							<td th:each="cat : ${catgories}" th:if="${pro.categoria_id}==${cat.id}" th:text="${cat.type}"></td>
-							<!-- <td th:text="${pro.descricao}"></td> -->
-							<!-- <td th:text="${pro.ficha_tecnica}"></td> -->
-							<td th:text="${pro.foto_galeria}"></td>
-							<td th:text="${pro.video_link}"></td>
+							<!-- <td th:text="${pro.descricao}"></td>  -->
+							<!-- <td th:text="${pro.ficha_tecnica}"></td>  -->
+							<!-- <td th:text="${pro.foto_galeria}"></td> -->
+							<!-- <td th:text="${pro.video_link}"></td> -->
 							<td>
 								<div class="col-sm-4">
 									<div class="toggle-switch toggle-switch-success">
@@ -440,7 +563,8 @@
 									</a>
 									<ul class="dropdown-menu">
 										<li><a  th:href="@{/bo/editCont(id=${pro.id})}"  ><i class="fa fa-pencil fa-fw"></i> Edit</a></li>
-										<li><a th:href="@{/bo/delCont(id=${pro.id})}"><i class="fa fa-trash-o fa-fw"></i> Delete</a></li>
+										<li><a  th:href="@{/bo/addGallary(id=${pro.id})}"><i class="fa fa-trash-o fa-fw"></i> Gallery</a></li>
+										<li><a  th:href="@{/bo/delCont(id=${pro.id})}"><i class="fa fa-trash-o fa-fw"></i> Delete</a></li>
 									</ul>
 								</div>
 								</td>
@@ -454,8 +578,6 @@
 		
 
 	</div>
-        
-        
-
+       
 </body>
 </html>

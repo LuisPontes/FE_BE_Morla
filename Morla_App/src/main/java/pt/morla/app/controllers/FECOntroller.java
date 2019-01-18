@@ -1,7 +1,9 @@
 package pt.morla.app.controllers;
 
-import java.util.Base64;
-import java.util.HashMap;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.util.Enumeration;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -40,59 +42,23 @@ public class FECOntroller {
     @Autowired
     private Environment props;
     
-    List<categorias_tb> categoriasList = null;
-    List<projectos_tb> projectosList = null;
-    String separatorFiles = null; 
-    private HashMap<String, images_tb> imagesMap =null;
+    private String ipServer = null;
+    private List<categorias_tb> categoriasList = null;
+    private List<projectos_tb> projectosList = null;
+    List<images_tb> imagesList = null;
     
     @PostConstruct
     private void init() {
-    	HashMap<String, images_tb> imagesMap_aux = new HashMap<>();
-    	imagesMap = new HashMap<>();
     	
-    	List<images_tb> imagesList = daoImg.findAll();
-    	if (imagesList.size()>0) {    		
-			for (images_tb img : imagesList) {
-				img.setEncode_to_str_Img(Base64.getEncoder().encodeToString(img.getImage()));
-				img.setImage(null);
-				imagesMap_aux.put(String.valueOf(img.getId()), img);
-			}
-		}
-    	
+    	ipServer = getIpMachine(props.getProperty("network.interface"))+":"+props.getProperty("port.apache.server");    			 
     	categoriasList = (List<categorias_tb>)  daoCat.findAllActive();
     	for (categorias_tb c : categoriasList) {
 			c.setSlug(c.getNome().replace(" ",""));
 			c.setNome(c.getNome().toUpperCase());
-
-			if ( c.getImg_backGround()!=null && !c.getImg_backGround().equals("") && imagesMap_aux.containsKey(c.getImg_backGround().trim())) {
-				c.setImg_backGround(imagesMap_aux.get(c.getImg_backGround().trim()).getEncode_to_str_Img());
-			}
-			
 		}
 		projectosList = (List<projectos_tb>) daoPro.findAllActive();
-		for (projectos_tb p : projectosList) {
-			
-			if ( p.getFoto_galeria()!=null && !p.getFoto_galeria().equals("") ) {
-				if ( p.getFoto_galeria().contains(",") ) {
-					for (String idstr : p.getFoto_galeria().split(",")) {
-						
-						if ( imagesMap_aux.containsKey(idstr.trim()) ) {
-							imagesMap.put(idstr.trim(), imagesMap_aux.get(idstr.trim()));	
-						}
-					}	
-				}else {
-					imagesMap.put(p.getFoto_galeria().trim(), imagesMap_aux.get(p.getFoto_galeria().trim()));
-				}
-
-				//p.setListPathsFotoGaleria(p.getFoto_galeria().split(props.getProperty("separator.files")));
-			}
-			if ( p.getImg_capa()!=null && !p.getImg_capa().equals("")) {
-				p.setImg_capa(imagesMap_aux.get(p.getImg_capa().trim()).getEncode_to_str_Img());
-			}
-		}
-		
-		
-		separatorFiles = props.getProperty("separator.files");
+		imagesList = daoImg.findAll();
+	
     }
 
 	
@@ -102,8 +68,50 @@ public class FECOntroller {
 		init();
 		model.addAttribute("categorias", categoriasList);
 		model.addAttribute("conteudos", projectosList);
-		model.addAttribute("imagens", imagesMap);
+		model.addAttribute("imagens", imagesList);
+		model.addAttribute("ipServer", ipServer);
 
 		return "FE/index";
 	}
+	
+	
+//	@RequestMapping(value = { "/refresh" }, method = { RequestMethod.GET,RequestMethod.POST })
+//	public String refresh(HttpServletRequest request, HttpServletResponse response,Model model,@ModelAttribute user_obj userObj) {
+//		
+//		init();
+//		model.addAttribute("categorias", categoriasList);
+//		model.addAttribute("conteudos", projectosList);
+//		model.addAttribute("imagens", imagesList);
+//		model.addAttribute("ipServer", ipServer);
+//
+//		return "FE/index";
+//	}
+	
+	@SuppressWarnings("rawtypes")
+	private String getIpMachine(String network_interface) {
+		Enumeration e;
+		try {
+			e = NetworkInterface.getNetworkInterfaces();
+
+			while (e.hasMoreElements()) { // wlp2s0 eth0
+				NetworkInterface n = (NetworkInterface) e.nextElement();
+				if (n.getName().equals(network_interface)) {
+					Enumeration ee = n.getInetAddresses();
+					while (ee.hasMoreElements()) {
+						InetAddress i = (InetAddress) ee.nextElement();
+						if (i.isSiteLocalAddress()) {
+							System.out.println(i.getHostAddress());
+							return i.getHostAddress();
+						}
+					}
+				}
+			}
+		} catch (SocketException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+			return null;
+		}
+		return null;
+	}
+
 }

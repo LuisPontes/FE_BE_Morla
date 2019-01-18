@@ -152,7 +152,7 @@ public class categorias_tb {
 	public void mappingActive() {
 		if ( this.active == null ) 
 		{
-			this.active_flag = 0;
+			this.active_flag = 1;
 		}
 		else if (this.active.equals("on") ) 
 		{

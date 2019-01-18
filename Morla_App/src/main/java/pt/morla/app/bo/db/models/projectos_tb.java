@@ -22,20 +22,20 @@ public class projectos_tb {
 	@Column(name = "id")
 	private Long id;
 
-	@Column(name = "titulo",columnDefinition="VARCHAR(5000)")
+	@Column(name = "titulo",columnDefinition="VARCHAR(3000)")
 	private String titulo;
 
-	@Column(name = "descricao",columnDefinition="VARCHAR(5000)")
+	@Column(name = "descricao",columnDefinition="VARCHAR(3000)")
 	private String descricao;
 
 	@Column(name = "img_capa")
 	private String img_capa;
 
-	@Column(name = "ficha_tecnica",columnDefinition="VARCHAR(5000)")
+	@Column(name = "ficha_tecnica",columnDefinition="VARCHAR(3000)")
 	private String ficha_tecnica;
 
-	@Column(name = "foto_galeria")
-	private String foto_galeria;
+//	@Column(name = "foto_galeria")
+//	private String foto_galeria;
 
 	@Column(name = "video_galeria")
 	private String video_link;
@@ -111,13 +111,13 @@ public class projectos_tb {
 		this.ficha_tecnica = ficha_tecnica;
 	}
 
-	public String getFoto_galeria() {
-		return foto_galeria;
-	}
-
-	public void setFoto_galeria(String foto_galeria) {
-		this.foto_galeria = foto_galeria;
-	}
+//	public String getFoto_galeria() {
+//		return foto_galeria;
+//	}
+//
+//	public void setFoto_galeria(String foto_galeria) {
+//		this.foto_galeria = foto_galeria;
+//	}
 
 	public Integer getActive_flag() {
 		return active_flag;
@@ -251,12 +251,11 @@ public class projectos_tb {
 	@Override
 	public String toString() {
 		return "projectos_tb [id=" + id + ", titulo=" + titulo + ", descricao=" + descricao + ", img_capa=" + img_capa
-				+ ", ficha_tecnica=" + ficha_tecnica + ", foto_galeria=" + foto_galeria + ", video_link=" + video_link
-				+ ", active_flag=" + active_flag + ", lastUpdate=" + lastUpdate + ", categoria_id=" + categoria_id
-				+ ", orderView=" + orderView + ", facebook=" + facebook + ", linkeDin=" + linkeDin + ", twitter="
-				+ twitter + ", instagram=" + instagram + ", email=" + email + ", telemovel=" + telemovel + ", active="
-				+ active + ", fileDatas=" + Arrays.toString(fileDatas) + ", listPathsFotoGaleria="
-				+ Arrays.toString(listPathsFotoGaleria) + "]";
+				+ ", ficha_tecnica=" + ficha_tecnica + ", video_link=" + video_link + ", active_flag=" + active_flag
+				+ ", lastUpdate=" + lastUpdate + ", categoria_id=" + categoria_id + ", orderView=" + orderView
+				+ ", facebook=" + facebook + ", linkeDin=" + linkeDin + ", twitter=" + twitter + ", instagram="
+				+ instagram + ", email=" + email + ", telemovel=" + telemovel + ", active=" + active + ", fileDatas="
+				+ Arrays.toString(fileDatas) + ", listPathsFotoGaleria=" + Arrays.toString(listPathsFotoGaleria) + "]";
 	}
 
 

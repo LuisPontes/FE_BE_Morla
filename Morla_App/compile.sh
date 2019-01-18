@@ -7,11 +7,12 @@
     echo "Compile ...[OK]" 
   }  
  function startProject() { 
-    echo "Run Project..." java -jar target/MORLA.app-0.0.1-SNAPSHOT.jar
+    echo "Run Project..." 
+	java -jar target/MORLA.app-0.0.1-SNAPSHOT.jar
   }  
   function upload(){
   	echo "UpLoad to server... " 
-	echo scp -r target/MORLA.app-0.0.1-SNAPSHOT.jar master@192.168.1.104:/tmp
+	scp -r target/MORLA.app-0.0.1-SNAPSHOT.jar pi@192.168.1.100:/tmp
   }
     
 

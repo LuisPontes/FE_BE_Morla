@@ -1,7 +1,5 @@
 package pt.morla.app.bo.db.models;
 
-import java.util.Arrays;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,8 +16,17 @@ public class images_tb {
 	@Column(name = "id")
 	private Long id;
 	
-	@Column(name = "image",columnDefinition="BLOB")
-	private byte[] image;
+//	@Column(name = "image",columnDefinition="LONGBLOB")
+//	private byte[] image;
+	
+	@Column(name = "path_up")
+	private String path_up;
+	
+	@Column(name = "path_show")
+	private String path_show;
+	
+	@Column(name = "idFather")
+	private Long idFather;
 	
 	@Column(name = "titulo")
 	private String titulo;
@@ -30,17 +37,6 @@ public class images_tb {
 	@Column(name = "descricao")
 	private String descricao;
 
-	private String encode_to_str_Img;
-	
-	
-	public String getEncode_to_str_Img() {
-		return encode_to_str_Img;
-	}
-
-	public void setEncode_to_str_Img(String encode_to_str_Img) {
-		this.encode_to_str_Img = encode_to_str_Img;
-	}
-
 	public Long getId() {
 		return id;
 	}
@@ -49,12 +45,28 @@ public class images_tb {
 		this.id = id;
 	}
 
-	public byte[] getImage() {
-		return image;
+	public String getPath_up() {
+		return path_up;
 	}
 
-	public void setImage(byte[] image) {
-		this.image = image;
+	public void setPath_up(String path_up) {
+		this.path_up = path_up;
+	}
+
+	public String getPath_show() {
+		return path_show;
+	}
+
+	public void setPath_show(String path_show) {
+		this.path_show = path_show;
+	}
+
+	public Long getIdFather() {
+		return idFather;
+	}
+
+	public void setIdFather(Long idFather) {
+		this.idFather = idFather;
 	}
 
 	public String getTitulo() {
@@ -83,9 +95,13 @@ public class images_tb {
 
 	@Override
 	public String toString() {
-		return "images_tb [id=" + id + ", image=" + Arrays.toString(image) + ", titulo=" + titulo + ", autor=" + autor
-				+ ", descricao=" + descricao + ", encode_to_str_Img=" + encode_to_str_Img + "]";
+		return "images_tb [id=" + id + ", path_up=" + path_up + ", path_show=" + path_show + ", idFather=" + idFather
+				+ ", titulo=" + titulo + ", autor=" + autor + ", descricao=" + descricao + "]";
 	}
+
+//	private String encode_to_str_Img;
+	
+	
 	
 	
 	

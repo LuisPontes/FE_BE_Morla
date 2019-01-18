@@ -14,7 +14,7 @@ function LoadAjaxContent(url){
 	        break;
 	    case "gestao-Conteudos":
 	    	$('#home').hide();
-	    	$('#gestao-Categorias').hide();
+	    	$('#gestao-Categorias').hide();	    	
 	        break;
 	} 
 	document.getElementsByName("redirectPage")[0].setAttribute("content", url); 
@@ -50,6 +50,7 @@ $(document).ready(function () {
 		e.preventDefault();
 		$('div#main').toggleClass('sidebar-show');
 		setTimeout(MessagesMenuWidth, 250);
+		
 	});
 	
 	var ajax_url = document.getElementsByName("redirectPage")[0].getAttribute("content");
@@ -140,6 +141,8 @@ $(document).ready(function () {
 				box.resize();
 				box.find('[id^=map-]').resize();
 			}, 50);
+
+			
 		})
 		.on('click', '.close-link', function (e) {
 			e.preventDefault();
@@ -204,6 +207,31 @@ $(document).ready(function () {
 		});
 		
 	});
+	
+	//Add Photos
+	$('#addImages').click(function(){
+		
+		var manualUploader = new qq.FineUploader({
+            element: document.getElementById('fine-uploader-manual-trigger'),
+            template: 'qq-template-manual-trigger',
+            request: {
+                endpoint: '/bo/server/uploads?id='+document.getElementById('proj_Galary_id').value
+            },
+            thumbnails: {
+                placeholders: {
+                    waitingPath: 'bo/img/waiting-generic.png',
+                    notAvailablePath: 'bo/img/not_available-generic.png'
+                }
+            },
+            autoUpload: false,
+            debug: false
+        });
+
+        qq(document.getElementById("trigger-upload")).attach("click", function() {
+            manualUploader.uploadStoredFiles();
+        });
+	});
+	
 });
 
 //
@@ -274,5 +302,9 @@ function FormLayoutExampleInputLength(selector){
 		}
 	});
 }
+
+
+
+
 
 

@@ -39,23 +39,23 @@
 						</div>
 						<div class="box-icons">
 							<a class="collapse-link"> <i class="fa fa-chevron-up"></i>
-							</a> <a class="expand-link"> <i class="fa fa-expand"></i>
-							<!-- </a> <a class="close-link"> <i class="fa fa-times"></i> -->
+							</a> <a class="expand-link"> <i class="fa fa-expand"></i> <!-- </a> <a class="close-link"> <i class="fa fa-times"></i> -->
 							</a>
 						</div>
 						<div class="no-move"></div>
 					</div>
 
 
-					<div class="box-content" th:style="${editMode} == 'TYPE_Categoria'? 'display: block;': 'display: none;'">
+					<div class="box-content"
+						th:style="${editMode} == 'TYPE_Categoria'? 'display: block;': 'display: none;'">
 
 						<!-- SEPARADOR -->
-						
+
 
 						<form class="form-horizontal" role="form" action="#"
-							th:action="@{${editMode} == 'TYPE_Categoria'? '/bo/upCat': '/bo/addcat'}" 
-							th:object="${categoriasObj}"
-							method="post" enctype="multipart/form-data">
+							th:action="@{${editMode} == 'TYPE_Categoria'? '/bo/upCat': '/bo/addcat'}"
+							th:object="${categoriasObj}" method="post"
+							enctype="multipart/form-data">
 
 							<input type="text" class="hidden" th:field="*{id}">
 
@@ -67,7 +67,7 @@
 										data-placement="bottom" title="Tooltip for name"
 										th:field="*{nome}">
 								</div>
-<!-- 
+								<!-- 
 								<label class="col-sm-2 control-label">Url</label>
 								<div class="col-sm-4">
 									<input type="text" class="form-control"
@@ -77,7 +77,7 @@
 								</div>
 								 -->
 							</div>
-							
+
 							<div class="form-group">
 								<label class="col-sm-2 control-label">Sequencia no menu
 								</label>
@@ -88,7 +88,7 @@
 									</select>
 								</div>
 
-							<label class="col-sm-2 control-label">Tipo conteudo</label>
+								<label class="col-sm-2 control-label">Tipo conteudo</label>
 								<div class="col-sm-4">
 									<select th:field="*{type}">
 										<option value="TYPE_HEADER">TYPE_HEADER</option>
@@ -100,9 +100,10 @@
 								</div>
 
 							</div>
-							
-						<!-- Back Ground -->
-						<h4 class="page-header"></h4>
+
+							<h4 class="page-header"></h4>
+							<!-- Back Ground -->
+
 							<div class="form-group">
 
 								<label class="col-sm-2 control-label">Imagem Upload</label>
@@ -111,19 +112,22 @@
 								</div>
 								<label class="col-sm-2 control-label">Color</label>
 								<div class="col-sm-4">
-									<input type="text" class="form-control"
-										placeholder="#ff0000" data-toggle="tooltip"
-										data-placement="bottom" title="Tooltip for name"
-										th:field="*{cor_backGround}">
+									<input type="text" class="form-control" placeholder="#ff0000"
+										data-toggle="tooltip" data-placement="bottom"
+										title="Tooltip for name" th:field="*{cor_backGround}">
 								</div>
-								
+
+							</div>
+							<h4 class="page-header"></h4>
+							<div class="form-group">
+								<img alt=""  th:src="'http://'+ @{${ipServer}}+''+ @{*{img_backGround}}" style="width:300px;height:80px;">
 							</div>
 							
-						
 							<!-- Butao submit -->
 							<div class="form-group">
 								<div class="col-sm-2">
-									<button type="submit" class="btn btn-primary btn-label-left">
+									<button type="submit" 
+										class="btn btn-primary btn-label-left">
 										<span><i class="fa fa-clock-o"></i></span> Guardar
 									</button>
 								</div>
@@ -137,74 +141,84 @@
 			</div>
 		</div>
 		<!-- END ADD CAT -->
-		
-	<!--TABLE RESULT-->
-	<div id="dashboard-header" class="row"> 
-			<div class="box-proent">		
-			 
-			 <h4 class="page-header">Categorias</h4>
-			<table class="table beauty-table table-hover">
-				
-							<thead>
-								<tr>
-									<th>Categoria Nome</th>
-									<th>Categoria id</th>
-									<th>Last update</th>
-									<th>url</th>
-									<th>Imagem Background</th>
-									<th>Color Background</th>
-									<th>Sequencia</th>
-									<th>Tipo</th>
-									<th>Visível</th>
-									
-								</tr>
-							</thead>
-							<tbody>
-							
-							<tr th:each="cat : ${catgories}">
-								<td th:text="${cat.nome}"></td>
-								<td th:text="${cat.id}"></td>
-								<td th:text="${cat.lastUpdate}"></td>
-								<td th:text="${cat.url}"></td>
-								<td th:text="${cat.img_backGround}"></td>
-								<td th:text="${cat.cor_backGround}"></td>
-								<td th:text="${cat.orderView}"></td>
-								<td th:text="${cat.type}"></td>
-								<td>
+
+
+
+		<!--TABLE RESULT-->
+		<div id="dashboard-header" class="row">
+			<div class="box-proent">
+
+				<h4 class="page-header">Categorias</h4>
+				<table class="table beauty-table table-hover">
+
+					<thead>
+						<tr>
+							<th>Categoria Nome</th>
+							<th>Categoria id</th>
+							<th>Last update</th>
+							<th>url</th>
+							<th>Imagem Background</th>
+							<th>Color Background</th>
+							<th>Sequencia</th>
+							<th>Tipo</th>
+							<th>Visível</th>
+
+						</tr>
+					</thead>
+					<tbody>
+
+						<tr th:each="cat : ${catgories}">
+							<td th:text="${cat.nome}"></td>
+							<td th:text="${cat.id}"></td>
+							<td th:text="${cat.lastUpdate}"></td>
+							<td th:text="${cat.url}"></td>
+							<td th:text="${cat.img_backGround}"></td>
+							<td th:text="${cat.cor_backGround}"></td>
+							<td th:text="${cat.orderView}"></td>
+							<td th:text="${cat.type}"></td>
+							<td>
 								<div class="col-sm-4">
 									<div class="toggle-switch toggle-switch-success">
-										<label>
-											<input th:if="${cat.active_flag} == 0" type="checkbox" id="home-Categorias" name="active" th:value="${cat.id}" >
-											<input th:if="${cat.active_flag} == 1" type="checkbox" id="home-Categorias" name="active" th:value="${cat.id}" checked>
+										<label> <input th:if="${cat.active_flag} == 0"
+											type="checkbox" id="home-Categorias" name="active"
+											th:value="${cat.id}"> <input
+											th:if="${cat.active_flag} == 1" type="checkbox"
+											id="home-Categorias" name="active" th:value="${cat.id}"
+											checked>
 											<div class="toggle-switch-inner"></div>
-											<div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
+											<div class="toggle-switch-switch">
+												<i class="fa fa-check"></i>
+											</div>
 										</label>
 									</div>
 								</div>
-								</td>
-								<td>
+							</td>
+							<td>
 								<div class="btn-group">
-									<a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
-									<span class="fa fa-caret-down">Ações</span>
+									<a class="btn btn-primary dropdown-toggle"
+										data-toggle="dropdown" href="#"> <span
+										class="fa fa-caret-down">Ações</span>
 									</a>
 									<ul class="dropdown-menu">
-										<li><a  th:href="@{/bo/editCat(id=${cat.id})}"  ><i class="fa fa-pencil fa-fw"></i> Edit</a></li>
-										<li><a th:href="@{/bo/delcat(id=${cat.id})}"><i class="fa fa-trash-o fa-fw"></i> Delete</a></li>
+										<li><a th:href="@{/bo/editCat(id=${cat.id})}"><i
+												class="fa fa-pencil fa-fw"></i> Edit</a></li>
+										<li><a th:href="@{/bo/delcat(id=${cat.id})}"><i
+												class="fa fa-trash-o fa-fw"></i> Delete</a></li>
 									</ul>
 								</div>
-								</td>
-								
-								
-							</tr>
-								
-								
-							</tbody>
-						</table>
-						
-				
-					</div>
+							</td>
+
+
+						</tr>
+
+
+					</tbody>
+				</table>
+
+
+			</div>
 		</div>
-	<!--END TABLE RESULTS-->
+		<!--END TABLE RESULTS-->
 
 	</div>
 
