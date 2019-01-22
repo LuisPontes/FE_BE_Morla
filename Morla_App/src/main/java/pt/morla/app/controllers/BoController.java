@@ -150,41 +150,7 @@ public class BoController {
 		return "dashboard/index";
 	}
 	
-	private static void replaceLink(String file_path) {
-			
-			File f = new File(file_path);
-			if (f.exists()) {		
-				try (BufferedReader br = new BufferedReader(new FileReader(f))) {				
-					String line,keyBegin="http://",keyEnd=":",strReplace="";
-					String bufer = "";
-				    while ((line = br.readLine()) != null) {	
-				    	System.out.println(line);
-				    	if ( line.contains("http://") && line.contains(":80")) {
-				    		//System.out.println(line);	
-				    		FindAndReturnTextBetweenChar fr = new FindAndReturnTextBetweenChar();
-				    		strReplace=fr.setParameters(line, keyBegin, keyEnd);
-				    		bufer+=line.replace(keyBegin+strReplace+":80", "..");
-				    		//System.out.println(line.replace(keyBegin+strReplace+":80", "..")+"\n\n");	
-						}else {
-							bufer+=line;
-						}
-				    }
-				    
-					 // SAVE FILES
-				    if( f.exists() ) {
-				    	f.delete();
-				    }
-				    PrintWriter writer = new PrintWriter(file_path, "UTF-8");
-			    	writer.println(bufer);
-			    	writer.close();
-					    
-				}catch (Exception e) {
-					e.printStackTrace();
-				}
-			}else {
-				System.out.println("File not exist... ["+file_path);
-			}
-	}
+	
 
 
 
@@ -331,7 +297,7 @@ public class BoController {
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
-		model = setAttributes(model,"home");
+		model = setAttributes(model,"gestao-Conteudos");
 		return "dashboard/index";
 	}
 	
@@ -615,6 +581,7 @@ public class BoController {
 		
 	}
 
+	/**/
 	@SuppressWarnings("rawtypes")
 	private String getIpMachine(String network_interface) {
 		Enumeration e;
@@ -641,4 +608,40 @@ public class BoController {
 		}
 		return null;
 	}
+	/*replace links of index production*/
+	private static void replaceLink(String file_path) {
+		
+		File f = new File(file_path);
+		if (f.exists()) {		
+			try (BufferedReader br = new BufferedReader(new FileReader(f))) {				
+				String line,keyBegin="http://",keyEnd=":",strReplace="";
+				String bufer = "";
+			    while ((line = br.readLine()) != null) {	
+			    	System.out.println(line);
+			    	if ( line.contains("http://") && line.contains(":80")) {
+			    		//System.out.println(line);	
+			    		FindAndReturnTextBetweenChar fr = new FindAndReturnTextBetweenChar();
+			    		strReplace=fr.setParameters(line, keyBegin, keyEnd);
+			    		bufer+=line.replace(keyBegin+strReplace+":80", "..");
+			    		//System.out.println(line.replace(keyBegin+strReplace+":80", "..")+"\n\n");	
+					}else {
+						bufer+=line;
+					}
+			    }
+			    
+				 // SAVE FILES
+			    if( f.exists() ) {
+			    	f.delete();
+			    }
+			    PrintWriter writer = new PrintWriter(file_path, "UTF-8");
+		    	writer.println(bufer);
+		    	writer.close();
+				    
+			}catch (Exception e) {
+				e.printStackTrace();
+			}
+		}else {
+			System.out.println("File not exist... ["+file_path);
+		}
+}
 }
