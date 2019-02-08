@@ -1,0 +1,99 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:dt="http://www.thymeleaf.org/dandelion/datatables">
+<head>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			// Create Wysiwig editor for textare
+			TinyMCEStart('#wysiwig_simple', 'extreme');
+			TinyMCEStart('#wysiwig_full', 'extreme');
+	
+		});
+	</script>
+	
+</head>
+<body>
+
+	<div th:fragment="gestao-Menu" id="gestao-Menu">
+		
+
+		<!--Start Breadcrumb-->
+		<div class="row">
+			<div id="breadcrumb" class="col-xs-12">
+				<a href="#" class="show-sidebar"> <i class="fa fa-bars"></i>
+				</a>
+				<ol class="breadcrumb pull-left">
+					<li><a href="/bo">Home</a></li>
+					<li><a href="gestao-Menu" class="ajax-link">Gestão de Menu</a></li>
+				</ol>
+				
+			</div>
+		</div>
+		<!--End Breadcrumb-->
+		
+		
+		<form 	class="form-horizontal" 
+								role="form"  
+								th:action="'/bo/addMenu'" 
+								th:object="${menuObj}" 
+								method="POST" 
+								 >
+								
+								
+							<div class="form-group">
+
+								<label class="col-sm-2 control-label">Menu-Type</label>
+								<div class="col-sm-4">
+								<!--th:field="*{type}" -->
+								
+									<select >
+										<option>Type-1</option>
+								
+									</select>
+								</div>
+								
+								<label class="col-sm-2 control-label">Font-Family :</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control" placeholder="'Open Sans', 'Helvetica Neue', 'Arial', 'sans-serif'"
+										data-toggle="tooltip" data-placement="bottom"
+										title="Tooltip for name" th:field="*{fontFamily}">
+								</div>
+								
+								<label class="col-sm-2 control-label">Font-Color :</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control" placeholder="#ff0000"
+										data-toggle="tooltip" data-placement="bottom"
+										title="Tooltip for name" th:field="*{textColor}">
+								</div>
+
+								<label class="col-sm-2 control-label">Font-Size :</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control" placeholder="10"
+										data-toggle="tooltip" data-placement="bottom"
+										title="Tooltip for name" th:field="*{textSize}">
+								</div>
+								
+								<label class="col-sm-2 control-label">Font-Weight :</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control" placeholder="700"
+										data-toggle="tooltip" data-placement="bottom"
+										title="Tooltip for name" th:field="*{fontWeight}">
+								</div>
+								
+							</div>
+							
+							<!-- Butao submit -->
+							<div class="form-group">
+								<div class="col-sm-2">
+									<button type="submit" 
+										class="btn btn-primary btn-label-left">
+										<span><i class="fa fa-clock-o"></i></span> Guardar
+									</button>
+								</div>
+							</div>
+								
+		</form>
+	</div>
+       
+</body>
+</html>

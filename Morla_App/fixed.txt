@@ -1,6 +1,17 @@
-1) cor menu cinza
-2) Mudanca de linha
-3) vidio face - finaly heavean -scarfs
-4) font: ar bonnie -titulos
-5) Email- icon
-6) Scrol automatico
+---- FRONT END ----
+														feito->1) cor menu cinza MENU
+														feito->2) Mudanca de linha
+	3) vidio face - finaly heavean -scarfs
+	
+														feito->5) Email- icon
+	6) Scrol automatico
+														feito ->9) css mobil
+														feito->10) logs
+
+
+---- BACK END ----
+														feito->1) cor menu cinza MENU
+	1.1) font: ar bonnie -titulos?????
+	7) contagem de visitas
+														feito->8) REFRESH
+														feito->10) logs

@@ -15,4 +15,13 @@ public interface ICategorias {
 	public int updateActiveFlag(Long long1,int active);
 	
 	public List<categorias_tb> findAllActive();
+
+	public int update(Long id, 
+			String nome,
+			String img_backGround, 
+			String cor_backGround, 
+			int orderView, 
+			String url, 
+			int active,
+			String typeContent);
 }

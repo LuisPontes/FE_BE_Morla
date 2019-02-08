@@ -4,16 +4,26 @@
 function LoadAjaxContent(url){
 	$('.preloader').show();
 	switch(url) {
+	
+	
 	    case "home":
+	    	$('#gestao-Menu').hide();
+	    	$('#gestao-Categorias').hide();
+	    	$('#gestao-Conteudos').hide();
+	        break;
+	    case "gestao-Menu":
+	    	$('#home').hide();
 	    	$('#gestao-Categorias').hide();
 	    	$('#gestao-Conteudos').hide();
 	        break;
 	    case "gestao-Categorias":
 	    	$('#home').hide();
+	    	$('#gestao-Menu').hide();
 	    	$('#gestao-Conteudos').hide();
 	        break;
 	    case "gestao-Conteudos":
 	    	$('#home').hide();
+	    	$('#gestao-Menu').hide();
 	    	$('#gestao-Categorias').hide();	    	
 	        break;
 	} 

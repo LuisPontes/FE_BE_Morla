@@ -39,9 +39,11 @@ import pt.morla.app.Contants;
 import pt.morla.app.FindAndReturnTextBetweenChar;
 import pt.morla.app.bo.db.interfaces.ICategorias;
 import pt.morla.app.bo.db.interfaces.IImages;
+import pt.morla.app.bo.db.interfaces.IMenu;
 import pt.morla.app.bo.db.interfaces.IProjectos;
 import pt.morla.app.bo.db.models.categorias_tb;
 import pt.morla.app.bo.db.models.images_tb;
+import pt.morla.app.bo.db.models.menu_obj;
 import pt.morla.app.bo.db.models.projectos_tb;
 import pt.morla.app.bo.db.models.user_obj;
 
@@ -50,47 +52,80 @@ import pt.morla.app.bo.db.models.user_obj;
 public class BoController {
 	
 	protected static Logger log = LoggerFactory.getLogger(BoController.class);
+	
 	user_obj user = null;
 	@Autowired
 	ICategorias daoCat;
     @Autowired
     IProjectos daoPro;
     @Autowired
+    IMenu daoMen;
+    @Autowired
     IImages daoImg;    
     @Autowired
     private Environment props;
+   
+    
     private String ipServer = null;
     private List<categorias_tb> categoriasList = null;
     private List<projectos_tb> projectosList = null;
     private List<images_tb> imagesList = null;
     private HashMap<String, images_tb> imagesMap =null;
+    private menu_obj menuObj =null;
     
     @PostConstruct
     private void init() {
     	//rasp_ethenet  eth0 
     	//local_wifi - wlp2s0
     	//getIpMachine("wlp2s0")
+    	
+    	log.info(">>>>>> Start Back Office Conttroller");
+    	
     	ipServer = getIpMachine(props.getProperty("network.interface"))+":"+props.getProperty("port.apache.server");
+    	log.info("Server IP ... "+ipServer);
+    	
     	categoriasList = (List<categorias_tb>) daoCat.findAll();
+    	log.info("Object categoriaList -> "+categoriasList.toString());
+    	
 		projectosList = (List<projectos_tb>) daoPro.findAll();
+		log.info("Object projectosList -> "+projectosList.toString());
+		
+		List<menu_obj> menuObj_list = (List<menu_obj>) daoMen.findAll();
+		if ( !menuObj_list.isEmpty()) {
+			menuObj = menuObj_list.get(0);
+		}else {
+			menuObj = new menu_obj();
+		}
+		log.info("Object menuObj_list -> "+menuObj_list.toString());
 		imagesList = daoImg.findAll();
+		log.info("Object imagesList -> "+imagesList.toString());
 		imagesMap = createImagesMap();
     }
     
    
     
     private Model setAttributes(Model model,String page) {
+    	/*OBJECTS DATA*/
 		model.addAttribute("catgories", categoriasList);
 		model.addAttribute("projectos", projectosList);
+		model.addAttribute("menuObj", menuObj);
 		model.addAttribute("imagens",imagesList);
 		model.addAttribute("nTotalCat", categoriasList.size());
 		model.addAttribute("nTotalPro", projectosList.size());
+		
+		/*NEWS OBJECTS*/
 		model.addAttribute("categoriasObj", new categorias_tb());
 		model.addAttribute("projectosObj", new projectos_tb());
+		
+		/*CATEGORAY TYPE*/
 		model.addAttribute("TypesCategorias",Contants.TypesCategorias);
+		/*URL REDIRECT*/
 		model.addAttribute("redirectPage", page);
+		/*MODE EDIT*/
 		model.addAttribute("editMode", "notEDIT");
+		/*SERVER IP*/
 		model.addAttribute("ipServer", ipServer);
+		
 		return model;
 	}
     /*Controler paths*/
@@ -113,6 +148,7 @@ public class BoController {
 						userObj.setIsauth(true);
 						user = userObj;
 						model = setAttributes(model,"home");
+						log.info("LOG IN -> "+userObj.toString());
 					return "dashboard/index";
 				}
 			}
@@ -150,8 +186,18 @@ public class BoController {
 		return "dashboard/index";
 	}
 	
-	
+	/*================================MENU POINTS=====================*/
 
+	@RequestMapping(value = { "/addMenu" }, method = { RequestMethod.POST })
+	public String addMenu(HttpServletRequest request, HttpServletResponse response,Model model,@ModelAttribute menu_obj obj) {
+
+		//daoMen.remove(Long.valueOf(1));
+		obj.setId(Long.valueOf(1));
+		daoMen.save(obj);	
+		init();
+		model = setAttributes(model,"home");
+		return "dashboard/index";
+	}
 
 
 	/*================================CATEGORIAS POINTS=====================*/
@@ -179,12 +225,31 @@ public class BoController {
 			new_cat_obj.setLastUpdate(new Date());
 			new_cat_obj.mappingActive();
 
-			log.info("Save id: " + daoCat.save(new_cat_obj));
+			if (request.getRequestURL().toString().endsWith("/addcat")) 
+			{
+				log.info("Save id: " + daoCat.save(new_cat_obj));
+			}
+			else if (request.getRequestURL().toString().endsWith("/upCat")) 
+			{
+				log.info("Save id: " + daoCat.update(
+														new_cat_obj.getId(),
+														new_cat_obj.getNome(),
+														new_cat_obj.getImg_backGround(),
+														new_cat_obj.getCor_backGround(),
+														new_cat_obj.getOrderView(),
+														new_cat_obj.getUrl(),
+														new_cat_obj.getActive_flag(),
+														new_cat_obj.getType()
+													));
+			}
+			
 		}
 		
 		categoriasList = (List<categorias_tb>) daoCat.findAll();
 		
-		model = setAttributes(model,"gestao-Categorias");
+		//model = setAttributes(model,"gestao-Categorias");
+		init();
+		model = setAttributes(model,"home");
 		return "dashboard/index";
 	}
 	
@@ -232,7 +297,9 @@ public class BoController {
 			categoriasList = (List<categorias_tb>) daoCat.findAll();
 		}
 		
-		model = setAttributes(model,"gestao-Categorias");
+		//model = setAttributes(model,"gestao-Categorias");
+		init();
+		model = setAttributes(model,"home");
 		return "dashboard/index";
 	}
 	
@@ -297,7 +364,9 @@ public class BoController {
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
-		model = setAttributes(model,"gestao-Conteudos");
+		//model = setAttributes(model,"gestao-Conteudos");
+		init();
+		model = setAttributes(model,"home");
 		return "dashboard/index";
 	}
 	
@@ -361,7 +430,9 @@ public class BoController {
 			projectosList = (List<projectos_tb>) daoPro.findAll();
 		}
 		
-		model = setAttributes(model,"gestao-Conteudos");
+		//model = setAttributes(model,"gestao-Conteudos");
+		init();
+		model = setAttributes(model,"home");
 		return "dashboard/index";
 	}
 	
@@ -595,14 +666,13 @@ public class BoController {
 					while (ee.hasMoreElements()) {
 						InetAddress i = (InetAddress) ee.nextElement();
 						if (i.isSiteLocalAddress()) {
-							System.out.println(i.getHostAddress());
 							return i.getHostAddress();
 						}
 					}
 				}
 			}
 		} catch (SocketException e1) {
-			// TODO Auto-generated catch block
+			log.error(e1.getMessage());
 			e1.printStackTrace();
 			return null;
 		}

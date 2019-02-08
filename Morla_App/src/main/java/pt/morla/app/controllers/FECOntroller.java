@@ -22,9 +22,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import pt.morla.app.bo.db.interfaces.ICategorias;
 import pt.morla.app.bo.db.interfaces.IImages;
+import pt.morla.app.bo.db.interfaces.IMenu;
 import pt.morla.app.bo.db.interfaces.IProjectos;
 import pt.morla.app.bo.db.models.categorias_tb;
 import pt.morla.app.bo.db.models.images_tb;
+import pt.morla.app.bo.db.models.menu_obj;
 import pt.morla.app.bo.db.models.projectos_tb;
 import pt.morla.app.bo.db.models.user_obj;
 
@@ -40,12 +42,15 @@ public class FECOntroller {
     @Autowired
     IImages daoImg;
     @Autowired
+    IMenu daoMen;
+    @Autowired
     private Environment props;
     
     private String ipServer = null;
     private List<categorias_tb> categoriasList = null;
     private List<projectos_tb> projectosList = null;
     List<images_tb> imagesList = null;
+    private menu_obj menuObj = null;
     
     @PostConstruct
     private void init() {
@@ -58,6 +63,11 @@ public class FECOntroller {
 		}
 		projectosList = (List<projectos_tb>) daoPro.findAllActive();
 		imagesList = daoImg.findAll();
+		
+		List<menu_obj> menuObj_list = (List<menu_obj>) daoMen.findAll();
+		if ( !menuObj_list.isEmpty()) {
+			menuObj = menuObj_list.get(0);
+		}
 	
     }
 
@@ -70,23 +80,11 @@ public class FECOntroller {
 		model.addAttribute("conteudos", projectosList);
 		model.addAttribute("imagens", imagesList);
 		model.addAttribute("ipServer", ipServer);
-
+		model.addAttribute("menuObj", menuObj);
 		return "FE/index";
 	}
 	
-	
-//	@RequestMapping(value = { "/refresh" }, method = { RequestMethod.GET,RequestMethod.POST })
-//	public String refresh(HttpServletRequest request, HttpServletResponse response,Model model,@ModelAttribute user_obj userObj) {
-//		
-//		init();
-//		model.addAttribute("categorias", categoriasList);
-//		model.addAttribute("conteudos", projectosList);
-//		model.addAttribute("imagens", imagesList);
-//		model.addAttribute("ipServer", ipServer);
-//
-//		return "FE/index";
-//	}
-	
+
 	@SuppressWarnings("rawtypes")
 	private String getIpMachine(String network_interface) {
 		Enumeration e;

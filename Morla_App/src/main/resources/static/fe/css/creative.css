@@ -94,7 +94,7 @@ img::-moz-selection {
   font-weight: 700;
   text-transform: uppercase;
   color: #F05F40;
-  font-family: 'Open Sans', 'Helvetica Neue', Arial, sans-serif;
+  font-family: 'Open Sans', 'Helvetica Neue', 'Arial', 'sans-serif';
 }
 
 #mainNav .navbar-brand:focus, #mainNav .navbar-brand:hover {
@@ -124,7 +124,7 @@ img::-moz-selection {
 #mainNav .navbar-nav > li.nav-item > a.nav-link:focus.active:hover {
   background-color: transparent;
 }
-
+/*
 @media (min-width: 992px) {
   #mainNav {
     border-color: transparent;
@@ -166,14 +166,15 @@ img::-moz-selection {
     color: #F05F40;
   }
 }
-
+*/
 header.masthead {
-  padding-top: 10rem;
-  padding-bottom: calc(10rem - 56px);
- /* background-image: url("../img/header.jpg");
-  background-position: center center;
-  background-size: cover;
-  */
+
+    height: 100vh;
+    min-height: 650px;
+    padding-top: 0;
+    padding-bottom: 0;
+
+  
 }
 
 header.masthead hr {
@@ -182,13 +183,13 @@ header.masthead hr {
 }
 
 header.masthead h1 {
-  font-size: 2rem;
-}
+    font-size: 3rem;
+  }
 
 header.masthead p {
   font-weight: 300;
 }
-
+/*
 @media (min-width: 768px) {
   header.masthead p {
     font-size: 1.15rem;
@@ -212,7 +213,7 @@ header.masthead p {
     font-size: 4rem;
   }
 }
-
+*/
 .service-box {
   max-width: 400px;
 }
@@ -270,7 +271,7 @@ header.masthead p {
 .portfolio-box:focus {
   outline: none;
 }
-
+/*
 @media (min-width: 768px) {
   .portfolio-box .portfolio-box-caption .portfolio-box-caption-content .project-category {
     font-size: 16px;
@@ -279,7 +280,7 @@ header.masthead p {
     font-size: 22px;
   }
 }
-
+*/
 .text-primary {
   color: #F05F40 !important;
 }

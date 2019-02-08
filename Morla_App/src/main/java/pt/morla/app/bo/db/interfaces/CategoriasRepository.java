@@ -21,4 +21,27 @@ public interface CategoriasRepository extends CrudRepository<categorias_tb, Long
 	
 	@Query(value = "SELECT u FROM categorias_tb u where u.active_flag = 1")
 	List<categorias_tb> findAllActive();
+	/*
+	@Modifying
+	@Query("update categorias_tb s "
+			+ "set s.nome = :nome , "
+			+ "s.img_backGround = :img_backGround, "
+			+ "s.cor_backGround = :cor_backGround, "
+			+ "s.orderView = :orderView, "
+			+ "s.url = :url, "
+			+ "s.active = :active, "
+			+ "s.typeContent = :typeContent "
+			+ "where s.id = :id")
+	@Transactional
+	public int update(
+			@Param("id") Long id, 
+			@Param("nome") String nome,
+			@Param("img_backGround") String img_backGround, 
+			@Param("cor_backGround") String cor_backGround, 
+			@Param("orderView") Integer orderView, 
+			@Param("url") String url, 
+			@Param("active") Integer active,
+			@Param("typeContent") String typeContent
+			);
+			*/
 }

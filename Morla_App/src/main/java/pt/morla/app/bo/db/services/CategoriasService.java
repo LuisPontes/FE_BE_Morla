@@ -42,4 +42,30 @@ public class CategoriasService implements ICategorias{
 		return repository.findAllActive();
 	}
 
+	@Override
+	public int update(
+			Long id, 
+			String nome,
+			String img_backGround, 
+			String cor_backGround, 
+			int orderView, 
+			String url, 
+			int active,
+			String typeContent
+			) {
+		return 0;
+
+		/*return repository.update(
+				id, 
+				nome,
+				img_backGround, 
+				cor_backGround, 
+				orderView, 
+				url, 
+				active,
+				typeContent
+				);
+*/
+	}
+
 }

@@ -6,7 +6,7 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication(scanBasePackages={"pt.morla.app.*"})
-@EnableJpaRepositories(basePackageClasses= {pt.morla.app.bo.db.interfaces.CategoriasRepository.class,pt.morla.app.bo.db.interfaces.ProjectosRepository.class,pt.morla.app.bo.db.interfaces.ImagesRepository.class})
+@EnableJpaRepositories(basePackageClasses= {pt.morla.app.bo.db.interfaces.CategoriasRepository.class,pt.morla.app.bo.db.interfaces.ProjectosRepository.class,pt.morla.app.bo.db.interfaces.ImagesRepository.class,pt.morla.app.bo.db.interfaces.MenuRepository.class})
 @EnableCaching
 public class MorlaAppApplication {
 

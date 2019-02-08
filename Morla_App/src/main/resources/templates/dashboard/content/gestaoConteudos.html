@@ -90,21 +90,16 @@
 				<a href="#" class="show-sidebar"> <i class="fa fa-bars"></i>
 				</a>
 				<ol class="breadcrumb pull-left">
-					<li><a href="/db">Home</a></li>
+					<li><a href="/bo">Home</a></li>
 					<li><a href="gestao-Conteudos" class="ajax-link">Gestão	de Conteudos</a></li>
 				</ol>
-				<div id="social" class="pull-right">
-					<a href="#"><i class="fa fa-google-plus"></i></a> <a href="#"><i
-						class="fa fa-facebook"></i></a> <a href="#"><i
-						class="fa fa-twitter"></i></a> <a href="#"><i
-						class="fa fa-linkedin"></i></a> <a href="#"><i
-						class="fa fa-youtube"></i></a>
-				</div>
+				
 			</div>
 		</div>
 		<!--End Breadcrumb-->
 
-
+<!-- Nota paragrafo e espaços-->
+<p> Paragrafo ->{ \< br / \> }(sem esta barra-\), espaço ->{ & n b s p ; }(tudo junto)<!p>
 		<!--START PLUS Projecto  TIPO APRESENTACAO-->
 		<div class="row">
 			<div class="col-xs-12 col-sm-12">
@@ -175,7 +170,7 @@
 	 						<label class="col-sm-2 control-label">Sequencia</label>
 								<div class="col-sm-4">
 									<select th:field="*{orderView}">
-										<option th:each="i: ${#numbers.sequence(0, nTotalCat )}"
+										<option th:each="i: ${#numbers.sequence(0, nTotalPro )}"
 											th:value="${i}" th:text="${i}"></option>
 									</select>
 								</div>
@@ -251,7 +246,7 @@
 	 						
 	 					
 							<div class="form-group">
-								<label class="col-sm-2 control-label" for="form-styles">Sinopse</label>
+								<label class="col-sm-2 control-label" for="form-styles">Sinopse </label>
 								<div class="col-sm-10">
 										<textarea class="form-control" rows="5" id="wysiwig_simple" th:field="*{descricao}" ></textarea>
 								</div>

@@ -27,6 +27,8 @@
 		</div>
 		<!--End Breadcrumb-->
 
+<!-- Nota paragrafo e espaços-->
+<p> Paragrafo ->{ \< br / \> }(sem esta barra-\), espaço ->{ & n b s p ; }(tudo junto)<!p>
 
 		<!--Start ADD CAT-->
 		<div class="row">
@@ -54,7 +56,8 @@
 
 						<form class="form-horizontal" role="form" action="#"
 							th:action="@{${editMode} == 'TYPE_Categoria'? '/bo/upCat': '/bo/addcat'}"
-							th:object="${categoriasObj}" method="post"
+							th:object="${categoriasObj}" 
+							method="post"
 							enctype="multipart/form-data">
 
 							<input type="text" class="hidden" th:field="*{id}">
