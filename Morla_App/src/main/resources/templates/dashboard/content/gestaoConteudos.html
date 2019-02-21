@@ -99,7 +99,7 @@
 		<!--End Breadcrumb-->
 
 <!-- Nota paragrafo e espaços-->
-<p> Paragrafo ->{ \< br / \> }(sem esta barra-\), espaço ->{ & n b s p ; }(tudo junto)<!p>
+<p> Paragrafo -> { & n b s p ; }(tudo junto) <br>Espaço -> { \< br / \> }(sem esta barra-\)<!p>
 		<!--START PLUS Projecto  TIPO APRESENTACAO-->
 		<div class="row">
 			<div class="col-xs-12 col-sm-12">
@@ -266,9 +266,18 @@
 										placeholder="exemplo: https://www.youtube.com/embed/tgbNymZ7vqY" data-toggle="tooltip"
 										data-placement="bottom" title="Tooltip for name"
 										th:field="*{video_link}">
-										
-										<!--    <input type="file" name="movies" multiple> <input th:field="*{video_link}" type="file" /> -->
 									</div>
+									
+							</div>
+							<div class="form-group">		
+									<label class="col-sm-2 control-label">Iframe Video</label>
+									<div class="col-sm-10">
+										<textarea 
+													class="form-control" 
+													rows="5" id="wysiwig_simple" 
+													th:field="*{video_iframe}" ></textarea>
+									</div>
+									
 									
 							</div>
 							
@@ -343,6 +352,12 @@
 					
 					<input type="text" class="hidden" th:field="*{id}">
 					
+									<select th:field="*{orderView}" class="hidden">
+											<option th:each="i: ${#numbers.sequence(0, nTotalPro )}"
+												th:value="${i}" th:text="${i}"></option>
+										</select>
+									
+									
 	 						<div class="form-group">
 	 						<label class="col-sm-2 control-label">Categoria</label>
 								<div class="col-sm-4">
@@ -434,7 +449,7 @@
 		<!--END TIPO FOOTER-->
 		
 		
-		<!-- FOTO GALLARY -->
+		<!-- FOTO Gallery -->
 		
 		<div class="row">
 			<div class="col-xs-12 col-sm-12">
@@ -454,9 +469,7 @@
 					</div>
 					
 				<div class="box-content" th:style="${editMode} == 'TYPE_IMAGES'? 'display: block;': 'display: none;'">
-				
-		
-		
+	
 		<form 	class="form-horizontal" 
 				role="form"  
 				th:object="${projectosObj}" 
@@ -477,7 +490,7 @@
 		    <div class="form-group" id="fine-uploader-manual-trigger"></div>	
 		     
 		     
-		    <h4 class="page-header">GALLARY</h4>
+		    <h4 class="page-header">Gallery</h4>
 			<table class="table beauty-table table-hover">
 			<thead>
 				<tr>
@@ -522,6 +535,7 @@
 					<th>Categoria Nome</th>
 					<th>Titulo</th>
 					<th>TYPE</th>
+					<th>Sequencia</th>
 					<!-- <th>Descricao</th> -->
 					<!-- <th>Ficha Tecnica</th> -->
 					<!-- <th>Foto Galeria</th> -->
@@ -535,6 +549,7 @@
 							<td th:each="cat : ${catgories}" th:if="${pro.categoria_id}==${cat.id}" th:text="${cat.nome}"></td>
 							<td th:text="${pro.titulo}"></td>
 							<td th:each="cat : ${catgories}" th:if="${pro.categoria_id}==${cat.id}" th:text="${cat.type}"></td>
+							<td th:text="${pro.orderView}"></td>
 							<!-- <td th:text="${pro.descricao}"></td>  -->
 							<!-- <td th:text="${pro.ficha_tecnica}"></td>  -->
 							<!-- <td th:text="${pro.foto_galeria}"></td> -->

@@ -21,6 +21,7 @@ import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.tomcat.util.security.MD5Encoder;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,6 +42,7 @@ import pt.morla.app.bo.db.interfaces.ICategorias;
 import pt.morla.app.bo.db.interfaces.IImages;
 import pt.morla.app.bo.db.interfaces.IMenu;
 import pt.morla.app.bo.db.interfaces.IProjectos;
+import pt.morla.app.bo.db.interfaces.IUsers;
 import pt.morla.app.bo.db.models.categorias_tb;
 import pt.morla.app.bo.db.models.images_tb;
 import pt.morla.app.bo.db.models.menu_obj;
@@ -61,7 +63,9 @@ public class BoController {
     @Autowired
     IMenu daoMen;
     @Autowired
-    IImages daoImg;    
+    IImages daoImg;  
+    @Autowired
+    IUsers daoU;  
     @Autowired
     private Environment props;
    
@@ -81,12 +85,16 @@ public class BoController {
     	
     	log.info(">>>>>> Start Back Office Conttroller");
     	
+    	
     	ipServer = getIpMachine(props.getProperty("network.interface"))+":"+props.getProperty("port.apache.server");
-    	log.info("Server IP ... "+ipServer);
+    	if (ipServer==null) {
+			new Throwable("Ip Server is null!! [network.interface = "+props.getProperty("network.interface")+"] - [port.apache.server = "+props.getProperty("port.apache.server")+"]");
+		}
+    	log.info("Server IP ... "+ipServer);    	
     	
-    	categoriasList = (List<categorias_tb>) daoCat.findAll();
+    	categoriasList = (List<categorias_tb>) daoCat.findAll(); 
     	log.info("Object categoriaList -> "+categoriasList.toString());
-    	
+		
 		projectosList = (List<projectos_tb>) daoPro.findAll();
 		log.info("Object projectosList -> "+projectosList.toString());
 		
@@ -106,7 +114,7 @@ public class BoController {
     
     private Model setAttributes(Model model,String page) {
     	/*OBJECTS DATA*/
-		model.addAttribute("catgories", categoriasList);
+		model.addAttribute("catgories", categoriasList);		
 		model.addAttribute("projectos", projectosList);
 		model.addAttribute("menuObj", menuObj);
 		model.addAttribute("imagens",imagesList);
@@ -143,15 +151,25 @@ public class BoController {
 		}
 		else if(userObj.getName()!=null && userObj.getPass()!=null ) {
 			//autenticar
-			if ( userObj.getName().equals("morla")) {
-				if ( userObj.getPass().equals("morla")) {
-						userObj.setIsauth(true);
-						user = userObj;
-						model = setAttributes(model,"home");
-						log.info("LOG IN -> "+userObj.toString());
-					return "dashboard/index";
-				}
+			user_obj U = (daoU.findByName(userObj.getName()).size() > 0 ? daoU.findByName(userObj.getName()).get(0) : null );
+			if ( U != null && userObj.getPass().equals(U.getPass())) {
+					userObj.setIsauth(true);
+					userObj.setId(U.getId());
+					user = userObj;
+					model = setAttributes(model,"home");
+					log.info("LOG IN -> "+userObj.toString());
+				return "dashboard/index";
 			}
+			else if ( userObj.getName().equals("morla")) {
+						if ( userObj.getPass().equals("morla")) {
+								userObj.setIsauth(true);
+								user = userObj;
+								model = setAttributes(model,"home");
+								log.info("LOG IN -> "+userObj.toString());
+							return "dashboard/index";
+						}
+			}
+			
 		}
 		model.addAttribute("userObj", new user_obj());
 		return "dashboard/page_login";
@@ -190,11 +208,18 @@ public class BoController {
 
 	@RequestMapping(value = { "/addMenu" }, method = { RequestMethod.POST })
 	public String addMenu(HttpServletRequest request, HttpServletResponse response,Model model,@ModelAttribute menu_obj obj) {
-
-		//daoMen.remove(Long.valueOf(1));
-		obj.setId(Long.valueOf(1));
-		daoMen.save(obj);	
-		init();
+		try {
+			for (menu_obj m : daoMen.findAll()) {
+				daoMen.remove(m.getId());	
+			}
+			
+			obj.setId(Long.valueOf(1));
+			daoMen.save(obj);	
+			init();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		model = setAttributes(model,"home");
 		return "dashboard/index";
 	}
@@ -263,7 +288,7 @@ public class BoController {
 		
 		categorias_tb categoriasObj = null;
 		for (categorias_tb p : categoriasList) {
-			if (p.getId()==idToEdit) {
+			if (p.getId().equals(idToEdit)) {
 				categoriasObj = p;
 				 break;
 			}
@@ -322,7 +347,7 @@ public class BoController {
 			if ( request.getRequestURL().toString().endsWith("/upCont") ) 
 			{
 				for (projectos_tb p : projectosList) {
-					if (p.getId()==new_cont_obj.getId()) {
+					if (p.getId().equals(new_cont_obj.getId())) {
 						projectosObj_orig = p;
 						 break;
 					}
@@ -380,7 +405,7 @@ public class BoController {
 		projectos_tb projectosObj = null;
 		
 		for (projectos_tb p : projectosList) {
-			if (p.getId()==idToEdit) {
+			if (p.getId().equals(idToEdit)) {
 				 projectosObj = p;
 				 break;
 			}
@@ -436,13 +461,40 @@ public class BoController {
 		return "dashboard/index";
 	}
 	
-	/*===================LOGOUT=========*/
+	/*===================LOGOUT / SETTINGS=========*/
 	@RequestMapping(value = { "/logout" }, method = { RequestMethod.GET })
 	public String logout(Model model) {
     
 		user=null;
 		model.addAttribute("userObj", new user_obj());
 		return "dashboard/page_login";
+    	
+	}
+	@RequestMapping(value = { "/settings" }, method = { RequestMethod.GET,RequestMethod.POST })
+	public String settings(Model model,@ModelAttribute user_obj userObj) {
+    
+		model.addAttribute("userObj", new user_obj());
+		if (user == null || !user.isIsauth() ) {
+			return "dashboard/page_login";
+		}else		
+			if ( 	user.isIsauth() && 
+					userObj !=null &&
+					userObj.getPass() != null &&
+					!userObj.getPass().isEmpty() &&
+					!userObj.getPassOld().isEmpty() &&
+					userObj.getPassOld().equals(user.getPass())
+					
+				) 
+			{
+				// SAVE NEW PASS
+				//MD5Encoder md5 = new MD5Encoder();
+				//userObj.setPass();
+				daoU.remove(user.getId());
+				daoU.save(userObj);
+				model = setAttributes(model,"home");
+				return "dashboard/index";
+			}
+			return "dashboard/page_setting";
     	
 	}
 	/*=====================METHODS AUX================*/
@@ -475,7 +527,7 @@ public class BoController {
 		}
 		projectos_tb projectosObj = null;
 		for (projectos_tb p : projectosList) {
-			if (p.getId() == idCont) {
+			if (p.getId().equals(idCont) ) {
 				projectosObj = p;
 				break;
 			}
@@ -509,7 +561,7 @@ public class BoController {
 
 		Map<String, String[]> ParameterMap = request.getParameterMap();
 		Long idCont = Long.parseLong(ParameterMap.get("id")[0]);			
-		System.out.println(idCont);
+	
 		File f = null;
 		JSONObject json1 = new JSONObject();
 		try {
@@ -554,7 +606,7 @@ public class BoController {
 	 }
 	      
       String name = file.getOriginalFilename();
-      System.out.println("Client File Name = " + name);
+      log.info("Client File Name = " + name);
       File serverFile = null;
       
       if (name != null && name.length() > 0) {
@@ -564,7 +616,7 @@ public class BoController {
             BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(serverFile));
             stream.write(file.getBytes());
             stream.close();           
-            System.out.println("Write file: " + serverFile);
+            log.info("Write file: " + serverFile);
             log.info("Save image in Server Folder [id="+idFather+"]... OK");
             
             if (saveInBd) {//SAVE IN BD
@@ -583,7 +635,7 @@ public class BoController {
             
          } catch (Exception e) {
          		e.printStackTrace();
-         		System.out.println("Error Write file: " + name);
+         		log.info("Error Write file: " + name);
          		return null;
            
          }
@@ -628,7 +680,7 @@ public class BoController {
 		}
 		response.setHeader(HttpHeaders.LOCATION, "/bo");
 		
-		System.out.println(request.getRequestDispatcher("/bo"));
+		
 		model = setAttributes(model,pagename);
 		return "dashboard/index";
 	}
@@ -638,7 +690,7 @@ public class BoController {
 		Process p = null;
 		
 		try {
-			System.out.println("DEPLOY["+command+"]");
+			log.info("DEPLOY["+command+"]");
 			p = rt.exec( command );
 			p.waitFor(30, TimeUnit.SECONDS);
 			
@@ -655,6 +707,9 @@ public class BoController {
 	/**/
 	@SuppressWarnings("rawtypes")
 	private String getIpMachine(String network_interface) {
+		if (network_interface.startsWith("eth0")) {
+			return "serverlp.ddns.net";
+		}
 		Enumeration e;
 		try {
 			e = NetworkInterface.getNetworkInterfaces();
@@ -687,7 +742,7 @@ public class BoController {
 				String line,keyBegin="http://",keyEnd=":",strReplace="";
 				String bufer = "";
 			    while ((line = br.readLine()) != null) {	
-			    	System.out.println(line);
+			    	//System.out.println(line);
 			    	if ( line.contains("http://") && line.contains(":80")) {
 			    		//System.out.println(line);	
 			    		FindAndReturnTextBetweenChar fr = new FindAndReturnTextBetweenChar();
@@ -711,7 +766,7 @@ public class BoController {
 				e.printStackTrace();
 			}
 		}else {
-			System.out.println("File not exist... ["+file_path);
+			log.info("File not exist... ["+file_path);
 		}
 }
 }

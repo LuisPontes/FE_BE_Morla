@@ -126,6 +126,7 @@ img::-moz-selection {
 }
 /*
 @media (min-width: 992px) {
+*/
   #mainNav {
     border-color: transparent;
     background-color: transparent;
@@ -165,6 +166,7 @@ img::-moz-selection {
   #mainNav.navbar-shrink .navbar-nav > li.nav-item > a.nav-link:focus:hover {
     color: #F05F40;
   }
+  /*
 }
 */
 header.masthead {

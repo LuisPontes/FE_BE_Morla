@@ -23,7 +23,7 @@
 		<div class="row" >
 			<div class="box-proent">	
 				<h4 class="page-header">Accões</h4>	
-				<a class="btn btn-success btn-label-center" href="/" target="_blank" ><span><i class="fa fa-clock-o"></i></span>Ver Pagina Principal</a>
+				<a class="btn btn-success btn-label-center" href="/local" target="_blank" ><span><i class="fa fa-clock-o"></i></span>Ver Pagina Principal</a>
 				<!-- 
 				<a type="button" class="btn btn-warnnig btn-label-left"  href="/refresh" ><span><i class="fa fa-clock-o"></i></span>REFRESH Pagina Principal</a>
 				 --> 
@@ -98,6 +98,7 @@
 					<th>Categoria_id</th>
 					<th>ID</th>
 					<th>Titulo</th>
+					<th>Sequencia</th>
 					<!-- <th>Descricao</th>  -->
 					<!-- <th>Ficha Tecnica</th> -->
 					<!-- <th>Foto Galeria</th> -->
@@ -111,6 +112,7 @@
 							<td th:text="${pro.categoria_id}"></td>
 							<td th:text="${pro.id}"></td>
 							<td th:text="${pro.titulo}"></td>
+							<td th:text="${pro.orderView}"></td>
 						   <!--  <td th:text="${pro.descricao}"></td> -->
 							<!-- <td th:text="${pro.ficha_tecnica}"></td>  -->
 							<!-- <td th:text="${pro.foto_galeria}"></td> -->

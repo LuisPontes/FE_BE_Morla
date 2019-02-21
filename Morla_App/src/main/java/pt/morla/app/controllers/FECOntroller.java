@@ -3,6 +3,7 @@ package pt.morla.app.controllers;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
@@ -55,13 +56,33 @@ public class FECOntroller {
     @PostConstruct
     private void init() {
     	
-    	ipServer = getIpMachine(props.getProperty("network.interface"))+":"+props.getProperty("port.apache.server");    			 
-    	categoriasList = (List<categorias_tb>)  daoCat.findAllActive();
-    	for (categorias_tb c : categoriasList) {
-			c.setSlug(c.getNome().replace(" ",""));
-			c.setNome(c.getNome().toUpperCase());
+    	ipServer = getIpMachine(props.getProperty("network.interface"))+":"+props.getProperty("port.apache.server"); 
+    	if (ipServer==null) {
+			new Throwable("Ip Server is null!! [network.interface = "+props.getProperty("network.interface")+"] - [port.apache.server = "+props.getProperty("port.apache.server")+"]");
 		}
-		projectosList = (List<projectos_tb>) daoPro.findAllActive();
+    	
+    	categoriasList = new ArrayList<categorias_tb>();
+    	List<categorias_tb> categoriasListBd = (List<categorias_tb>)  daoCat.findAllActive();
+		for ( int i = 0; i < categoriasListBd.size(); i++ ) {
+			for ( categorias_tb cat : categoriasListBd ) {				
+				if (cat!=null && cat.getOrderView()!=null && cat.getOrderView()==i) {
+					cat.setSlug(cat.getNome().replace(" ",""));
+					cat.setNome(cat.getNome().toUpperCase());
+					categoriasList.add(cat);
+				}
+			}
+		}
+    	
+		projectosList = new ArrayList<projectos_tb>();
+		List<projectos_tb> projectosListBd = (List<projectos_tb>)  daoPro.findAllActive();
+		for ( int i = 0; i < projectosListBd.size(); i++ ) {
+			for ( projectos_tb cat : projectosListBd ) {				
+				if (cat!=null && cat.getOrderView()!=null && cat.getOrderView()==i ) {
+					projectosList.add(cat);
+				}
+			}
+		}
+		
 		imagesList = daoImg.findAll();
 		
 		List<menu_obj> menuObj_list = (List<menu_obj>) daoMen.findAll();
@@ -71,12 +92,23 @@ public class FECOntroller {
 	
     }
 
+	@RequestMapping(value = { "/local" }, method = { RequestMethod.GET,RequestMethod.POST })
+	public String index_local(HttpServletRequest request, HttpServletResponse response,Model model,@ModelAttribute user_obj userObj) {
+		
+		init();
+		model.addAttribute("categorias", SortList(categoriasList));
+		model.addAttribute("conteudos", projectosList);
+		model.addAttribute("imagens", imagesList);
+		model.addAttribute("ipServer", "serverlp.ddns.net:80");
+		model.addAttribute("menuObj", menuObj);
+		return "FE/index";
+	}
 	
 	@RequestMapping(value = { "" }, method = { RequestMethod.GET,RequestMethod.POST })
 	public String index(HttpServletRequest request, HttpServletResponse response,Model model,@ModelAttribute user_obj userObj) {
 		
 		init();
-		model.addAttribute("categorias", categoriasList);
+		model.addAttribute("categorias", SortList(categoriasList));
 		model.addAttribute("conteudos", projectosList);
 		model.addAttribute("imagens", imagesList);
 		model.addAttribute("ipServer", ipServer);
@@ -84,6 +116,21 @@ public class FECOntroller {
 		return "FE/index";
 	}
 	
+
+	private List<categorias_tb> SortList(List<categorias_tb> categoriasList2) {
+    	
+		List<categorias_tb> categoriasList_copy = new ArrayList<categorias_tb>();
+		for ( int i = 0; i < categoriasList.size(); i++ ) {
+			for ( categorias_tb cat : categoriasList ) {
+				if (cat!=null && cat.getOrderView()==i) {
+					categoriasList_copy.add(cat);
+				}
+			}
+		}
+		
+		return categoriasList_copy;
+	}
+
 
 	@SuppressWarnings("rawtypes")
 	private String getIpMachine(String network_interface) {
