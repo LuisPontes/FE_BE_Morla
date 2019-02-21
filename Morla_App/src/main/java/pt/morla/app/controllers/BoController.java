@@ -489,7 +489,9 @@ public class BoController {
 				// SAVE NEW PASS
 				//MD5Encoder md5 = new MD5Encoder();
 				//userObj.setPass();
-				daoU.remove(user.getId());
+				if ( user.getId() != null ) {
+					daoU.remove(user.getId());
+				}				
 				daoU.save(userObj);
 				model = setAttributes(model,"home");
 				return "dashboard/index";
