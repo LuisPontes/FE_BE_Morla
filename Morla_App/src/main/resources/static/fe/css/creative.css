@@ -444,3 +444,42 @@ header.masthead p {
     transform: scale(1.2);
 }
 
+
+
+/* smarthPhone*/
+@media (min-width: 100px) {
+  .projects_desc_min {
+   float:none;width:100%;
+  }
+  .projects_desc_max {
+    width:100%;
+    float:none;
+  }
+ .projects_video {
+   max-height:600px;
+    width:100%;
+    float:none;
+    margin-bottom: 15%;
+    text-align: center;
+  }
+}
+/* desktop*/
+@media (min-width: 1200px) {
+ 
+  .projects_desc_max {
+    width:100%;
+  }
+  .projects_desc_min {
+    float:left;
+    width:50%;
+  }
+  .projects_video_none {
+    display:none;
+  }
+ .projects_video {
+    width:50%;
+    float:right;
+    max-height:600px;
+  }
+}
+

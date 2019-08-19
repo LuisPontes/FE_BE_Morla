@@ -12,7 +12,7 @@
 ---- BACK END ----
 														feito->1) cor menu cinza MENU
 	1.1) font: ar bonnie -titulos?????
-	7) contagem de visitas
+														feito->7) contagem de visitas
 														feito->8) REFRESH
 														feito->10) logs
 														

@@ -12,7 +12,8 @@
   }  
   function upload(){
   	echo "UpLoad to server... " 
-	scp -r target/MORLA.app-0.0.1-SNAPSHOT.jar pi@192.168.1.100:/tmp
+	#scp -r target/MORLA.app-0.0.1-SNAPSHOT.jar pi@192.168.1.100:/tmp
+	scp -r target/MORLA.app-0.0.1-SNAPSHOT.jar pi@serverlp.ddns.net:/tmp
   }
     
 

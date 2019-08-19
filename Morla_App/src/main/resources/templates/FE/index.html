@@ -165,9 +165,12 @@
 						
 						<div class="box-content page-top"  >
 							<div  class="row">
-								<div th:style="${con.video_link} == '' and ${con.video_iframe} == '' ? 'width:100%;' : 'float:left;width:50%;' " class="text-center">
-								
-									<h2 class="section-heading text-white"
+                                
+                                <!-- <div th:style="${con.video_link} == '' and ${con.video_iframe} == '' ? 'width:100%;' : 'float:left;width:50%;' " class="text-center">
+                                -->
+                                <div th:class="${con.video_link} == '' and ${con.video_iframe} == '' ? 'text-center projects_desc_max' : 'text-center projects_desc_min' ">
+                                    
+                                    <h2 class="section-heading text-white"
 										th:if="${con.titulo} != null" th:text="${con.titulo}">
 									</h2>
 								
@@ -178,8 +181,10 @@
 									</p>
 								</div>	
 								
-								<div th:style="${con.video_link} == '' and ${con.video_iframe} == '' ? 'display:none;' : 'width:50%;float:right;max-height:600px;'  "> 
-									<!-- iframe -->
+								<!-- <div th:style="${con.video_link} == '' and ${con.video_iframe} == '' ? 'display:none;' : 'width:50%;float:right;max-height:600px;'  "> 
+                                  -->
+                                <div th:class="${con.video_link} == '' and ${con.video_iframe} == '' ? 'projects_video_none' : 'projects_video'  ">
+                                    <!-- iframe -->
 									<p 
 										th:style="${con.video_iframe} == ''  ? 'display:none;' : 'text-align: center;'"
 										th:utext="${con.video_iframe}" 

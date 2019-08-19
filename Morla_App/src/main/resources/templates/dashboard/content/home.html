@@ -21,20 +21,85 @@
 		<!--Start Dashboard 1-->
 		
 		<div class="row" >
-			<div class="box-proent">	
+			<div class="box-proent" style="text-align:center;">	
 				<h4 class="page-header">Accões</h4>	
-				<a class="btn btn-success btn-label-center" href="/local" target="_blank" ><span><i class="fa fa-clock-o"></i></span>Ver Pagina Principal</a>
-				<!-- 
-				<a type="button" class="btn btn-warnnig btn-label-left"  href="/refresh" ><span><i class="fa fa-clock-o"></i></span>REFRESH Pagina Principal</a>
-				 --> 
-				<a type="button" class="btn btn-danger btn-label-right" style="float:right;" href="/bo/deploy" ><span><i class="fa fa-clock-o"></i></span>DEPLOY PARA PRODUÇÂO</a>
-				
+				<a class="btn btn-success btn-label-center" href="/local" target="_blank" ><span><i class="fa fa-clock-o"></i></span>Ver Pagina Principal</a>				
+				<a type="button" class="btn btn-warning btn-label-center"  href="javascript:request('/bo/deploy','0')" ><span><i class="fa fa-clock-o"></i></span>DEPLOY PARA QUALIDADE</a>
+                <a type="button" class="btn btn-danger btn-label-center"  href="javascript:request('/bo/deployTOProd','1')" ><span><i class="fa fa-clock-o"></i></span>DEPLOY PARA PRODUÇÂO</a>
+               
 				<h4 class="page-header"></h4>
 			</div>
-		</div>
-		
-		<div id="dashboard-header" class="row"> 
-			<div class="box-proent">		
+        </div>
+
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog">
+            
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 id="modalTitle" class="modal-title"></h4>
+                </div>
+                <div id="modalBody" class="modal-body" style="text-align: center" >
+                   <img th:src="@{/bo/img/loading.gif}"  alt="Carregando..." title="Carregando...">           
+                     
+                </div>
+                <div id="modalFooter" class="modal-footer">
+                    <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
+                    <h4 class="modal-title">Têm calma Morlinha esta quase...  </h4>
+                </div> 
+            </div>
+            
+            </div>
+        </div>
+        
+        <script>
+
+        function request(endpoint,msg){
+             
+                $.ajax({
+                    url: endpoint, 
+                    beforeSend: function() {
+                                if(msg==='0'){
+                                     $("#modalTitle").html("(Deply para Qualidade) - Loading...");
+                                }
+                                if(msg==='1'){
+                                     $("#modalTitle").html("(Deply para Produção) - Loading...");
+                                }
+                                $("#myModal").modal('show');
+                    },
+                    success: function(result){
+                                $("#modalBody").html("O seu pedido terminou com Sucesso!");
+                                $("#modalBody").append("<br>");
+                                $("#modalBody").append("verifique se realmente esta como espera!");
+                                $("#modalBody").append("<br>");
+                                if(msg==='0'){                                   
+                                    $("#modalBody").append("<a href='http://serverlp.ddns.net/morla.site/index.html' target='_blank' >VER</a><br>");
+                                    $("#modalBody").append("Neste momento Todas as todas alteraçoes estam no ambiente de qualidade!<br>");
+                                    $("#modalBody").append("Para passar para Produção carrega no botão[DEPLOY PARA PRODUÇÂO]");
+                                }
+                                if(msg==='1'){
+                                    $("#modalBody").append("<a href='http://www.morla.online' target='_blank' >VER</a><br>");
+                                     $("#modalBody").append("Neste momento Todas as todas alteraçoes estam no ambiente de Produção ou seja final!");
+                                }
+                                $("#modalFooter").html('<a href="/bo" class="btn btn-success" >Continuar</a>');
+                               
+                        },
+                   
+                    fail: function(xhr, textStatus, errorThrown){
+                            $("#modalBody").html("Passou alguma coisa de errrado! <br> Fala com o teu suporte tecnico... ou 112! <br> Error: "+errorThrown);
+                            $("#modalFooter").html('<a href="/bo" class="btn btn-danger" >Continuar</a>');
+                    },
+                     error: function(xhr, textStatus, errorThrown){
+                            $("#modalBody").html("Passou alguma coisa de errrado! <br> Fala com o teu suporte tecnico... ou 112!<br> Error: "+errorThrown);
+                            $("#modalFooter").html('<a href="/bo" class="btn btn-danger" >Continuar</a>');
+                    }, 
+                    timeout: 600000 // 600000=10min
+                    
+                });
+        }
+
+        </script>
 			 
 			 <h4 class="page-header">Categorias</h4>
 			<table class="table beauty-table table-hover">
@@ -85,9 +150,9 @@
 						</table>
 						
 				
-					</div>
-		</div>
-		<div class="row">
+</div>
+		
+<div class="row">
 	<div class="box-proent">
 
 		<h4 class="page-header">Projectos</h4>
@@ -137,7 +202,7 @@
 				</table>
 	</div>
 </div>
-</div>
+
 
 </body>
 </html>

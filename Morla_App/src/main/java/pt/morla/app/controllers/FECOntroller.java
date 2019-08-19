@@ -56,7 +56,8 @@ public class FECOntroller {
     @PostConstruct
     private void init() {
     	
-    	ipServer = getIpMachine(props.getProperty("network.interface"))+":"+props.getProperty("port.apache.server"); 
+    	ipServer = getIpMachine(props.getProperty("network.interface"))+":"+props.getProperty("port.apache.server");
+		
     	if (ipServer==null) {
 			new Throwable("Ip Server is null!! [network.interface = "+props.getProperty("network.interface")+"] - [port.apache.server = "+props.getProperty("port.apache.server")+"]");
 		}
@@ -99,7 +100,7 @@ public class FECOntroller {
 		model.addAttribute("categorias", SortList(categoriasList));
 		model.addAttribute("conteudos", projectosList);
 		model.addAttribute("imagens", imagesList);
-		model.addAttribute("ipServer", "serverlp.ddns.net:80");
+		model.addAttribute("ipServer", props.getProperty("network.interface.hostname"));
 		model.addAttribute("menuObj", menuObj);
 		return "FE/index";
 	}

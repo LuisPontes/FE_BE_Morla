@@ -21,7 +21,6 @@ import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.tomcat.util.security.MD5Encoder;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -87,6 +86,8 @@ public class BoController {
     	
     	
     	ipServer = getIpMachine(props.getProperty("network.interface"))+":"+props.getProperty("port.apache.server");
+		
+    	
     	if (ipServer==null) {
 			new Throwable("Ip Server is null!! [network.interface = "+props.getProperty("network.interface")+"] - [port.apache.server = "+props.getProperty("port.apache.server")+"]");
 		}
@@ -175,33 +176,90 @@ public class BoController {
 		return "dashboard/page_login";
     	
 	}
-    /*** DePLOY	 */
+    /*** DePLOY	 
+     * @throws Exception */
+    
+    /*TO QUALIDADE*/
 	@RequestMapping(value = { "/deploy" }, method = { RequestMethod.GET })
 	public String deploy(
 			HttpServletRequest request, 
 			HttpServletResponse response,
-			Model model) {
+			Model model) throws Exception {
 		
 		String command = String.format(Contants.COMMANDBASE_WGET, Contants.SERVER_IP+Contants.SERVER_PORT ,Contants.PATH_SITE_PROD);	
-		if( execCmd(command) ) {
-			
-		
+		if( execCmd(command) ) {		
 			File f = new File(Contants.PATH_SITE_PROD+Contants.FOLDER_APACHE_NAME);
 			if (f.exists() && f.isDirectory() ) {
 				execCmd("sudo rm -r "+Contants.PATH_SITE_PROD+Contants.FOLDER_APACHE_NAME);
 			}
 			
-			
+			//"sudo mv /var/www/html/127.0.0.1:8090/ /var/www/html/morla.site";
 			String moveCmd = String.format("sudo mv %s %s", Contants.PATH_SITE_PROD+Contants.SERVER_IP+Contants.SERVER_PORT,Contants.PATH_SITE_PROD+Contants.FOLDER_APACHE_NAME);
-					//"sudo mv /var/www/html/127.0.0.1:8090/ /var/www/html/morla.site";
-			execCmd(moveCmd);
-			execCmd(String.format("sudo chmod 777 %s",Contants.PATH_SITE_PROD+Contants.FOLDER_APACHE_NAME));
-			replaceLink(Contants.PATH_SITE_PROD+Contants.FOLDER_APACHE_NAME+"/index.html");
-			
-
+					
+			if(execCmd(moveCmd)) {
+				if(execCmd(String.format("sudo chmod 777 %s",Contants.PATH_SITE_PROD+Contants.FOLDER_APACHE_NAME))) {
+					replaceLink(Contants.PATH_SITE_PROD+Contants.FOLDER_APACHE_NAME+"/index.html");
+					model = setAttributes(model,"home");
+					return "dashboard/index";
+				}
+			}
 		}
+		
+		throw new Exception("Error deploy to Qualidade!");
+		
+	}
+	
+	/*To PRODUCTION GITHUB PAGES*/	
+	@RequestMapping(value = { "/deployTOProd" }, method = { RequestMethod.GET })
+	public String deployTOProd(
+			HttpServletRequest request, 
+			HttpServletResponse response,
+			Model model) throws Exception {
+		/*
+		 	sudo cp -R /var/www/html/morla.site/* /var/github_rep/LuisPontes.github.io/morla.site/*
+			sudo cp -R /var/www/html/morla.site/imgs/* /var/github_rep/LuisPontes.github.io/imgs/*			
+			git add .  
+			read -p "Commit description: " desc  
+			git commit -m "$d"
+			git push origin master
+git -C /var/github_rep/LuisPontes.github.io/ push https://LuisPontes:soeusei8git@github.com/LuisPontes/LuisPontes.github.io.git --all
+		  */
+		@SuppressWarnings("deprecation")
+		String comment = new Date().toGMTString();		
+		String path = "-C /var/github_rep/LuisPontes.github.io/";
+		
+		String[] cmdArray = new String[]{
+				"sudo cp -R /var/www/html/morla.site /var/github_rep/LuisPontes.github.io/",
+				"sudo cp -R /var/www/html/morla.site/imgs /var/github_rep/LuisPontes.github.io/",
+				"sudo git "+path+" add .",
+				"sudo git "+path+" commit -m '"+comment+"'",
+				"sudo git "+path+" push https://LuisPontes:soeusei8git@github.com/LuisPontes/LuisPontes.github.io.git --all"
+		};
+		
+		for (String cmd : cmdArray) {
+			if ( !execCmd(cmd) ) {
+				log.error("ERROR: "+cmd);
+				throw new Exception("Error deploy TO Prod!");
+			}
+		}
+
 		model = setAttributes(model,"home");
 		return "dashboard/index";
+		
+		
+		/*
+		if( execCmd("sudo cp -R /var/www/html/* /var/github_rep/LuisPontes.github.io/") ) {
+			if( execCmd("/var/github_rep/LuisPontes.github.io/git commit -m '"+comment+"'") ) {
+				if ( execCmd("/var/github_rep/LuisPontes.github.io/git push -u origin master") ) {
+					model = setAttributes(model,"home");
+			return "dashboard/index";
+				}
+			}
+		}
+		throw new Exception("Error deploy TO Prod!");
+		*/
+		
+		
 	}
 	
 	/*================================MENU POINTS=====================*/
@@ -695,7 +753,7 @@ public class BoController {
 			log.info("DEPLOY["+command+"]");
 			p = rt.exec( command );
 			p.waitFor(30, TimeUnit.SECONDS);
-			
+			System.out.println("VALUE: "+p.exitValue());
 			return true;
 			
 		} catch (Exception e) {
